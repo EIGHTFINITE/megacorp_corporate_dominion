@@ -74,8 +74,8 @@ civic_imperial_cult = {
 	}
 	random_weight = { base = 5 }
 	modifier = {
-		edict_length_mult = 0.25
-		pop_government_ethic_attraction = 0.10
+		country_edict_cap_add = 1
+		edicts_cost_mult = -0.25
 	}
 }
 
@@ -203,6 +203,9 @@ civic_citizen_service = {
 				value = auth_democratic
 				value = auth_oligarchic
 			}
+		}
+		civics = {
+			NOT = { value = civic_reanimated_armies }
 		}
 	}
 	random_weight = { base = 5 }
@@ -351,7 +354,8 @@ civic_inwards_perfection = {
 	random_weight = { base = 1000 }
 	modifier = {
 		country_unity_produces_mult = 0.20
-		pop_growth_speed = 0.20
+		pop_growth_speed = 0.10
+		country_edict_cap_add = 1
 		pop_citizen_happiness = 0.05
 		envoys_add = -1
 	}
@@ -725,7 +729,7 @@ civic_shared_burden = {
 #	}
 #
 #	description = civic_tooltip_syncretic_evolution_effects
-#	has_secondary_species = {	# see game_start.11
+#	has_secondary_species = {
 #		title = civic_syncretic_evolution_secondary_species
 #		traits = {
 #			trait = trait_syncretic_proles
@@ -937,6 +941,30 @@ civic_merchant_guilds = {
 	}
 }
 
+civic_reanimated_armies = {
+	playable = { host_has_dlc = "Necroids Species Pack" }
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		ethics = {
+			NOR = {
+				value = ethic_gestalt_consciousness
+				value = ethic_pacifist
+				value = ethic_fanatic_pacifist
+			}
+		}
+		civics = {
+			NOT = { value = civic_citizen_service }
+		}
+	}
+	random_weight = {
+		base = 3
+	}
+	description = "civic_tooltip_reanimated_armies_effects"
+}
+
 civic_diplomatic_corps = {
 	playable = { host_has_dlc = "Federations" }
 	potential = {
@@ -955,5 +983,48 @@ civic_diplomatic_corps = {
 	modifier = {
 		envoys_add = 2
 		diplo_weight_mult = 0.1
+	}
+}
+
+civic_death_cult = {
+	playable = { host_has_dlc = "Necroids Species Pack" }
+	description = "civic_tooltip_death_cult_effects"
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } } #Corps get their own version
+	}
+	possible = {
+		origin = {
+			NOT = { value = origin_necrophage }
+		}
+		civics = {
+			NOR = {
+				value = civic_fanatic_purifiers
+				value = civic_inwards_perfection
+				value = civic_ancient_preservers
+			}
+		}
+		ethics = {
+			OR = {
+				value = ethic_spiritualist
+				value = ethic_fanatic_spiritualist
+			}
+		}
+	}
+}
+
+civic_memorialist = {
+	playable = { host_has_dlc = "Necroids Species Pack" }
+	description = "civic_tooltip_memorialist_effects"
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } } #Gestalts get their own versions
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		civics = {
+			NOT = {
+				value = civic_fanatic_purifiers
+			}
+		}
 	}
 }
