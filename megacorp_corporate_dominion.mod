@@ -1,8 +1,10 @@
 name="Corporate Dominion with MegaCorp"
-path="mod/megacorp_corporate_dominion"
 tags={
-	"Species"
-	"Gameplay"
 	"Balance"
+	"Gameplay"
+	"Species"
 }
-supported_version="2.8.*"
+picture="thumbnail.png"
+supported_version="3.0.*"
+path="mod/megacorp_corporate_dominion"
+remote_file_id="2496533016"
