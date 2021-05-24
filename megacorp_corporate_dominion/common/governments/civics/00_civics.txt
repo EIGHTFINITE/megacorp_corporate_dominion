@@ -999,8 +999,6 @@ civic_cutthroat_politics = {
 
 # Disable this civic if host has MegaCorp as it's replaced by the Corporate authority
 civic_corporate_dominion = {
-	playable = { NOT = { host_has_dlc = "Megacorp" } }
-	ai_playable = { NOT = { host_has_dlc = "Megacorp" } }
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -1019,10 +1017,6 @@ civic_corporate_dominion = {
 	}
 	random_weight = {
 		base = @civic_uncommon_random_weight
-		modifier = {
-			factor = 0
-			host_has_dlc = "Megacorp"
-		}
 	}
 	ai_weight = {
 		base = @ai_civic_default_base_weight
