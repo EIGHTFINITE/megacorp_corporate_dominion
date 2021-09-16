@@ -134,6 +134,8 @@ iferyx = {
 	adjective = "PRESCRIPTED_adjective_iferyx"
 	spawn_enabled = yes # yes / no / always
 	
+	playable = has_not_megacorp
+	
 	species = {
 		class = "MAM"
 		portrait = "mam16"
