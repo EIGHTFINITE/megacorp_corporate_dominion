@@ -1873,7 +1873,7 @@ country_event = {
 				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random civic = random }
+				civics = { civic = civic_corporate_dominion civic = random civic = random }
 			}
 		}
 		else = {
@@ -1881,7 +1881,7 @@ country_event = {
 				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random }
+				civics = { civic = civic_corporate_dominion civic = random }
 			}
 		}
 	}
