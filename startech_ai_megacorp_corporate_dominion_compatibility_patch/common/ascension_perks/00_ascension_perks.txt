@@ -1294,7 +1294,35 @@ ap_shared_destiny = {
 	}
 
 	ai_weight = {
-		factor = 0
+		factor = 5
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_valid_civic = civic_diplomatic_corps
+				has_valid_civic = civic_hive_empath
+				has_valid_civic = civic_machine_delegated_functions
+				has_valid_civic = civic_pompous_purists
+				has_tradition = tr_diplomacy_adopt
+			}
+		}
+		modifier = {
+			factor = 0
+			has_ascension_perk = ap_interstellar_dominion
+		}
+		modifier = {
+			factor = 4
+			any_subject = {
+				is_subject_type = vassal
+			}
+		}
 	}
 }
 
