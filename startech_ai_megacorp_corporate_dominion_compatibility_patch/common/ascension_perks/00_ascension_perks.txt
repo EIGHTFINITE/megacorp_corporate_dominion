@@ -1220,13 +1220,7 @@ ap_transcendent_learning = {
 	}
 
 	ai_weight = {
-		factor = 5
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_executive_vigor
-			}
-		}
+		factor = 0
 	}
 }
 
