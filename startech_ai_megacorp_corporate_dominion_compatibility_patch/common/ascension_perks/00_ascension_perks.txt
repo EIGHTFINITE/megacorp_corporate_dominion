@@ -49,12 +49,9 @@ ap_become_the_crisis = {
 			factor = 0
 			nor = {
 				is_militarist = yes
+				is_authoritarian = yes
 				is_xenophobe = yes
 				is_gestalt = yes
-				and = {
-					is_authoritarian = yes
-					is_spiritualist = yes
-				}
 			}
 		}
 
@@ -87,7 +84,7 @@ ap_become_the_crisis = {
 				value > 200
 			}
 			resource_income_compare = {
-				resource = physics_research
+				resource = engineering_research
 				value > 500
 			}
 			rusher2 = yes
@@ -96,11 +93,17 @@ ap_become_the_crisis = {
 		modifier = {
 			factor = 0
 			galaxy_percentage < 0.05
+			num_owned_planets < 5
 			minilategame = no
 		}
 		modifier = {
 			factor = 5
-			galaxy_percentage > 0.2
+			or = {
+				not = {
+					galaxy_percentage < 0.2
+				}
+				num_owned_planets > 19
+			}
 		}
 		modifier = {
 			factor = 100
@@ -110,15 +113,6 @@ ap_become_the_crisis = {
 			resource_income_compare = {
 				resource = alloys
 				value > 200
-			}
-		}
-		modifier = {
-			factor = 0
-			count_country = {
-				count > 2
-				limit = {
-					has_ascension_perk = ap_become_the_crisis
-				}
 			}
 		}
 	}
