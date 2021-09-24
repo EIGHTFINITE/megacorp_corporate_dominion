@@ -281,8 +281,11 @@ ap_colossus = {
 		modifier = {
 			factor = 0
 			OR = {
+				has_ascension_perk = ap_become_the_crisis
 				has_valid_civic = civic_fanatic_purifiers
+				has_valid_civic = civic_hive_devouring_swarm
 				has_valid_civic = civic_machine_terminator
+				has_valid_civic = civic_machine_assimilator
 			}
 		}
 		modifier = {
@@ -905,8 +908,8 @@ ap_interstellar_dominion = {
 			}
 		}
 		modifier = {
-			factor = 0.001
-			num_ascension_perks > 1
+			factor = 0
+			num_ascension_perks > 0
 		}
 		modifier = {
 			factor = 0
@@ -915,10 +918,12 @@ ap_interstellar_dominion = {
 		modifier = {
 			factor = 0
 			OR = {
-				has_civic = civic_fanatic_purifiers
-				has_civic = civic_hive_devouring_swarm
-				has_civic = civic_machine_terminator
-				has_civic = civic_machine_assimilator
+				has_ascension_perk = ap_become_the_crisis
+				has_ascension_perk = ap_colossus
+				has_valid_civic = civic_fanatic_purifiers
+				has_valid_civic = civic_hive_devouring_swarm
+				has_valid_civic = civic_machine_terminator
+				has_valid_civic = civic_machine_assimilator
 			}
 		}
 
