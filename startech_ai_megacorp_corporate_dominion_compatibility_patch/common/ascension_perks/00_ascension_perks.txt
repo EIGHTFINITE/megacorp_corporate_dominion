@@ -220,6 +220,38 @@ ap_enigmatic_engineering = {
 			}
 		}
 		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_galactic_force_projection
+			}
+		}
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_grasp_the_void
+			}
+		}
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_shared_destiny
+			}
+			NOR = {
+				has_valid_civic = civic_fanatic_purifiers
+				has_valid_civic = civic_hive_devouring_swarm
+				has_valid_civic = civic_inwards_perfection
+				has_valid_civic = civic_machine_terminator
+				has_authority = auth_corporate
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_valid_civic = civic_diplomatic_corps
+				has_valid_civic = civic_hive_empath
+				has_valid_civic = civic_machine_delegated_functions
+				has_valid_civic = civic_pompous_purists
+				has_tradition = tr_diplomacy_adopt
+			}
+		}
+		modifier = {
 			factor = 2
 			has_ethic = ethic_materialist
 		}
@@ -1110,6 +1142,38 @@ ap_technological_ascendancy = {
 			factor = 0
 			not = {
 				has_ascension_perk = ap_executive_vigor
+			}
+		}
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_galactic_force_projection
+			}
+		}
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_grasp_the_void
+			}
+		}
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_shared_destiny
+			}
+			NOR = {
+				has_valid_civic = civic_fanatic_purifiers
+				has_valid_civic = civic_hive_devouring_swarm
+				has_valid_civic = civic_inwards_perfection
+				has_valid_civic = civic_machine_terminator
+				has_authority = auth_corporate
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_valid_civic = civic_diplomatic_corps
+				has_valid_civic = civic_hive_empath
+				has_valid_civic = civic_machine_delegated_functions
+				has_valid_civic = civic_pompous_purists
+				has_tradition = tr_diplomacy_adopt
 			}
 		}
 		modifier = {
