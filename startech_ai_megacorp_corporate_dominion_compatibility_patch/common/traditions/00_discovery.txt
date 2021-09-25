@@ -6,7 +6,7 @@ tr_discovery_adopt = {
 	possible = {
 		nand = {
 			is_ai = yes
-			num_ascension_perks = 1
+			num_tradition_categories = 1
 			not = {
 				has_tradition = tr_supremacy_adopt
 			}

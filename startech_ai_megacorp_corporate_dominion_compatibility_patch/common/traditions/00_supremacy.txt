@@ -6,11 +6,11 @@ tr_supremacy_adopt = {
 	ai_weight = {
 		modifier = {
 			factor = 100
-			num_ascension_perks > 1
+			num_tradition_categories > 1
 		}
 		modifier = {
 			factor = 0
-			num_ascension_perks = 0
+			num_tradition_categories = 0
 		}
 	}
 }

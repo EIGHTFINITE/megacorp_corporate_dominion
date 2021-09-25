@@ -7,7 +7,7 @@ tr_prosperity_adopt = {
 			factor = 100
 			or = {
 				num_tradition_categories = 0
-				num_ascension_perks > 1
+				num_tradition_categories > 1
 			}
 		}
 	}

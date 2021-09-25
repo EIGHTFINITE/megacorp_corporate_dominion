@@ -5,7 +5,7 @@ tr_diplomacy_adopt = {
 	possible = {
 		or = {
 			is_ai = no
-			num_ascension_perks > 2
+			num_tradition_categories > 2
 			has_origin = origin_common_ground
 			has_origin = origin_common_ground_npc
 		}
@@ -13,7 +13,7 @@ tr_diplomacy_adopt = {
 	ai_weight = {
 		modifier = {
 			factor = 0
-			num_ascension_perks < 2
+			num_tradition_categories < 2
 		}
 		modifier = {
 			factor = 100
