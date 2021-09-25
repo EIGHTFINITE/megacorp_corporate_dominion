@@ -6,25 +6,23 @@ tr_expansion_adopt = {
 	possible = {
 		or = {
 			is_ai = no
-			num_tradition_categories < 1
+			# ai has at least 3 traditions
+			num_tradition_categories > 2
+			and = {
+				# or ai has at least 2 traditions
+				num_tradition_categories > 1
+				# and ai has the devouring swarm civic
+				has_valid_civic = civic_hive_devouring_swarm
+			}
 		}
 		or = {
 			is_ai = no
+			# and ai benefits from expansion tradition
 			nor = {
 				has_origin = origin_necrophage
 				has_origin = origin_void_dwellers
 				num_guaranteed_colonies < 2
 			}
-		}
-	}
-	ai_weight = {
-		modifier = {
-			factor = 100
-			num_tradition_categories = 0
-		}
-		modifier = {
-			factor = 0
-			num_tradition_categories > 0
 		}
 	}
 }

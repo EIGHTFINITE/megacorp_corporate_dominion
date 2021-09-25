@@ -3,14 +3,19 @@ tr_supremacy_adopt = {
 		country_naval_cap_add = 20
 		army_damage_mult = 0.20
 	}
-	ai_weight = {
-		modifier = {
-			factor = 100
-			num_tradition_categories > 1
-		}
-		modifier = {
-			factor = 0
-			num_tradition_categories = 0
+	possible = {
+		or = {
+			is_ai = no
+			# ai has exactly 1 tradition
+			num_tradition_categories = 1
+			# or ai has at least 3 traditions
+			num_tradition_categories > 2
+			and = {
+				# or ai has at least 2 traditions
+				num_tradition_categories > 1
+				# and ai has the devouring swarm civic
+				has_valid_civic = civic_hive_devouring_swarm
+			}
 		}
 	}
 }

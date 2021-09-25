@@ -5,13 +5,14 @@ tr_subterfuge_adopt = {
 	possible = {
 		or = {
 			is_ai = no
+			# ai has at least 5 traditions
 			num_tradition_categories > 4
-		}
-	}
-	ai_weight = {
-		modifier = {
-			factor = 0
-			num_tradition_categories < 6
+			and = {
+				# or ai has at least 4 traditions
+				num_tradition_categories > 3
+				# and ai has the devouring swarm civic
+				has_valid_civic = civic_hive_devouring_swarm
+			}
 		}
 	}
 }

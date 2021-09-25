@@ -18,13 +18,14 @@ tr_domination_adopt = {
 	possible = {
 		or = {
 			is_ai = no
+			# ai has at least 4 traditions
 			num_tradition_categories > 3
-		}
-	}
-	ai_weight = {
-		modifier = {
-			factor = 0
-			num_tradition_categories < 2
+			and = {
+				# or ai has at least 3 traditions
+				num_tradition_categories > 2
+				# and ai has the devouring swarm civic
+				has_valid_civic = civic_hive_devouring_swarm
+			}
 		}
 	}
 }
