@@ -1927,6 +1927,6 @@ ap_universal_transactions = {
 	}
 
 	ai_weight = {
-		factor = 5
+		factor = 0
 	}
 }
