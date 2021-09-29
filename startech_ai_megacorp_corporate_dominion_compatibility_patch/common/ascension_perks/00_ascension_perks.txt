@@ -793,7 +793,7 @@ ap_galactic_force_projection = {
 			}
 		}
 		modifier = {
-			factor = 0
+			factor = 0.01
 			resource_stockpile_compare = {
 				resource = alloys
 				value < 2500
@@ -968,7 +968,7 @@ ap_grasp_the_void = {
 			is_xenophobe = yes
 		}
 		modifier = {
-			factor = 0
+			factor = 0.01
 			resource_stockpile_compare = {
 				resource = alloys
 				value < 2500
