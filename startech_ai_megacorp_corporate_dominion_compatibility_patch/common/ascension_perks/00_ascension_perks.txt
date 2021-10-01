@@ -283,15 +283,14 @@ ap_nihilistic_acquisition = {
 		}
 		modifier = {
 			factor = 0
-			NOT = { has_ai_personality_behaviour = slaver }
-		}
-		modifier = {
-			factor = 0
 			OR = {
+				has_ascension_perk = ap_become_the_crisis
+				has_ascension_perk = ap_colossus
 				has_valid_civic = civic_fanatic_purifiers
 				has_valid_civic = civic_hive_devouring_swarm
 				has_valid_civic = civic_inwards_perfection
 				has_valid_civic = civic_machine_terminator
+				has_valid_civic = civic_machine_assimilator
 			}
 		}
 	}
