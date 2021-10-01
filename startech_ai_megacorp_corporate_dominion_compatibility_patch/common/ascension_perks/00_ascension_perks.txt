@@ -427,14 +427,14 @@ ap_engineered_evolution = {
 	}
 
 	ai_weight = {
-		factor = 100
+		factor = 1000
 		modifier = {
 			factor = 0
-			num_ascension_perks < 3
+			num_ascension_perks < 5
 		}
 		modifier = {
-			factor = 100
-			is_gestalt = yes
+			factor = 0
+			is_gestalt = no
 		}
 	}
 }
@@ -500,6 +500,10 @@ ap_evolutionary_mastery = {
 
 	ai_weight = {
 		factor = 10000
+		modifier = {
+			factor = 0
+			num_ascension_perks < 6
+		}
 	}
 }
 
@@ -553,15 +557,18 @@ ap_the_flesh_is_weak = {
 	ai_weight = {
 		factor = 1000
 		modifier = {
-			factor = 0.001
+			factor = 0
+			num_ascension_perks < 5
+		}
+		modifier = {
+			factor = 0
 			or = {
 				has_ethic = ethic_spiritualist
 				has_ethic = ethic_fanatic_spiritualist
 			}
-		}
-		modifier = {
-			factor = 0
-			has_origin = origin_necrophage
+			not = {
+				has_technology = tech_robotic_workers
+			}
 		}
 	}
 }
@@ -646,7 +653,21 @@ ap_synthetic_evolution = {
 	}
 
 	ai_weight = {
-		factor = 5000
+		factor = 10000
+		modifier = {
+			factor = 0
+			num_ascension_perks < 6
+		}
+		modifier = {
+			factor = 0
+			any_owned_species = {
+				has_trait = trait_mechanical
+			}
+		}
+		modifier = {
+			factor = 0
+			has_origin = origin_necrophage
+		}
 	}
 }
 
@@ -696,7 +717,7 @@ ap_mind_over_matter = {
 	}
 
 	ai_weight = {
-		factor = 2000
+		factor = 0
 	}
 }
 
@@ -742,7 +763,7 @@ ap_transcendence = {
 	}
 
 	ai_weight = {
-		factor = 5000
+		factor = 0
 	}
 }
 
