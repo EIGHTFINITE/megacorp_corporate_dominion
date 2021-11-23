@@ -3,6 +3,6 @@ tags={
 	"Fixes"
 }
 picture="thumbnail.png"
-supported_version="3.1.*"
+supported_version="3.2.*"
 path="mod/startech_ai_megacorp_corporate_dominion_compatibility_patch"
 remote_file_id="2607153754"
