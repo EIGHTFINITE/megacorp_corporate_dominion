@@ -2,15 +2,6 @@ tr_prosperity_adopt = {
 	modifier = {
 		station_gatherers_produces_mult = 0.20
 	}
-	possible = {
-		or = {
-			is_ai = no
-			# ai has no traditions yet
-			num_tradition_categories = 0
-			# or ai has at least 2 traditions
-			num_tradition_categories > 1
-		}
-	}
 }
 
 tr_prosperity_finish = {

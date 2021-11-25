@@ -1122,7 +1122,7 @@ fanatic_purifiers = {
 	military_spending = 1.2
 	colony_spending = 1.2
 
-	federation_acceptance = -500
+	federation_acceptance = -1000
 	migration_pact_acceptance = -1000
 
 	advanced_start_chance = 400

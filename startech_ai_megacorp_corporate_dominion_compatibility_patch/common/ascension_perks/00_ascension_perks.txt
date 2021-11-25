@@ -49,9 +49,12 @@ ap_become_the_crisis = {
 			factor = 0
 			nor = {
 				is_militarist = yes
-				is_authoritarian = yes
 				is_xenophobe = yes
 				is_gestalt = yes
+				and = {
+					is_authoritarian = yes
+					is_spiritualist = yes
+				}
 			}
 		}
 
@@ -84,7 +87,7 @@ ap_become_the_crisis = {
 				value > 200
 			}
 			resource_income_compare = {
-				resource = engineering_research
+				resource = physics_research
 				value > 500
 			}
 			rusher2 = yes
@@ -93,17 +96,11 @@ ap_become_the_crisis = {
 		modifier = {
 			factor = 0
 			galaxy_percentage < 0.05
-			num_owned_planets < 5
 			minilategame = no
 		}
 		modifier = {
 			factor = 5
-			or = {
-				not = {
-					galaxy_percentage < 0.2
-				}
-				num_owned_planets > 19
-			}
+			galaxy_percentage > 0.2
 		}
 		modifier = {
 			factor = 100
@@ -115,9 +112,78 @@ ap_become_the_crisis = {
 				value > 200
 			}
 		}
+		modifier = {
+			factor = 0
+			count_country = {
+				count > 2
+				limit = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			count_country = {
+				count > 1
+				limit = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+			}
+			num_ascension_perks < 4
+		}
 	}
 }
+#################
+# AQUATICS ASCENSION PERKS
+#################
 
+ap_hydrocentric = {
+	potential = {
+		has_aquatics = yes
+		NOT = { has_ascension_perk = ap_hydrocentric }
+		has_trait = trait_pc_ocean_preference
+	}
+	possible = {
+		has_trait = trait_aquatic
+		has_technology = tech_terrestrial_sculpting
+	}
+
+	on_enabled = {
+		custom_tooltip = ap_hydrocentric_tooltip
+		if = {
+			limit = {
+				host_has_dlc = "Apocalypse"
+			}
+			if = {
+				limit = { has_ascension_perk = ap_colossus }
+				custom_tooltip = ap_hydrocentric_deluge_tooltip
+			}
+			else = {
+				custom_tooltip = ap_hydrocentric_deluge_pre_unlock_tooltip
+			}
+		}
+		hidden_effect = {
+			country_event = { id = aquatics.1 }
+		}
+	}
+
+	modifier = {
+		terraforming_ocean_cost_mult = -0.25
+	}
+
+	ai_weight = {
+		factor = 80 #it really is quite good for Aquatic species
+		modifier = {
+			factor = 0.5
+			is_xenophobe = no
+			is_hive_empire = no
+		}
+		modifier = {
+			factor = 5
+			has_origin = origin_ocean_paradise
+		}
+	}
+}
 #################
 # APOCALYPSE ASCENSION PERKS
 #################
@@ -151,37 +217,6 @@ ap_enigmatic_engineering = {
 			factor = 0
 			not = {
 				has_ascension_perk = ap_executive_vigor
-			}
-		}
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_galactic_force_projection
-			}
-		}
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_grasp_the_void
-			}
-		}
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_shared_destiny
-			}
-			NOR = {
-				has_valid_civic = civic_fanatic_purifiers
-				has_valid_civic = civic_hive_devouring_swarm
-				has_valid_civic = civic_inwards_perfection
-				has_valid_civic = civic_machine_terminator
-				has_authority = auth_corporate
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_valid_civic = civic_diplomatic_corps
-				has_valid_civic = civic_hive_empath
-				has_valid_civic = civic_machine_delegated_functions
-				has_tradition = tr_diplomacy_adopt
 			}
 		}
 		modifier = {
@@ -230,14 +265,15 @@ ap_nihilistic_acquisition = {
 		}
 		modifier = {
 			factor = 0
+			NOT = { has_ai_personality_behaviour = slaver }
+		}
+		modifier = {
+			factor = 0
 			OR = {
-				has_ascension_perk = ap_become_the_crisis
-				has_ascension_perk = ap_colossus
 				has_valid_civic = civic_fanatic_purifiers
 				has_valid_civic = civic_hive_devouring_swarm
 				has_valid_civic = civic_inwards_perfection
 				has_valid_civic = civic_machine_terminator
-				has_valid_civic = civic_machine_assimilator
 			}
 		}
 	}
@@ -280,11 +316,8 @@ ap_colossus = {
 		modifier = {
 			factor = 0
 			OR = {
-				has_ascension_perk = ap_become_the_crisis
 				has_valid_civic = civic_fanatic_purifiers
-				has_valid_civic = civic_hive_devouring_swarm
 				has_valid_civic = civic_machine_terminator
-				has_valid_civic = civic_machine_assimilator
 			}
 		}
 		modifier = {
@@ -374,14 +407,14 @@ ap_engineered_evolution = {
 	}
 
 	ai_weight = {
-		factor = 10000
+		factor = 100
 		modifier = {
 			factor = 0
-			num_ascension_perks < 5
+			num_ascension_perks < 3
 		}
 		modifier = {
-			factor = 0
-			is_gestalt = no
+			factor = 100
+			is_gestalt = yes
 		}
 	}
 }
@@ -447,10 +480,6 @@ ap_evolutionary_mastery = {
 
 	ai_weight = {
 		factor = 10000
-		modifier = {
-			factor = 0
-			num_ascension_perks < 6
-		}
 	}
 }
 
@@ -502,17 +531,17 @@ ap_the_flesh_is_weak = {
 	}
 
 	ai_weight = {
-		factor = 500
-		modifier = {
-			factor = 0
-			num_ascension_perks < 5
-		}
+		factor = 1000
 		modifier = {
 			factor = 0.001
 			or = {
 				has_ethic = ethic_spiritualist
 				has_ethic = ethic_fanatic_spiritualist
 			}
+		}
+		modifier = {
+			factor = 0
+			has_origin = origin_necrophage
 		}
 	}
 }
@@ -597,21 +626,7 @@ ap_synthetic_evolution = {
 	}
 
 	ai_weight = {
-		factor = 500
-		modifier = {
-			factor = 0
-			num_ascension_perks < 6
-		}
-		modifier = {
-			factor = 0
-			any_owned_species = {
-				has_trait = trait_mechanical
-			}
-		}
-		modifier = {
-			factor = 0
-			has_origin = origin_necrophage
-		}
+		factor = 5000
 	}
 }
 
@@ -661,7 +676,7 @@ ap_mind_over_matter = {
 	}
 
 	ai_weight = {
-		factor = 0
+		factor = 2000
 	}
 }
 
@@ -707,7 +722,7 @@ ap_transcendence = {
 	}
 
 	ai_weight = {
-		factor = 0
+		factor = 5000
 	}
 }
 
@@ -753,6 +768,14 @@ ap_world_shaper = {
 			factor = 0
 			has_ascension_perk = ap_machine_worlds
 			has_ascension_perk = ap_hive_worlds
+		}
+		modifier = {
+			factor = 5
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
 		}
 	}
 }
@@ -807,7 +830,7 @@ ap_galactic_force_projection = {
 			}
 		}
 		modifier = {
-			factor = 0.01
+			factor = 0
 			resource_stockpile_compare = {
 				resource = alloys
 				value < 2500
@@ -911,7 +934,7 @@ ap_interstellar_dominion = {
 	}
 
 	ai_weight = {
-		factor = 200
+		factor = 10
 		modifier = {
 			factor = 10
 			rusher = yes
@@ -925,7 +948,7 @@ ap_interstellar_dominion = {
 			}
 		}
 		modifier = {
-			factor = 0
+			factor = 0.001
 			num_ascension_perks > 0
 		}
 		modifier = {
@@ -935,21 +958,19 @@ ap_interstellar_dominion = {
 		modifier = {
 			factor = 0
 			OR = {
-				has_ascension_perk = ap_become_the_crisis
-				has_ascension_perk = ap_colossus
-				has_valid_civic = civic_fanatic_purifiers
-				has_valid_civic = civic_hive_devouring_swarm
-				has_valid_civic = civic_machine_terminator
-				has_valid_civic = civic_machine_assimilator
+				has_civic = civic_fanatic_purifiers
+				has_civic = civic_hive_devouring_swarm
+				has_civic = civic_machine_terminator
+				has_civic = civic_machine_assimilator
 			}
 		}
 
 		modifier = {
-			factor = 2
+			factor = 1.25
 			has_ethic = ethic_xenophobe
 		}
 		modifier = {
-			factor = 3
+			factor = 1.25
 			has_ethic = ethic_fanatic_xenophobe
 		}
 	}
@@ -984,7 +1005,7 @@ ap_grasp_the_void = {
 			is_xenophobe = yes
 		}
 		modifier = {
-			factor = 0.01
+			factor = 0
 			resource_stockpile_compare = {
 				resource = alloys
 				value < 2500
@@ -1089,37 +1110,6 @@ ap_technological_ascendancy = {
 			factor = 0
 			not = {
 				has_ascension_perk = ap_executive_vigor
-			}
-		}
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_galactic_force_projection
-			}
-		}
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_grasp_the_void
-			}
-		}
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_shared_destiny
-			}
-			NOR = {
-				has_valid_civic = civic_fanatic_purifiers
-				has_valid_civic = civic_hive_devouring_swarm
-				has_valid_civic = civic_inwards_perfection
-				has_valid_civic = civic_machine_terminator
-				has_authority = auth_corporate
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_valid_civic = civic_diplomatic_corps
-				has_valid_civic = civic_hive_empath
-				has_valid_civic = civic_machine_delegated_functions
-				has_tradition = tr_diplomacy_adopt
 			}
 		}
 		modifier = {
@@ -1234,7 +1224,7 @@ ap_executive_vigor = {
 	}
 
 	ai_weight = {
-		factor = 5
+		factor = 300
 		modifier = {
 			factor = 20
 			turtler2 = yes
@@ -1245,7 +1235,7 @@ ap_executive_vigor = {
 			num_ascension_perks < 3
 		}
 		modifier = {
-			factor = 200
+			factor = 20
 			resource_stockpile_compare = {
 				resource = influence
 				value > 250
@@ -1261,25 +1251,6 @@ ap_executive_vigor = {
 				has_technology = tech_mineral_purification_1
 				has_technology = tech_food_processing_1
 				has_technology = tech_power_hub_1
-			}
-		}
-		modifier = {
-			factor = 0.001
-			NOR = {
-				has_civic = civic_fanatic_purifiers
-				has_civic = civic_hive_devouring_swarm
-				has_civic = civic_machine_terminator
-				has_civic = civic_machine_assimilator
-			}
-			NOR = {
-				has_technology = tech_mineral_purification_1
-				has_technology = tech_food_processing_1
-				is_pacifist = yes
-				is_authoritarian = yes
-				resource_stockpile_compare = {
-					resource = influence
-					value > 150
-				}
 			}
 		}
 	}
@@ -1298,7 +1269,13 @@ ap_transcendent_learning = {
 	}
 
 	ai_weight = {
-		factor = 0
+		factor = 5
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
+		}
 	}
 }
 
@@ -1323,34 +1300,7 @@ ap_shared_destiny = {
 	}
 
 	ai_weight = {
-		factor = 5
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_executive_vigor
-			}
-		}
-		modifier = {
-			factor = 0
-			OR = {
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_valid_civic = civic_diplomatic_corps
-				has_valid_civic = civic_hive_empath
-				has_valid_civic = civic_machine_delegated_functions
-				has_tradition = tr_diplomacy_adopt
-			}
-		}
-		modifier = {
-			factor = 0
-			has_ascension_perk = ap_interstellar_dominion
-		}
-		modifier = {
-			factor = 4
-			any_subject = {
-				is_subject_type = vassal
-			}
-		}
+		factor = 0
 	}
 }
 
@@ -1522,6 +1472,14 @@ ap_galactic_wonders_utopia = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
 		}
+		modifier = {
+			factor = 100
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
+		}
 	}
 }
 
@@ -1563,6 +1521,14 @@ ap_galactic_wonders_megacorp = {
 		modifier = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
+		}
+		modifier = {
+			factor = 100
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
 		}
 	}
 }
@@ -1620,6 +1586,14 @@ ap_galactic_wonders_utopia_and_megacorp = {
 		modifier = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
+		}
+		modifier = {
+			factor = 100
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
 		}
 	}
 }
@@ -1768,7 +1742,39 @@ ap_arcology_project = {
 	}
 
 	ai_weight = {
-		factor = 0
+		factor = 1000
+		modifier = {
+			factor = 10
+			resource_stockpile_compare = { resource = minerals value > 8000 }
+			nor = {
+				has_ascension_perk = ap_mind_over_matter
+				has_ascension_perk = ap_the_flesh_is_weak
+				has_ascension_perk = ap_engineered_evolution
+			}
+		}
+		modifier = {
+			factor = 200
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
+		}
+		modifier = {
+			factor = 0
+			or = {
+			has_origin = origin_remnants
+				has_ecumen = yes
+			}
+		}
+		modifier = {
+			factor = 50
+			is_pacifist = yes
+		}
+		modifier = {
+			factor = 5
+			num_pops > 300
+		}
 	}
 }
 
@@ -1844,6 +1850,6 @@ ap_universal_transactions = {
 	}
 
 	ai_weight = {
-		factor = 0
+		factor = 5
 	}
 }

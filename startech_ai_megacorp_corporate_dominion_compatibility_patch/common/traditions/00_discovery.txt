@@ -4,20 +4,9 @@ tr_discovery_adopt = {
 		ship_anomaly_research_speed_mult = 0.20
 	}
 	possible = {
-		or = {
-			is_ai = no
-			# ai has at least 3 traditions
-			num_tradition_categories > 2
-			and = {
-				# or ai has at least 2 traditions
-				num_tradition_categories > 1
-				# and ai has the devouring swarm civic
-				has_valid_civic = civic_hive_devouring_swarm
-			}
-		}
 		nand = {
 			is_ai = yes
-			# and ai has the supremacy tradition
+			num_ascension_perks = 1
 			not = {
 				has_tradition = tr_supremacy_adopt
 			}

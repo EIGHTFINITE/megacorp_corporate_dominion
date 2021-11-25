@@ -6,14 +6,14 @@ tr_mercantile_adopt = {
 	possible = {
 		or = {
 			is_ai = no
-			# ai has at least 3 traditions
-			num_tradition_categories > 2
-			and = {
-				# or ai has at least 2 traditions
-				num_tradition_categories > 1
-				# and ai has the devouring swarm civic
-				has_valid_civic = civic_hive_devouring_swarm
-			}
+			num_ascension_perks > 2
+			has_valid_civic = civic_merchant_guilds
+		}
+	}
+	ai_weight = {
+		modifier = {
+			factor = 0
+			num_ascension_perks < 3
 		}
 	}
 }
@@ -63,10 +63,6 @@ tr_mercantile_adaptive_economic_policies = {
 		weight = {
 			factor = 1
 		}
-	}
-
-	ai_weight = {
-		factor = 1000
 	}
 }
 

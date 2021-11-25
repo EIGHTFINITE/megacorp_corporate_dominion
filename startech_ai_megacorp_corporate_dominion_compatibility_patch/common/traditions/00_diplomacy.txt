@@ -5,21 +5,9 @@ tr_diplomacy_adopt = {
 	possible = {
 		or = {
 			is_ai = no
-			# ai has at least 2 traditions
-			num_tradition_categories > 1
-			and = {
-				# or ai has the common ground or hegemon origin
-				or = {
-					has_origin = origin_common_ground
-					has_origin = origin_hegemon
-				}
-				# and ai has no traditions yet
-				num_tradition_categories = 0
-			}
-		}
-		# and ai doesn't have the devouring swarm civic
-		not = {
-			has_valid_civic = civic_hive_devouring_swarm
+			num_ascension_perks > 2
+			has_origin = origin_common_ground
+			has_origin = origin_common_ground_npc
 		}
 	}
 }

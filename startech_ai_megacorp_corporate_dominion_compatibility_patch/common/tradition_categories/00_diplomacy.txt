@@ -11,8 +11,9 @@ tradition_diplomacy = {
 	}
 
 	potential = {
-		NOT = {
+		NOR = {
 			has_valid_civic = civic_inwards_perfection
+			has_valid_civic = civic_hive_devouring_swarm
 		}
 	}
 
@@ -31,12 +32,12 @@ tradition_diplomacy = {
 			has_ethic = ethic_fanatic_xenophile
 		}
 		modifier = {
+			factor = 30
+			has_tradition = tr_mercantile_finish
+		}
+		modifier = {
 			factor = 0
 			is_homicidal = yes
-			not = {
-				# ai has exactly 2 traditions
-				num_tradition_categories = 2
-			}
 		}
 	}
 }
