@@ -667,6 +667,12 @@ building_clone_army_clone_vat = {
 				has_country_flag = clone_army_fertility_unlocked
 			}
 		}
+		OR = {
+			is_ai = no
+			not = {
+				has_building = building_clone_army_clone_vat
+			}
+		}
 	}
 
 	destroy_trigger = {
