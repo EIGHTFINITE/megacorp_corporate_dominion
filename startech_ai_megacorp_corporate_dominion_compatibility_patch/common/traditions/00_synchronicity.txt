@@ -35,7 +35,7 @@ tr_synchronicity_adopt = {
 	possible = {
 		or = {
 			is_ai = no
-			num_ascension_perks > 2
+			num_tradition_categories > 2
 		}
 	}
 }

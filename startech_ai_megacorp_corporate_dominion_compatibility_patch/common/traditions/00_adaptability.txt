@@ -6,7 +6,7 @@ tr_adaptability_adopt = {
 	possible = {
 		or = {
 			is_ai = no
-			num_ascension_perks > 1
+			num_tradition_categories > 1
 		}
 	}
 }

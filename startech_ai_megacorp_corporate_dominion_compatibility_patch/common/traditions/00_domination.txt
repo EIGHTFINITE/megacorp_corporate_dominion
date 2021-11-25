@@ -18,7 +18,7 @@ tr_domination_adopt = {
 	possible = {
 		or = {
 			is_ai = no
-			num_ascension_perks > 3
+			num_tradition_categories > 3
 		}
 	}
 }
