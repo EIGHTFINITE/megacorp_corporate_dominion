@@ -1868,13 +1868,7 @@ country_event = {
 
 	immediate = {
 		if = {
-			limit = {
-				has_technology = tech_galactic_administration
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
+			limit = { has_technology = tech_galactic_administration }
 			change_government = {
 				authority = auth_oligarchic
 				cooldown = no
@@ -1882,35 +1876,12 @@ country_event = {
 				civics = { civic = civic_merchant_guilds civic = random civic = random }
 			}
 		}
-		else_if = {
-			limit = { has_technology = tech_galactic_administration }
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_corporate_dominion civic = random civic = random }
-			}
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random }
-			}
-		}
 		else = {
 			change_government = {
 				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
-				civics = { civic = civic_corporate_dominion civic = random }
+				civics = { civic = civic_merchant_guilds civic = random }
 			}
 		}
 	}
@@ -2192,6 +2163,81 @@ espionage_operation_event = {
 				days = 30
 				target = root.owner.capital_scope
 			}
+		}
+	}
+}
+
+# On research Planetary Unification
+country_event = {
+	id = action.400
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		last_increased_tech = tech_planetary_unification
+	}
+
+	immediate = {
+		add_monthly_resource_mult = {
+			resource = unity
+			value = @tier2unityreward
+			min = @tier2unitymin
+			max = @tier2unitymax
+		}
+	}
+}
+
+country_event = {
+	id = action.405
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_valid_civic = civic_distinguished_admiralty
+		from = {
+			OR = {
+				leader_class = admiral
+				leader_class = general
+			}
+		}
+	}
+
+	immediate = {
+		from = {
+			add_skill = 2
+		}
+	}
+}
+
+country_event = {
+	id = action.410
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_valid_civic = civic_distinguished_admiralty
+		any_pool_leader = {
+			OR = {
+				leader_class = admiral
+				leader_class = general
+			}
+			has_skill = 1
+		}
+	}
+
+	immediate = {
+		every_pool_leader = {
+			limit = {
+				OR = {
+					leader_class = admiral
+					leader_class = general
+				}
+				has_skill = 1
+			}
+			add_skill = 2
 		}
 	}
 }
