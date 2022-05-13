@@ -5,6 +5,6 @@ tags={
 	"Species"
 }
 picture="thumbnail.png"
-supported_version="3.3.*"
+supported_version="3.4.*"
 path="mod/megacorp_corporate_dominion"
 remote_file_id="2496533016"
