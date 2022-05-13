@@ -17,11 +17,14 @@
 #	}
 #	is_origin = yes / no						# default: no, set to yes if civic should be treated as an Origin
 #
-#	swap_type = {								# triggered name/desc/custom desc based on species class, no scope
+#	swap_type = {								# triggered name, desc, custom desc and modifiers
 #		name = ...
 #		description = ...
-#		trigger = {
-#			local_human_species_class = ..
+#		trigger = {								# In empire creation / galaxy setup, this has no scope. During the game, when there are actual countries existing, it is set to country scope.
+#			local_human_species_class = ..		# If you want to use country scope here, you must always check is_scope_valid first (see civic_devouring_swarm), or you will get errors or it won't work as intended.
+#		}
+#		modifier = {							# modifier that is applied to the country when triggers are evaluated as true
+#			...
 #		}
 #	}
 #	ai_playable = {}							# Similar to "playable", for AI
@@ -219,6 +222,7 @@ civic_citizen_service = {
 		country_naval_cap_mult = 0.15
 		planet_soldiers_unity_produces_add = 2
 	}
+	description = "civic_tooltip_citizen_service_effects"
 }
 
 civic_technocracy = {
@@ -264,7 +268,6 @@ civic_feudal_realm = {
 
 	modifier = {
 		leaders_cost_mult = -0.5
-		country_subject_power_penalty_mult = -0.5
 	}
 	description = "civic_tooltip_feudal_realm_effects"
 }
@@ -318,6 +321,7 @@ civic_environmentalist = {
 	modifier = {
 		planet_pops_consumer_goods_upkeep_mult = -0.20
 	}
+	description = "civic_tooltip_environmentalist_effects"
 }
 
 civic_slaver_guilds = {
@@ -410,6 +414,15 @@ civic_warrior_culture = {
 	modifier = {
 		army_damage_mult = 0.20
 	}
+	swap_type = {
+		description = "civic_tooltip_warrior_culture_effects"
+		trigger = {
+			host_has_dlc = "Overlord"
+		}
+		modifier = {
+			country_enclave_capacity_add = 1
+		}
+	}
 }
 
 civic_distinguished_admiralty = {
@@ -475,6 +488,8 @@ civic_cutthroat_politics = {
 
 # Disable this civic if host has MegaCorp as it's replaced by the Corporate authority
 civic_corporate_dominion = {
+	playable = { NOT = { host_has_dlc = "Megacorp" } }
+	ai_playable = { NOT = { host_has_dlc = "Megacorp" } }
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -493,6 +508,10 @@ civic_corporate_dominion = {
 	}
 	random_weight = {
 		base = 3
+		modifier = {
+			factor = 0
+			host_has_dlc = "Megacorp"
+		}
 	}
 
 	# unlocks sponsored_colonizer ship size
@@ -573,6 +592,7 @@ civic_parliamentary_system = {
 		}
 	}
 	random_weight = { base = 5 }
+	description = "civic_tooltip_parliamentary_system_effects"
 	modifier = {
 		pop_factions_produces_mult = 0.40
 	}
@@ -899,8 +919,12 @@ civic_fanatic_purifiers = {
 #}
 
 civic_barbaric_despoilers = {
-	playable = { host_has_dlc = "Apocalypse" }
-	ai_playable = { host_has_dlc = "Apocalypse" }
+	playable = {
+		host_has_dlc = "Apocalypse"
+	}
+	ai_playable = {
+		host_has_dlc = "Apocalypse"
+	}
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -913,14 +937,12 @@ civic_barbaric_despoilers = {
 				value = ethic_militarist
 			}
 			OR = {
-				text = civic_tooltip_authoritarian_or_xenophobe
 				value = ethic_fanatic_authoritarian
 				value = ethic_authoritarian
 				value = ethic_fanatic_xenophobe
 				value = ethic_xenophobe
 			}
 			NOR = {
-				text = civic_tooltip_not_xenophile
 				value = ethic_xenophile
 				value = ethic_fanatic_xenophile
 			}
@@ -950,6 +972,15 @@ civic_barbaric_despoilers = {
 		}
 	}
 	description = "civic_tooltip_barbaric_despoilers_effects"
+	swap_type = {
+		description = "civic_tooltip_barbaric_despoilers_effects"
+		trigger = {
+			host_has_dlc = "Overlord"
+		}
+		modifier = {
+			country_enclave_capacity_add = 1
+		}
+	}
 }
 
 # New for MegaCorp
@@ -1177,11 +1208,8 @@ civic_idyllic_bloom = {
 			}
 		}
 		origin = {
-			NOR = {
-				text = civic_tooltip_not_origin_non_standard_habitability_preference
-				value = origin_life_seeded
+			NOT = {
 				value = origin_void_dwellers
-				value = origin_shattered_ring
 			}
 		}
 	}
@@ -1202,6 +1230,7 @@ civic_anglers = {
 				value = origin_post_apocalyptic
 				value = origin_shattered_ring
 				value = origin_void_dwellers
+				value = origin_subterranean
 			}
 		}
 		civics = { NOT = { value = civic_agrarian_idyll } }
