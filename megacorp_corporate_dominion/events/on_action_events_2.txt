@@ -1927,11 +1927,11 @@ country_event = {
 				civics = { civic = random }
 			}
 		}
-		# Overlord has 100 Intel on released sectors
+		# Overlord has 90 Intel on released sectors
 		from = {
 			add_intel = {
 				who = root
-				amount = 100
+				amount = 80
 			}
 		}
 	}
@@ -1950,13 +1950,7 @@ country_event = {
 
 	immediate = {
 		if = {
-			limit = {
-				has_technology = tech_galactic_administration
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
+			limit = { has_technology = tech_galactic_administration }
 			change_government = {
 				authority = auth_oligarchic
 				cooldown = no
@@ -1964,35 +1958,12 @@ country_event = {
 				civics = { civic = civic_merchant_guilds civic = random civic = random }
 			}
 		}
-		else_if = {
-			limit = { has_technology = tech_galactic_administration }
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_corporate_dominion civic = random civic = random }
-			}
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random }
-			}
-		}
 		else = {
 			change_government = {
 				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
-				civics = { civic = civic_corporate_dominion civic = random }
+				civics = { civic = civic_merchant_guilds civic = random }
 			}
 		}
 	}
@@ -2613,5 +2584,67 @@ agreement_event = {
 				override_requirements = yes
 			}
 		}
+	}
+}
+
+# Recalculate divided patronage on government reform if you have Feudal Society or Franchising.
+country_event = {
+	id = action.445
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_civic = civic_feudal_realm
+			has_civic = civic_franchising
+		}
+	}
+
+	immediate = {
+		refresh_subject_count_loyalty_penalty = yes
+	}
+}
+
+# Recalculate divided patronage on taking Shared Destiny AP. 
+country_event = {
+	id = action.446
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		refresh_subject_count_loyalty_penalty = yes
+	}
+}
+
+# This = agreement
+# owner = overlord
+# target = subject
+agreement_event = {
+	id = action.450
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		target = { set_country_flag = specialistion_subject_conversion_flag }
+	}
+}
+
+agreement_event = {
+	id = action.451
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		target = { remove_country_flag = specialistion_subject_conversion_flag }
 	}
 }

@@ -725,7 +725,7 @@ wg_subjugation = {
 									limit = {
 										ROOT = { is_ai = yes }
 									}
-									FROM = {
+									PREV = {
 										set_subject_of = {
 											who = ROOT
 											preset = preset_vassal_oppressive_ai
@@ -733,7 +733,7 @@ wg_subjugation = {
 									}
 								}
 								else = {
-									FROM = {
+									PREV = {
 										set_subject_of = {
 											who = ROOT
 											preset = preset_vassal_oppressive
@@ -742,7 +742,7 @@ wg_subjugation = {
 								}
 							}
 							balanced_terms = {
-								FROM = {
+								PREV = {
 									set_subject_of = {
 										who = ROOT
 										preset = preset_vassal_balanced
@@ -750,7 +750,7 @@ wg_subjugation = {
 								}
 							}
 							benevolent_terms = {
-								FROM = {
+								PREV = {
 									set_subject_of = {
 										who = ROOT
 										preset = preset_vassal_benevolent
@@ -775,10 +775,6 @@ wg_subjugation = {
 					if = {
 						limit = {
 							has_technology = tech_galactic_administration
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
 						}
 						change_government = {
 							authority = auth_oligarchic
@@ -787,38 +783,6 @@ wg_subjugation = {
 							civics = {
 								civic = civic_merchant_guilds
 								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							has_technology = tech_galactic_administration
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_corporate_dominion
-								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -829,7 +793,7 @@ wg_subjugation = {
 							cooldown = no
 							remove_invalid_civics = yes
 							civics = {
-								civic = civic_corporate_dominion
+								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -964,10 +928,6 @@ wg_tribute = {
 					if = {
 						limit = {
 							has_technology = tech_galactic_administration
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
 						}
 						change_government = {
 							authority = auth_oligarchic
@@ -976,38 +936,6 @@ wg_tribute = {
 							civics = {
 								civic = civic_merchant_guilds
 								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							has_technology = tech_galactic_administration
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_corporate_dominion
-								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -1018,7 +946,7 @@ wg_tribute = {
 							cooldown = no
 							remove_invalid_civics = yes
 							civics = {
-								civic = civic_corporate_dominion
+								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -1183,7 +1111,7 @@ wg_megacorp_subjugate = {
 								limit = {
 									ROOT = { is_ai = yes }
 								}
-								FROM = {
+								PREV = {
 									set_subject_of = {
 										who = ROOT
 										preset = preset_subsidiary_oppressive_ai
@@ -1191,7 +1119,7 @@ wg_megacorp_subjugate = {
 								}
 							}
 							else = {
-								FROM = {
+								PREV = {
 									set_subject_of = {
 										who = ROOT
 										preset = preset_subsidiary_oppressive
@@ -1200,7 +1128,7 @@ wg_megacorp_subjugate = {
 							}
 						}
 						balanced_terms = {
-							FROM = {
+							PREV = {
 								set_subject_of = {
 									who = ROOT
 									preset = preset_subsidiary_balanced
@@ -1208,7 +1136,7 @@ wg_megacorp_subjugate = {
 							}
 						}
 						benevolent_terms = {
-							FROM = {
+							PREV = {
 								set_subject_of = {
 									who = ROOT
 									preset = preset_subsidiary_benevolent
@@ -1232,10 +1160,6 @@ wg_megacorp_subjugate = {
 					if = {
 						limit = {
 							has_technology = tech_galactic_administration
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
 						}
 						change_government = {
 							authority = auth_oligarchic
@@ -1244,38 +1168,6 @@ wg_megacorp_subjugate = {
 							civics = {
 								civic = civic_merchant_guilds
 								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							has_technology = tech_galactic_administration
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_corporate_dominion
-								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -1286,7 +1178,7 @@ wg_megacorp_subjugate = {
 							cooldown = no
 							remove_invalid_civics = yes
 							civics = {
-								civic = civic_corporate_dominion
+								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -1376,10 +1268,6 @@ wg_force_ideology = {
 					if = {
 						limit = {
 							has_technology = tech_galactic_administration
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
 						}
 						change_government = {
 							authority = auth_oligarchic
@@ -1388,38 +1276,6 @@ wg_force_ideology = {
 							civics = {
 								civic = civic_merchant_guilds
 								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							has_technology = tech_galactic_administration
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_corporate_dominion
-								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -1430,7 +1286,7 @@ wg_force_ideology = {
 							cooldown = no
 							remove_invalid_civics = yes
 							civics = {
-								civic = civic_corporate_dominion
+								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -1495,10 +1351,6 @@ wg_force_ideology = {
 					if = {
 						limit = {
 							has_technology = tech_galactic_administration
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
 						}
 						change_government = {
 							authority = auth_oligarchic
@@ -1507,38 +1359,6 @@ wg_force_ideology = {
 							civics = {
 								civic = civic_merchant_guilds
 								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							has_technology = tech_galactic_administration
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_corporate_dominion
-								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -1549,7 +1369,7 @@ wg_force_ideology = {
 							cooldown = no
 							remove_invalid_civics = yes
 							civics = {
-								civic = civic_corporate_dominion
+								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -2193,10 +2013,6 @@ wg_scion = {
 					if = {
 						limit = {
 							has_technology = tech_galactic_administration
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
 						}
 						change_government = {
 							authority = auth_oligarchic
@@ -2205,38 +2021,6 @@ wg_scion = {
 							civics = {
 								civic = civic_merchant_guilds
 								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							has_technology = tech_galactic_administration
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_corporate_dominion
-								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -2247,7 +2031,7 @@ wg_scion = {
 							cooldown = no
 							remove_invalid_civics = yes
 							civics = {
-								civic = civic_corporate_dominion
+								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -2345,10 +2129,6 @@ wg_hegemon = {
 					if = {
 						limit = {
 							has_technology = tech_galactic_administration
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
 						}
 						change_government = {
 							authority = auth_oligarchic
@@ -2357,38 +2137,6 @@ wg_hegemon = {
 							civics = {
 								civic = civic_merchant_guilds
 								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							has_technology = tech_galactic_administration
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_corporate_dominion
-								civic = random
-								civic = random
-							}
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								has_ethic = ethic_xenophobe
-								has_ethic = ethic_fanatic_xenophobe
-							}
-						}
-						change_government = {
-							authority = auth_oligarchic
-							cooldown = no
-							remove_invalid_civics = yes
-							civics = {
-								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
@@ -2399,7 +2147,7 @@ wg_hegemon = {
 							cooldown = no
 							remove_invalid_civics = yes
 							civics = {
-								civic = civic_corporate_dominion
+								civic = civic_merchant_guilds
 								civic = random
 							}
 						}
