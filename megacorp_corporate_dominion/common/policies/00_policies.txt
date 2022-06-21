@@ -368,11 +368,20 @@ diplomatic_stance = {
 		valid = {
 			NOT = { has_valid_civic = civic_inwards_perfection }
 			is_homicidal = no
-			OR = {
+			# some ugliness to preserve the
+			# auth/civic - potential/valid divide for tooltip
+			if = {
+				limit = {
+					has_megacorp = yes
+					is_megacorp = yes
+				}
 				is_megacorp = yes
-				has_civic = civic_merchant_guilds
-				has_civic = civic_corporate_dominion
 			}
+			else_if = {
+				limit = { has_megacorp = yes }
+				has_civic = civic_merchant_guilds
+			}
+			else = { has_civic = civic_corporate_dominion }
 		}
 
 		policy_flags = {
@@ -938,6 +947,10 @@ subjugation_war_terms = {
 			oppressive_terms
 		}
 
+		potential = {
+			NOT = { has_authority = auth_corporate }
+		}
+
 		on_enabled = {
 			hidden_effect = { #this is to remember the player's pick if they are subjugated
 				if = {
@@ -1001,6 +1014,10 @@ subjugation_war_terms = {
 			balanced_terms
 		}
 
+		potential = {
+			NOT = { has_authority = auth_corporate }
+		}
+
 		on_enabled = {
 			hidden_effect = {
 				if = {
@@ -1044,6 +1061,193 @@ subjugation_war_terms = {
 
 		policy_flags = {
 			benevolent_terms
+		}
+
+		potential = {
+			NOT = { has_authority = auth_corporate }
+		}
+
+		on_enabled = {
+			hidden_effect = {
+				if = {
+					limit = { is_ai = no }
+					set_country_flag = benevolent_terms_preference
+					remove_country_flag = balanced_terms_preference
+					remove_country_flag = oppressive_terms_preference
+				}
+			}
+		}
+
+		ai_weight = {
+			weight = 10
+
+			# Bad people who probably not pick this.
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_fanatic_xenophobe
+			}
+			modifier = {
+				factor = 0.5
+				has_ethic = ethic_xenophobe
+			}
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_fanatic_authoritarian
+			}
+			modifier = {
+				factor = 0.5
+				has_ethic = ethic_authoritarian
+			}
+
+			# Nice people who probably would.
+			modifier = {
+				factor = 1.3
+				has_ethic = ethic_fanatic_xenophile
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_xenophile
+			}
+			modifier = {
+				factor = 1.3
+				has_ethic = ethic_fanatic_pacifist
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_pacifist
+			}
+			modifier = {
+				factor = 10
+				has_country_flag = benevolent_terms_preference
+			}
+		}
+	}
+
+	option = {
+		name = "oppressive_corporate_terms"
+
+		policy_flags = {
+			oppressive_terms
+		}
+
+		potential = {
+			has_authority = auth_corporate
+		}
+
+		on_enabled = {
+			hidden_effect = { #this is to remember the player's pick if they are subjugated
+				if = {
+					limit = { is_ai = no }
+					set_country_flag = oppressive_terms_preference
+					remove_country_flag = benevolent_terms_preference
+					remove_country_flag = balanced_terms_preference
+				}
+			}
+		}
+
+		ai_weight = {
+			weight = 10
+
+			# Nice people who would never pick this.
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_fanatic_xenophile
+			}
+			modifier = {
+				factor = 0.5
+				has_ethic = ethic_xenophile
+			}
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_fanatic_pacifist
+			}
+			modifier = {
+				factor = 0.5
+				has_ethic = ethic_pacifist
+			}
+
+			# Bad people who likely would.
+			modifier = {
+				factor = 1.3
+				has_ethic = ethic_fanatic_xenophobe
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_xenophobe
+			}
+			modifier = {
+				factor = 1.3
+				has_ethic = ethic_fanatic_authoritarian
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_authoritarian
+			}
+			modifier = {
+				factor = 10
+				has_country_flag = oppressive_terms_preference
+			}
+		}
+	}
+
+	option = {
+		name = "balanced_corporate_terms"
+
+		policy_flags = {
+			balanced_terms
+		}
+
+		on_enabled = {
+			hidden_effect = {
+				if = {
+					limit = { is_ai = no }
+					set_country_flag = balanced_terms_preference
+					remove_country_flag = benevolent_terms_preference
+					remove_country_flag = oppressive_terms_preference
+				}
+			}
+		}
+
+		potential = {
+			has_authority = auth_corporate
+		}
+
+		ai_weight = {
+			weight = 10
+
+			# Rational people who would like this.
+			modifier = {
+				factor = 1.3
+				has_ethic = ethic_fanatic_egalitarian
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_egalitarian
+			}
+			modifier = {
+				factor = 1.3
+				has_ethic = ethic_fanatic_materialist
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_materialist
+			}
+			modifier = {
+				factor = 10
+				has_country_flag = balanced_terms_preference
+			}
+		}
+	}
+
+	option = {
+		name = "benevolent_corporate_terms"
+
+		policy_flags = {
+			benevolent_terms
+		}
+
+		potential = {
+			has_authority = auth_corporate
 		}
 
 		on_enabled = {
