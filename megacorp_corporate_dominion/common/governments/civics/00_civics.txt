@@ -317,6 +317,11 @@ civic_environmentalist = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
 	}
+	possible = {
+		civics = {
+			NOT = { value = civic_relentless_industrialists }
+		}
+	}
 	random_weight = { base = 5 }
 	modifier = {
 		planet_pops_consumer_goods_upkeep_mult = -0.20
@@ -488,6 +493,8 @@ civic_cutthroat_politics = {
 
 # Disable this civic if host has MegaCorp as it's replaced by the Corporate authority
 civic_corporate_dominion = {
+	playable = { NOT = { host_has_dlc = "Megacorp" } }
+	ai_playable = { NOT = { host_has_dlc = "Megacorp" } }
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -506,6 +513,10 @@ civic_corporate_dominion = {
 	}
 	random_weight = {
 		base = 3
+		modifier = {
+			factor = 0
+			host_has_dlc = "Megacorp"
+		}
 	}
 
 	# unlocks sponsored_colonizer ship size
@@ -535,10 +546,20 @@ civic_agrarian_idyll = {
 				value = origin_remnants
 			}
 		}
-		civics = { NOT = { value = civic_anglers } }
+		civics = {
+			NOT = {
+				value = civic_relentless_industrialists
+			}
+		}
 	}
 	random_weight = { base = 5 }
-	modifier = {}
+	swap_type = {
+		description = "civic_tooltip_agrarian_anglers_effects"
+		trigger = {
+			is_scope_valid = yes
+			has_civic = civic_anglers
+		}
+	}
 }
 
 civic_shadow_council = {
@@ -819,6 +840,7 @@ civic_fanatic_purifiers = {
 				value = origin_syncretic_evolution
 				value = origin_common_ground
 				value = origin_hegemon
+				value = origin_toxic_knights
 			}
 		}
 	}
@@ -1117,8 +1139,9 @@ civic_memorialist = {
 	}
 	possible = {
 		civics = {
-			NOT = {
+			NOR = {
 				value = civic_fanatic_purifiers
+				value = civic_relentless_industrialists
 			}
 		}
 	}
@@ -1206,6 +1229,9 @@ civic_idyllic_bloom = {
 				value = origin_void_dwellers
 			}
 		}
+		civics = {
+			NOT = { value = civic_relentless_industrialists }
+		}
 	}
 }
 
@@ -1227,7 +1253,6 @@ civic_anglers = {
 				value = origin_subterranean
 			}
 		}
-		civics = { NOT = { value = civic_agrarian_idyll } }
 	}
 	traits = {
 		trait = trait_aquatic
@@ -1265,3 +1290,53 @@ civic_pompous_purists = {
 	}
 }
 
+civic_toxic_baths = {
+	playable = { has_toxoids = yes }
+	ai_playable = { has_toxoids = yes }
+	description = "civic_tooltip_toxic_baths_effects"
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		origin = { NOT = { value = origin_life_seeded } }
+	}
+}
+
+civic_relentless_industrialists = {
+	playable = { has_toxoids = yes }
+	ai_playable = { has_toxoids = yes }
+	description = "civic_tooltip_relentless_industrialists_effects"
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		ethics = {
+			OR = {
+				text = civic_tooltip_materialist
+				value = ethic_materialist
+				value = ethic_fanatic_materialist
+			}
+		}
+		origin = { NOT = { value = origin_life_seeded } }
+		civics = {
+			NOR = {
+				value = civic_environmentalist
+				value = civic_agrarian_idyll
+				value = civic_idyllic_bloom
+				value = civic_memorialist
+			}
+		}
+	}
+}
+
+civic_scavengers = {
+	playable = { has_toxoids = yes }
+	ai_playable = { has_toxoids = yes }
+	description = "civic_scavengers_effects"
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+}
