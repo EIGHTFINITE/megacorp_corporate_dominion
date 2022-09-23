@@ -6624,38 +6624,126 @@ set_merchant_government_effect = {
 		limit = { has_civic = civic_criminal_heritage }
 		if = {
 			limit = { has_technology = tech_galactic_administration }
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
+			if = {
+				limit = {
+					OR = {
+						has_ethic = ethic_xenophobe
+						has_ethic = ethic_fanatic_xenophobe
+					}
+				}
+				# Criminal Heritage: yes
+				# Galactic Administration: yes
+				# Xenophobe: yes
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
+				}
+			}
+			else = {
+				# Criminal Heritage: yes
+				# Galactic Administration: yes
+				# Xenophobe: no
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_corporate_dominion civic = civic_dystopian_society civic = random }
+				}
 			}
 		}
 		else = {
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
+			if = {
+				limit = {
+					OR = {
+						has_ethic = ethic_xenophobe
+						has_ethic = ethic_fanatic_xenophobe
+					}
+				}
+				# Criminal Heritage: yes
+				# Galactic Administration: no
+				# Xenophobe: yes
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
+				}
+			}
+			else = {
+				# Criminal Heritage: yes
+				# Galactic Administration: no
+				# Xenophobe: no
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_corporate_dominion civic = civic_dystopian_society }
+				}
 			}
 		}
 	}
 	else = {
 		if = {
 			limit = { has_technology = tech_galactic_administration }
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random civic = random }
+			if = {
+				limit = {
+					OR = {
+						has_ethic = ethic_xenophobe
+						has_ethic = ethic_fanatic_xenophobe
+					}
+				}
+				# Criminal Heritage: no
+				# Galactic Administration: yes
+				# Xenophobe: yes
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_merchant_guilds civic = random civic = random }
+				}
+			}
+			else = {
+				# Criminal Heritage: no
+				# Galactic Administration: yes
+				# Xenophobe: no
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_corporate_dominion civic = random civic = random }
+				}
 			}
 		}
 		else = {
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random }
+			if = {
+				limit = {
+					OR = {
+						has_ethic = ethic_xenophobe
+						has_ethic = ethic_fanatic_xenophobe
+					}
+				}
+				# Criminal Heritage: no
+				# Galactic Administration: no
+				# Xenophobe: yes
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_merchant_guilds civic = random }
+				}
+			}
+			else = {
+				# Criminal Heritage: no
+				# Galactic Administration: no
+				# Xenophobe: no
+				change_government = {
+					authority = auth_oligarchic
+					cooldown = no
+					remove_invalid_civics = yes
+					civics = { civic = civic_corporate_dominion civic = random }
+				}
 			}
 		}
 	}
