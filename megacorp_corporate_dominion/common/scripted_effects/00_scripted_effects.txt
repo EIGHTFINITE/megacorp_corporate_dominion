@@ -2114,7 +2114,14 @@ make_unleashed_messenger = {
 		}
 		else = { modify_species = { portrait = aqu7 } }
 	}
-	#TODO_TOX handle them
+	else_if = {
+		limit = { root = { is_species_class = TOX } }
+		if = {
+			limit = { NOT = { root = { species_portrait = tox5 } } }
+			modify_species = { portrait = tox5 }
+		}
+		else = { modify_species = { portrait = tox8 } }
+	}
 }
 
 make_leashed_messenger = {
@@ -2206,7 +2213,14 @@ make_leashed_messenger = {
 		}
 		else = { modify_species = { portrait = aqu7 } }
 	}
-	#TODO_TOX handle them
+	else_if = {
+		limit = { root = { is_species_class = TOX } }
+		if = {
+			limit = { NOT = { root = { species_portrait = tox5 } } }
+			modify_species = { portrait = tox5 }
+		}
+		else = { modify_species = { portrait = tox8 } }
+	}
 }
 
 wipe_pop_ethos = {
@@ -7756,17 +7770,55 @@ set_origin_effect = {
 	else = {
 		set_origin = origin_default
 	}
+
+	# Fix hive/machine
+	if = {
+		limit = {
+			is_machine_empire = yes
+			NOT = { has_trait = trait_machine_unit }
+		}
+		country_remove_ethic = ethic_gestalt_consciousness
+		shift_ethic = ethic_xenophobe
+		change_government = random
+	}
+	else_if = {
+		limit = {
+			is_hive_empire = yes
+			NOT = { has_trait = trait_hive_mind }
+		}
+		country_remove_ethic = ethic_gestalt_consciousness
+		shift_ethic = ethic_xenophobe
+		change_government = random
+	}
+	else_if = {
+		limit = {
+			is_machine_empire = no
+			has_trait = trait_machine_unit
+		}
+		shift_ethic = ethic_gestalt_consciousness
+		change_government = {
+			authority = auth_machine_intelligence
+			cooldown = no
+			remove_invalid_civics = yes
+		}
+	}
+	else_if = {
+		limit = {
+			is_hive_empire = no
+			has_trait = trait_hive_mind
+		}
+		shift_ethic = ethic_gestalt_consciousness
+		change_government = {
+			authority = auth_hive_mind
+			cooldown = no
+			remove_invalid_civics = yes
+		}
+	}
 }
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			has_technology = tech_galactic_administration
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
+		limit = { has_technology = tech_galactic_administration }
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
@@ -7774,35 +7826,12 @@ set_merchant_government_effect = {
 			civics = { civic = civic_merchant_guilds civic = random civic = random }
 		}
 	}
-	else_if = {
-		limit = { has_technology = tech_galactic_administration }
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random civic = random }
-		}
-	}
-	else_if = {
-		limit = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_merchant_guilds civic = random }
-		}
-	}
 	else = {
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
 			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random }
+			civics = { civic = civic_merchant_guilds civic = random }
 		}
 	}
 }
@@ -7903,7 +7932,7 @@ remove_fleet_contract_modifiers = {
 }
 
 remove_fauna_yuht = {
-	every_deposit = {	
+	every_deposit = {
 		limit = { is_deposit_type = d_dangerous_wildlife_blocker }
 		clear_blocker = yes
 	}
@@ -7913,11 +7942,11 @@ remove_fauna_yuht = {
 	}
 	every_deposit = {
 		limit = { is_deposit_type = d_venomous_insects }
-		clear_blocker = yes 
+		clear_blocker = yes
 	}
 	every_deposit = {
 		limit = { is_deposit_type = d_wandering_forests }
-		clear_blocker = yes 
+		clear_blocker = yes
 	}
 
 	if = {
