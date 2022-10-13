@@ -493,6 +493,8 @@ civic_cutthroat_politics = {
 
 # Disable this civic if host has MegaCorp as it's replaced by the Corporate authority
 civic_corporate_dominion = {
+	playable = { NOT = { host_has_dlc = "Megacorp" } }
+	ai_playable = { NOT = { host_has_dlc = "Megacorp" } }
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -511,6 +513,10 @@ civic_corporate_dominion = {
 	}
 	random_weight = {
 		base = 3
+		modifier = {
+			factor = 0
+			host_has_dlc = "Megacorp"
+		}
 	}
 
 	# unlocks sponsored_colonizer ship size
@@ -613,6 +619,8 @@ civic_efficient_bureaucracy = {
 		authority = { NOT = { value = auth_corporate } }
 	}
 	random_weight = { base = 5 }
+	# The edict fund production is deliberately only limited to  Bureaucrats, Priests, Managers and Death Priests. 
+	description = "civic_tooltip_efficient_bureaucracy_effects"
 	modifier = {
 		planet_administrators_upkeep_mult = -0.20
 	}
@@ -1332,5 +1340,25 @@ civic_scavengers = {
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
+	}
+}
+
+civic_ascensionists = {
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		ethics = {
+			OR = {
+				text = civic_tooltip_spiritualist
+				value = ethic_spiritualist
+				value = ethic_fanatic_spiritualist
+			}
+		}
+	}
+	modifier = {
+		planetary_ascension_effect_mult = 0.25
+		planetary_ascension_cost_mult = -0.1
 	}
 }
