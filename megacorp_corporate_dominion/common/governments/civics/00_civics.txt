@@ -493,6 +493,8 @@ civic_cutthroat_politics = {
 
 # Disable this civic if host has MegaCorp as it's replaced by the Corporate authority
 civic_corporate_dominion = {
+	playable = { NOT = { host_has_dlc = "Megacorp" } }
+	ai_playable = { NOT = { host_has_dlc = "Megacorp" } }
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -511,6 +513,10 @@ civic_corporate_dominion = {
 	}
 	random_weight = {
 		base = 3
+		modifier = {
+			factor = 0
+			host_has_dlc = "Megacorp"
+		}
 	}
 
 	# unlocks sponsored_colonizer ship size
@@ -613,7 +619,7 @@ civic_efficient_bureaucracy = {
 		authority = { NOT = { value = auth_corporate } }
 	}
 	random_weight = { base = 5 }
-	# The edict fund production is deliberately only limited to  Bureaucrats, Priests, Managers and Death Priests. 
+	# The edict fund production is deliberately only limited to  Bureaucrats, Priests, Managers and Death Priests.
 	description = "civic_tooltip_efficient_bureaucracy_effects"
 	modifier = {
 		planet_administrators_upkeep_mult = -0.20
@@ -689,48 +695,6 @@ civic_aristocratic_elite = {
 	random_weight = { base = 5 }
 }
 
-#civic_mechanists = {
-#	modification = no
-#	playable = { host_has_dlc = "Utopia" }
-#	ai_playable = { host_has_dlc = "Utopia" }
-#	potential = {
-#		ethics = { NOT = { value = ethic_gestalt_consciousness } }
-#		authority = { NOT = { value = auth_corporate } }
-#	}
-#	possible = {
-#		ethics = {
-#			OR = {
-#				text = civic_tooltip_materialist
-#				value = ethic_materialist
-#				value = ethic_fanatic_materialist
-#			}
-#		}
-#		civics = {
-#			NOR = {
-#				value = civic_syncretic_evolution
-#				value = civic_post_apocalyptic
-#				value = civic_life_seeded
-#			}
-#		}
-#	}
-#	random_weight = {
-#		base = 5
-#		modifier = {
-#			factor = 0
-#			NOT = { host_has_dlc = "Utopia" }
-#		}
-#		modifier = {
-#			# civic has no effect after galaxy generation, disable for random generation
-#			factor = 0
-#			has_global_flag = game_started
-#		}
-#	}
-#	modifier = { planet_pops_robotics_upkeep_mult = -0.05 }
-#
-#	description = "civic_tooltip_mechanists_effects"
-#	#used when starting a new game to give robots (see game_start.11) and techs (see game_start.8)
-#}
-
 civic_shared_burden = {
 	playable = { host_has_dlc = "Megacorp" }
 	ai_playable = { host_has_dlc = "Megacorp" }
@@ -765,49 +729,6 @@ civic_shared_burden = {
 
 	description = civic_tooltip_shared_burden_effects
 }
-
-#civic_syncretic_evolution = {
-#	modification = no
-#	playable = { host_has_dlc = "Utopia" }
-#	ai_playable = { host_has_dlc = "Utopia" }
-#	potential = {
-#		ethics = { NOT = { value = ethic_gestalt_consciousness } }
-#		authority = { NOT = { value = auth_corporate } }
-#	}
-#	possible = {
-#		civics = {
-#			NOR = {
-#				value = civic_mechanists
-#				value = civic_fanatic_purifiers
-#				value = civic_agrarian_idyll
-#				value = civic_post_apocalyptic
-#				value = civic_life_seeded
-#				value = civic_shared_burden
-#				value = civic_slaver_guilds
-#			}
-#		}
-#	}
-#	random_weight = {
-#		base = 1 # Should be fairly rare
-#		modifier = {
-#			factor = 0
-#			NOT = { host_has_dlc = "Utopia" }
-#		}
-#		modifier = {
-#			# civic has no effect after galaxy generation, disable for random generation
-#			factor = 0
-#			has_global_flag = game_started
-#		}
-#	}
-#
-#	description = civic_tooltip_syncretic_evolution_effects
-#	has_secondary_species = {
-#		title = civic_syncretic_evolution_secondary_species
-#		traits = {
-#			trait = trait_syncretic_proles
-#		}
-#	}
-#}
 
 civic_fanatic_purifiers = {
 	modification = no
@@ -856,79 +777,6 @@ civic_fanatic_purifiers = {
 		country_naval_cap_mult = 0.33
 	}
 }
-
-#civic_post_apocalyptic = {
-#	playable = { host_has_dlc = "Apocalypse" }
-#	ai_playable = { host_has_dlc = "Apocalypse" }
-#	starting_colony = pc_nuked # Changes homeworld class regardless of what is picked for empire
-#	potential = {
-#		ethics = { NOT = { value = ethic_gestalt_consciousness } }
-#		authority = { NOT = { value = auth_corporate } }
-#	}
-#	possible = {
-#		civics = {
-#			NOR = {
-#				value = civic_mechanists
-#				value = civic_agrarian_idyll
-#				value = civic_syncretic_evolution
-#				value = civic_life_seeded
-#			}
-#		}
-#	}
-#	modification = no
-#	random_weight = {
-#		base = 1 # Should be fairly rare
-#		modifier = {
-#			factor = 0
-#			NOT = { host_has_dlc = "Apocalypse" }
-#		}
-#		modifier = {
-#			# civic has no effect after galaxy generation, disable for random generation
-#			factor = 0
-#			has_global_flag = game_started
-#		}
-#	}
-#	description = "civic_tooltip_post_apocalyptic_effects"
-#
-#	traits = {
-#		trait = trait_survivor
-#	}
-#}
-
-#civic_life_seeded = {
-#	playable = { host_has_dlc = "Apocalypse" }
-#	ai_playable = { host_has_dlc = "Apocalypse" }
-#	starting_colony = pc_gaia
-#	habitability_preference = pc_gaia
-#	preferred_planet_class_neighbor = no
-#	potential = {
-#		ethics = { NOT = { value = ethic_gestalt_consciousness } }
-#		authority = { NOT = { value = auth_corporate } }
-#	}
-#	possible = {
-#		civics = {
-#			NOR = {
-#				value = civic_mechanists
-#				value = civic_syncretic_evolution
-#				value = civic_post_apocalyptic
-#			}
-#		}
-#	}
-#	modification = no
-#	random_weight = {
-#		base = 1 # Should be fairly rare
-#		modifier = {
-#			factor = 0
-#			NOT = { host_has_dlc = "Apocalypse" }
-#		}
-#		modifier = {
-#			# civic has no effect after galaxy generation, disable for random generation
-#			factor = 0
-#			has_global_flag = game_started
-#		}
-#	}
-#	description = "civic_tooltip_life_seeded_effects"
-#}
 
 civic_barbaric_despoilers = {
 	playable = {
@@ -995,7 +843,6 @@ civic_barbaric_despoilers = {
 	}
 }
 
-# New for MegaCorp
 civic_byzantine_bureaucracy = {
 	playable = { host_has_dlc = "Megacorp" }
 	ai_playable = { host_has_dlc = "Megacorp" }
@@ -1338,6 +1185,8 @@ civic_scavengers = {
 }
 
 civic_ascensionists = {
+	playable = { host_has_dlc = "Utopia" }
+	ai_playable = { host_has_dlc = "Utopia" }
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -1354,5 +1203,6 @@ civic_ascensionists = {
 	modifier = {
 		planetary_ascension_effect_mult = 0.25
 		planetary_ascension_cost_mult = -0.1
+		tradition_cost_empire_size_mult = -0.25
 	}
 }
