@@ -2558,20 +2558,26 @@ reroll_planet = {
 # Scope: Something that has a species and an owner
 create_cybernetic_species_mod = {
 	species = {
-		create_species = {
-			is_mod = yes
-			name = this
-			plural = this
-			class = this
-			portrait = this
-			traits = this
-			can_be_modified = this
-			homeworld = this
-			namelist = this
-			gender = this
-			traits = {
-				ideal_planet_class = this
-				trait = trait_cybernetic
+		modify_species = {
+			remove_trait = trait_latent_psionic
+			remove_trait = trait_psionic
+			effect = {
+				create_species = {
+					is_mod = yes
+					name = this
+					plural = this
+					class = this
+					portrait = this
+					traits = this
+					can_be_modified = this
+					homeworld = this
+					namelist = this
+					gender = this
+					traits = {
+						ideal_planet_class = this
+						trait = trait_cybernetic
+					}
+				}
 			}
 		}
 		save_event_target_as = changing_species
@@ -7892,13 +7898,7 @@ set_origin_effect = {
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			has_technology = tech_galactic_administration
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
+		limit = { has_technology = tech_galactic_administration }
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
@@ -7906,35 +7906,12 @@ set_merchant_government_effect = {
 			civics = { civic = civic_merchant_guilds civic = random civic = random }
 		}
 	}
-	else_if = {
-		limit = { has_technology = tech_galactic_administration }
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random civic = random }
-		}
-	}
-	else_if = {
-		limit = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_merchant_guilds civic = random }
-		}
-	}
 	else = {
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
 			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random }
+			civics = { civic = civic_merchant_guilds civic = random }
 		}
 	}
 }
@@ -8167,5 +8144,109 @@ remove_fauna_yuht = {
 	if = {
 		limit = { has_modifier = migrating_forests_2 }
 		remove_modifier = migrating_forests_2
+	}
+}
+
+create_random_devolved_species = {
+	# Requires event_target:species_target as a species input.
+	# Gives event_target:devolved_species_target as a species output.
+	random_list = {
+		1 = {
+			modify_species = {
+				species = event_target:species_target
+				add_trait = trait_presapient_starborn
+				add_traits_at_start_of_list = yes
+				effect = {
+					change_species_characteristics = {
+						sapient = no
+					}
+					save_event_target_as = devolved_species_target
+				}
+			}
+		}
+		
+		1 = {
+			modify_species = {
+				species = event_target:species_target
+				add_trait = trait_presapient_earthbound
+				add_traits_at_start_of_list = yes
+				effect = {
+					change_species_characteristics = {
+						sapient = no
+					}
+					save_event_target_as = devolved_species_target
+				}
+			}
+		}
+
+		1 = {
+			modify_species = {
+				species = event_target:species_target
+				add_trait = trait_presapient_natural_intellectuals
+				add_traits_at_start_of_list = yes
+				effect = {
+					change_species_characteristics = {
+						sapient = no
+					}
+					save_event_target_as = devolved_species_target
+				}
+			}
+		}
+
+		1 = {
+			modify_species = {
+				species = event_target:species_target
+				add_trait = trait_presapient_proles
+				add_traits_at_start_of_list = yes
+				effect = {
+					change_species_characteristics = {
+						sapient = no
+					}
+					save_event_target_as = devolved_species_target
+				}
+			}
+		}
+
+		1 = {
+			modify_species = {
+				species = event_target:species_target
+				add_trait = trait_presapient_conservative
+				add_traits_at_start_of_list = yes
+				effect = {
+					change_species_characteristics = {
+						sapient = no
+					}
+					save_event_target_as = devolved_species_target
+				}
+			}
+		}
+
+		1 = {
+			modify_species = {
+				species = event_target:species_target
+				add_trait = trait_presapient_irradiated
+				add_traits_at_start_of_list = yes
+				effect = {
+					change_species_characteristics = {
+						sapient = no
+					}
+					save_event_target_as = devolved_species_target
+				}
+			}
+		}
+
+		1 = {
+			modify_species = {
+				species = event_target:species_target
+				add_trait = trait_presapient_docile_livestock
+				add_traits_at_start_of_list = yes
+				effect = {
+					change_species_characteristics = {
+						sapient = no
+					}
+					save_event_target_as = devolved_species_target
+				}
+			}
+		}
 	}
 }
