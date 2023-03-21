@@ -829,6 +829,10 @@ add_random_leader_trait = {
 						set_timed_leader_flag = { flag = gained_leader_trait_trickster days = 7 }
 						set_timed_leader_flag = { flag = has_gained_trait days = 7 }
 					}
+					modifier = {
+						factor = 0
+						has_first_contact_dlc = yes
+					}
 				}
 				5 = {
 					if = {
@@ -838,6 +842,10 @@ add_random_leader_trait = {
 						add_trait = leader_trait_trickster_fircon
 						set_timed_leader_flag = { flag = gained_leader_trait_trickster_fircon days = 7 }
 						set_timed_leader_flag = { flag = has_gained_trait days = 7 }
+					}
+					modifier = {
+						factor = 0
+						has_first_contact_dlc = no
 					}
 				}
 				5 = {
@@ -5809,6 +5817,7 @@ destroy_machine_world = {
 				NOT = { has_planet_flag = destroyed_by_colossus }
 				has_planet_flag = planet_godrayed
 				has_planet_flag = planet_drenched
+				has_planet_flag = planet_devolved
 			}
 		}
 		every_owned_pop = {
@@ -8067,13 +8076,7 @@ set_origin_effect = {
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			has_technology = tech_galactic_administration
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
+		limit = { has_technology = tech_galactic_administration }
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
@@ -8081,35 +8084,12 @@ set_merchant_government_effect = {
 			civics = { civic = civic_merchant_guilds civic = random civic = random }
 		}
 	}
-	else_if = {
-		limit = { has_technology = tech_galactic_administration }
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random civic = random }
-		}
-	}
-	else_if = {
-		limit = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_merchant_guilds civic = random }
-		}
-	}
 	else = {
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
 			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random }
+			civics = { civic = civic_merchant_guilds civic = random }
 		}
 	}
 }
