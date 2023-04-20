@@ -8076,13 +8076,7 @@ set_origin_effect = {
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			has_technology = tech_galactic_administration
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
+		limit = { has_technology = tech_galactic_administration }
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
@@ -8090,35 +8084,12 @@ set_merchant_government_effect = {
 			civics = { civic = civic_merchant_guilds civic = random civic = random }
 		}
 	}
-	else_if = {
-		limit = { has_technology = tech_galactic_administration }
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random civic = random }
-		}
-	}
-	else_if = {
-		limit = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_merchant_guilds civic = random }
-		}
-	}
 	else = {
 		change_government = {
 			authority = auth_oligarchic
 			cooldown = no
 			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random }
+			civics = { civic = civic_merchant_guilds civic = random }
 		}
 	}
 }
@@ -8547,6 +8518,128 @@ create_devolved_species = {
 				sapient = no
 			}
 			save_event_target_as = devolved_species_target
+		}
+	}
+}
+
+set_earth_entity = {
+	if = {
+		limit = {
+			is_starting_planet_type = yes
+		}
+		switch = {
+			trigger = is_planet_class
+			pc_desert = {
+				set_planet_entity = {
+					entity = desert_planet_earth_entity
+				}
+			}
+			pc_arid = {
+				set_planet_entity = {
+					entity = arid_planet_earth_entity
+				}
+			}
+			pc_savannah = {
+				set_planet_entity = {
+					entity = savannah_planet_earth_entity
+				}
+			}
+			pc_tropical = {
+				set_planet_entity = {
+					entity = tropical_planet_earth_entity
+				}
+			}
+			pc_ocean = {
+				set_planet_entity = {
+					entity = ocean_planet_earth_entity
+				}
+			}
+			pc_continental = {
+				set_planet_entity = {
+					entity = continental_planet_earth_entity
+				}
+			}
+			pc_tundra = {
+				set_planet_entity = {
+					entity = tundra_planet_earth_entity
+				}
+			}
+			pc_arctic = {
+				set_planet_entity = {
+					entity = arctic_planet_earth_entity
+				}
+			}
+			pc_alpine = {
+				set_planet_entity = {
+					entity = alpine_planet_earth_entity
+				}
+			}
+			default = {
+				set_planet_entity = {
+					entity = continental_planet_earth_entity
+				}
+			}
+		}
+	}
+}
+
+set_mars_entity = {
+	if = {
+		limit = {
+			is_starting_planet_type = yes
+		}
+		switch = {
+			trigger = is_planet_class
+			pc_desert = {
+				set_planet_entity = {
+					entity = desert_planet_mars_entity
+				}
+			}
+			pc_arid = {
+				set_planet_entity = {
+					entity = arid_planet_mars_entity
+				}
+			}
+			pc_savannah = {
+				set_planet_entity = {
+					entity = savannah_planet_mars_entity
+				}
+			}
+			pc_tropical = {
+				set_planet_entity = {
+					entity = tropical_planet_mars_entity
+				}
+			}
+			pc_ocean = {
+				set_planet_entity = {
+					entity = ocean_planet_mars_entity
+				}
+			}
+			pc_continental = {
+				set_planet_entity = {
+					entity = continental_planet_mars_entity
+				}
+			}
+			pc_tundra = {
+				set_planet_entity = {
+					entity = tundra_planet_mars_entity
+				}
+			}
+			pc_arctic = {
+				set_planet_entity = {
+					entity = arctic_planet_mars_entity
+				}
+			}
+			pc_alpine = {
+				set_planet_entity = {
+					entity = alpine_planet_mars_entity
+				}
+			}
+			default = {
+				set_planet_entity = {
+					entity = arid_planet_mars_entity
+				}
+			}
 		}
 	}
 }
