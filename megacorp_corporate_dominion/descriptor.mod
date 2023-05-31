@@ -1,6 +1,7 @@
 name="Corporate Dominion with MegaCorp"
 tags={
 	"Balance"
+	"Fixes"
 	"Gameplay"
 	"Species"
 }
