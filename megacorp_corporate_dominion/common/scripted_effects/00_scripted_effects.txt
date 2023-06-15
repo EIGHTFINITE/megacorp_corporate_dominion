@@ -1600,7 +1600,7 @@ end_crisis = {
 	remove_global_flag = crisis_stage_2
 	remove_global_flag = crisis_stage_3
 	remove_global_flag = crisis_stage_4
-	multiply_crisis_strength = 1.5
+	multiply_crisis_strength = 2
 }
 
 # this = pop
@@ -6621,142 +6621,41 @@ set_origin_effect = {
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_criminal_heritage }
-		}
-		# Ensure Oppressive Autocracy is a valid civic
-		if = {
-			limit = {
-				NOR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
-				}
-			}
-			shift_ethic = ethic_authoritarian
-		}
+		limit = { has_civic = civic_criminal_heritage }
 		if = {
 			limit = { has_technology = tech_galactic_administration }
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				# Criminal Heritage: yes
-				# Galactic Administration: yes
-				# Xenophobe: yes
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
-				}
-			}
-			else = {
-				# Criminal Heritage: yes
-				# Galactic Administration: yes
-				# Xenophobe: no
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = civic_dystopian_society civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
 			}
 		}
 		else = {
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				# Criminal Heritage: yes
-				# Galactic Administration: no
-				# Xenophobe: yes
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
-				}
-			}
-			else = {
-				# Criminal Heritage: yes
-				# Galactic Administration: no
-				# Xenophobe: no
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = civic_dystopian_society }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
 			}
 		}
 	}
 	else = {
 		if = {
 			limit = { has_technology = tech_galactic_administration }
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				# Criminal Heritage: no
-				# Galactic Administration: yes
-				# Xenophobe: yes
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random civic = random }
-				}
-			}
-			else = {
-				# Criminal Heritage: no
-				# Galactic Administration: yes
-				# Xenophobe: no
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random civic = random }
 			}
 		}
 		else = {
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				# Criminal Heritage: no
-				# Galactic Administration: no
-				# Xenophobe: yes
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random }
-				}
-			}
-			else = {
-				# Criminal Heritage: no
-				# Galactic Administration: no
-				# Xenophobe: no
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random }
 			}
 		}
 	}
@@ -7052,7 +6951,7 @@ create_random_devolved_species = {
 				}
 			}
 		}
-		
+
 		1 = {
 			modify_species = {
 				species = event_target:species_target

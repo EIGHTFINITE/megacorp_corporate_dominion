@@ -148,6 +148,9 @@ civic_beacon_of_liberty = {
 				value = ethic_fanatic_xenophobe
 			}
 		}
+		civics = {
+			NOT = { value = civic_crusader_spirit }
+		}
 	}
 	random_weight = { base = @civic_default_random_weight }
 	ai_weight = {
@@ -999,6 +1002,8 @@ civic_cutthroat_politics = {
 
 # Disable this civic if host has MegaCorp as it's replaced by the Corporate authority
 civic_corporate_dominion = {
+	playable = { NOT = { host_has_dlc = "Megacorp" } }
+	ai_playable = { NOT = { host_has_dlc = "Megacorp" } }
 	potential = {
 		ethics = { NOT = { value = ethic_gestalt_consciousness } }
 		authority = { NOT = { value = auth_corporate } }
@@ -1017,6 +1022,10 @@ civic_corporate_dominion = {
 	}
 	random_weight = {
 		base = @civic_uncommon_random_weight
+		modifier = {
+			factor = 0
+			host_has_dlc = "Megacorp"
+		}
 	}
 	ai_weight = {
 		base = @ai_civic_default_base_weight
@@ -1516,6 +1525,7 @@ civic_fanatic_purifiers = {
 			NOR = {
 				value = civic_barbaric_despoilers
 				value = civic_pompous_purists
+				value = civic_crusader_spirit
 			}
 		}
 		origin = {
@@ -2547,11 +2557,7 @@ civic_dystopian_society = {
 	}
 	possible = {
 		ethics = {
-			OR = {
-				text = civic_tooltip_authoritarian
-				value = ethic_authoritarian
-				value = ethic_fanatic_authoritarian
-			}
+			value = ethic_fanatic_authoritarian
 		}
 		civics = {
 			NOR = {
