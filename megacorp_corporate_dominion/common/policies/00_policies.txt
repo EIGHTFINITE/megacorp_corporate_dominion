@@ -378,11 +378,20 @@ diplomatic_stance = {
 		valid = {
 			NOT = { has_valid_civic = civic_inwards_perfection }
 			is_homicidal = no
-			OR = {
+			# some ugliness to preserve the
+			# auth/civic - potential/valid divide for tooltip
+			if = {
+				limit = {
+					has_megacorp = yes
+					is_megacorp = yes
+				}
 				is_megacorp = yes
-				has_civic = civic_merchant_guilds
-				has_civic = civic_corporate_dominion
 			}
+			else_if = {
+				limit = { has_megacorp = yes }
+				has_civic = civic_merchant_guilds
+			}
+			else = { has_civic = civic_corporate_dominion }
 		}
 
 		policy_flags = {
@@ -2325,10 +2334,13 @@ border_policy = {
 		}
 
 		valid = {
-			NOR = {
-				has_valid_civic = civic_machine_terminator
-				has_valid_civic = civic_hive_devouring_swarm
-				has_valid_civic = civic_fanatic_purifiers
+			OR = {
+				NOR = {
+					has_valid_civic = civic_machine_terminator
+					has_valid_civic = civic_hive_devouring_swarm
+					has_valid_civic = civic_fanatic_purifiers
+				}
+				is_primitive = yes
 			}
 		}
 	}
@@ -2863,20 +2875,26 @@ artificial_intelligence_policy = {
 		OR = {
 			can_set_ai_policy = yes
 			has_country_flag = synthetic_empire
+			is_individual_machine = yes
 		}
 	}
 
 	option = {
 		name = "ai_outlawed"
 
+		potential = {
+			is_individual_machine = no
+		}
 		valid = {
 			NOR = {
 				has_ethic = "ethic_materialist"
 				has_ethic = "ethic_fanatic_materialist"
+				has_origin = origin_synthetic_fertility
 				custom_tooltip = {
 					success_text = is_a_synthetic_empire
 					has_country_flag = synthetic_empire
 				}
+				is_individual_machine = yes
 			}
 		}
 
@@ -2928,11 +2946,17 @@ artificial_intelligence_policy = {
 	option = {
 		name = "ai_servitude"
 
+		potential = {
+			is_individual_machine = no
+		}
+
 		valid = {
+			NOT = {	has_origin = origin_synthetic_fertility }
 			custom_tooltip = {
 				fail_text = is_a_synthetic_empire_fail
 				NOT = { has_country_flag = synthetic_empire }
 			}
+			is_individual_machine = no
 		}
 
 		policy_flags = {
@@ -2967,6 +2991,10 @@ artificial_intelligence_policy = {
 					}
 				}
 			}
+			modifier = {
+				factor = 0.1
+				is_individual_machine = yes
+			}
 		}
 	}
 
@@ -2983,6 +3011,7 @@ artificial_intelligence_policy = {
 					has_ethic = "ethic_spiritualist"
 					has_ethic = "ethic_fanatic_spiritualist"
 				}
+				is_individual_machine = yes
 			}
 			NOT = { has_policy_flag = robots_outlawed }
 		}
@@ -3027,7 +3056,10 @@ artificial_intelligence_policy = {
 robot_pop_policy = {
 
 	potential = {
-		NOT = { has_ethic = ethic_gestalt_consciousness }
+		NOR = {
+			has_ethic = ethic_gestalt_consciousness
+			is_individual_machine = yes
+		}
 	}
 
 	option = {
@@ -3037,8 +3069,10 @@ robot_pop_policy = {
 			NOR = {
 				has_ethic = "ethic_materialist"
 				has_ethic = "ethic_fanatic_materialist"
+				has_origin = origin_synthetic_fertility
 			}
 			NOT = { has_policy_flag = ai_full_rights }
+			is_individual_machine = no
 		}
 
 		policy_flags = {
@@ -3089,6 +3123,14 @@ robot_pop_policy = {
 			robots_allowed
 		}
 
+		on_enabled = {
+			hidden_effect = {
+				country_event = {
+					id = action.56 # Failsafe if you don't have a robot species to assemble.
+				}
+			}
+		}
+
 		AI_weight = {
 			factor = 2
 			modifier = {
@@ -3108,6 +3150,7 @@ pre_sapients = {
 					is_sapient = no
 				}
 			}
+			is_guided_sapience_empire = yes
 		}
 	}
 
@@ -3133,10 +3176,10 @@ pre_sapients = {
 		}
 
 		AI_weight = {
-			factor = 2
+			factor = 10
 			modifier = {
 				factor = 0
-				NOT = { has_ai_personality_behaviour = multispecies }
+				values_others = no
 			}
 		}
 	}
@@ -3149,6 +3192,7 @@ pre_sapients = {
 				has_valid_civic = civic_machine_terminator
 				has_valid_civic = civic_hive_devouring_swarm
 				has_valid_civic = civic_fanatic_purifiers
+				is_guided_sapience_empire = yes
 			}
 		}
 
@@ -3163,7 +3207,7 @@ pre_sapients = {
 		}
 
 		AI_weight = {
-			factor = 1
+			factor = 10
 		}
 	}
 
@@ -3173,8 +3217,9 @@ pre_sapients = {
 		potential = {
 			host_has_dlc = "Utopia"
 			is_synthetic_empire = no
-			NOT = {
+			NOR = {
 				has_valid_civic = civic_fanatic_purifiers
+				is_guided_sapience_empire = yes
 			}
 		}
 
@@ -3201,7 +3246,7 @@ pre_sapients = {
 			factor = 10
 			modifier = {
 				factor = 0
-				NOT = { has_authority = auth_hive_mind }
+				NOT = { has_valid_civic = civic_hive_devouring_swarm }
 			}
 		}
 	}
@@ -3213,6 +3258,7 @@ pre_sapients = {
 			NOR = {
 				has_ethic = "ethic_xenophile"
 				has_ethic = "ethic_fanatic_xenophile"
+				is_guided_sapience_empire = yes
 			}
 		}
 
@@ -3229,20 +3275,13 @@ pre_sapients = {
 		modifier = {}
 
 		AI_weight = {
-			factor = 5
+			factor = 10
 			modifier = {
 				factor = 0
 				is_country_type = default
 				NOR = {
-					has_ethic = "ethic_xenophobe"
-					has_ethic = "ethic_fanatic_xenophobe"
-					AND = {
-						has_authority = auth_machine_intelligence
-						NOR = {
-							has_valid_civic = civic_machine_servitor
-							has_valid_civic = civic_machine_assimilator
-						}
-					}
+					has_valid_civic = civic_machine_terminator
+					has_valid_civic = civic_fanatic_purifiers
 				}
 			}
 		}
@@ -3513,6 +3552,7 @@ slavery = {
 				NOR = {
 					has_valid_civic = "civic_slaver_guilds"
 					has_trait = "trait_decadent"
+					has_trait = "trait_robot_decadent"
 				}
 			}
 		}
@@ -3597,7 +3637,7 @@ purge = {
 				has_ethic = ethic_gestalt_consciousness
 				has_ethic = ethic_xenophobe
 				has_ethic = ethic_fanatic_xenophobe
-				has_menace_perk = menp_undertaker	# Unlocked with Crisis Level 1
+				has_crisis_perk = menp_undertaker	# Unlocked with Crisis Level 1
 			}
 		}
 
@@ -3786,34 +3826,6 @@ relentless_industrialists_policy = {
 				factor = 5
 				has_country_flag = relentless_industrialists_cleanup
 			}
-		}
-	}
-}
-
-roboticist_output = {
-	potential = {
-		has_tradition = tr_cybernetics_assembly_standards
-		is_regular_empire = yes
-	}
-
-	option = {
-		name = build_robots
-
-		policy_flags = {
-			roboticist_output_build_robots
-		}
-
-	}
-
-	option = {
-		name = build_cyborgs
-
-		policy_flags = {
-			roboticist_output_build_cyborgs
-		}
-
-		AI_weight = {
-			factor = 2
 		}
 	}
 }
