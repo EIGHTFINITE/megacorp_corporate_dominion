@@ -609,6 +609,7 @@ make_intelligent = {
 		# nothing
 	}
 	else = {
+		limit = { is_robot_pop = no }
 		# remove opposite traits
 		if = {
 			limit = { pop_has_trait = trait_nerve_stapled }
@@ -644,6 +645,19 @@ make_intelligent = {
 			add_trait = trait_intelligent
 		}
 	}
+	#add machine trait
+	if = {
+		limit = { pop_has_trait = trait_robot_logic_engines }
+		# nothing
+	}
+	else = {
+		limit = { is_robot_pop = yes }
+		# no opposites
+		modify_species = {
+			species = this
+			add_trait = trait_robot_logic_engines
+		}
+	}
 }
 
 make_resilient = {
@@ -652,10 +666,32 @@ make_resilient = {
 		# nothing
 	}
 	else = {
+		limit = { is_robot_pop = no }
 		# no opposites
 		modify_species = {
 			species = this
 			add_trait = trait_resilient
+		}
+	}
+	#add machine trait
+	if = {
+		limit = { pop_has_trait = trait_robot_durable }
+		# nothing
+	}
+	else = {
+		limit = { is_robot_pop = yes }
+		# remove opposite traits
+		if = {
+			limit = { pop_has_trait = trait_robot_high_maintenance }
+			modify_species = {
+				species = this
+				remove_trait = trait_robot_high_maintenance
+			}
+		}
+		# add trait
+		modify_species = {
+			species = this
+			add_trait = trait_robot_durable
 		}
 	}
 }
@@ -1771,9 +1807,8 @@ nuke_pre_ftls_stone_age_effect = {
 			random_owned_pop = {
 				limit = { is_exact_same_species = prev }
 				create_nuked_species_mod = yes
-				species = { save_event_target_as = new_main_species }
 			}
-			change_dominant_species = { species = event_target:new_main_species }
+			change_dominant_species = { species = event_target:changing_species }
 			set_awareness = 0
 		}
 		change_pc = pc_nuked
@@ -1787,46 +1822,69 @@ nuke_pre_ftls_stone_age_effect = {
 }
 
 generate_cyborg_treats = {
-	add_monthly_resource_mult = {
-		resource = unity
-		value = 1
-		min = 5
-		max = 100
+	if = {
+		limit = {
+			has_tradition = tr_cybernetics_assimilator_adopt
+			has_government = gov_memory_aggregator
+		}
+		add_monthly_resource_mult = {
+			resource = unity
+			value = 1
+			min = 5
+			max = 250
+		}
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = 1
+			min = 5
+			max = 250
+		}
+		add_monthly_resource_mult = {
+			resource = engineering_research
+			value = 2
+			min = 10
+			max = 250
+		}
 	}
-	add_monthly_resource_mult = {
-		resource = society_research
-		value = 1
-		min = 5
-		max = 100
+	else_if = {
+		limit = {
+			has_tradition = tr_cybernetics_assimilator_adopt
+			NOT = {
+				has_government = gov_memory_aggregator
+			}
+		}
+		add_monthly_resource_mult = {
+			resource = unity
+			value = 1
+			min = 5
+			max = 175
+		}
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = 1
+			min = 5
+			max = 175
+		}
+		add_monthly_resource_mult = {
+			resource = engineering_research
+			value = 2
+			min = 10
+			max = 175
+		}
 	}
-	change_variable = {
-		which = num_assimilated_pops
-		value = 1
-	}
-}
-
-generate_cyborg_extra_treats = {
-	add_monthly_resource_mult = {
-		resource = unity
-		value = 2
-		min = 10
-		max = 200
-	}
-	add_monthly_resource_mult = {
-		resource = society_research
-		value = 2
-		min = 10
-		max = 200
-	}
-	add_monthly_resource_mult = {
-		resource = engineering_research
-		value = 2
-		min = 10
-		max = 200
-	}
-	change_variable = {
-		which = num_assimilated_pops
-		value = 1
+	else = {
+		add_monthly_resource_mult = {
+			resource = unity
+			value = 1
+			min = 5
+			max = 100
+		}
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = 1
+			min = 5
+			max = 100
+		}
 	}
 }
 
@@ -1913,6 +1971,39 @@ spawn_habitat_cracker_effect = {
 	remove_planet = yes
 }
 
+spawn_lathe_cracker_effect = {
+	create_ambient_object = {
+		location = this
+		type = habitat_cracker_object
+		duration = 5
+
+		use_3d_location = yes
+		base_angle_towards = star
+		entity_face_object = star
+
+		entity_offset = { min = 0 max = 0 }
+
+		entity_scale_to_size = yes
+		scale = 0.10
+	}
+	save_event_target_as = target_lathe
+	solar_system = {
+		spawn_megastructure = {
+			type = cosmogenesis_world_ruined
+			owner = this.owner
+			coords_from = PREV
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_cosmogenesis_world
+			}
+			remove_planet_flag = has_cosmogenesis_world
+			remove_planet_flag = has_megastructure
+		}
+	}
+	remove_planet = yes
+}
+
 spawn_ringworld_cracker_effect = {
 	create_ambient_object = {
 		location = this
@@ -1967,6 +2058,39 @@ spawn_habitat_pacifier_effect = {
 	}
 }
 
+spawn_lathe_pacifier_effect = {
+	create_ambient_object = {
+		location = this
+		type = habitat_pacifier_object
+		duration = 5
+
+		use_3d_location = yes
+		base_angle_towards = star
+		entity_face_object = star
+
+		entity_offset = { min = 0 max = 0 }
+
+		entity_scale_to_size = yes
+		scale = 0.10
+	}
+	save_event_target_as = target_lathe
+	solar_system = {
+		spawn_megastructure = {
+			type = cosmogenesis_world_ruined
+			owner = this.owner
+			coords_from = PREV
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_cosmogenesis_world
+			}
+			remove_planet_flag = has_cosmogenesis_world
+			remove_planet_flag = has_megastructure
+		}
+	}
+	remove_planet = yes
+}
+
 spawn_ringworld_pacifier_effect = {
 	create_ambient_object = {
 		location = this
@@ -2019,6 +2143,23 @@ spawn_ringworld_neutron_effect = {
 	}
 }
 
+spawn_lathe_neutron_effect = {
+	create_ambient_object = {
+		location = this
+		type = habitat_neutron_object
+		duration = 5
+
+		use_3d_location = yes
+		base_angle_towards = star
+		entity_face_object = star
+
+		entity_offset = { min = 0 max = 0 }
+
+		entity_scale_to_size = yes
+		scale = 0.10
+	}
+}
+
 # Divine Enforcer effect
 spawn_habitat_divine_effect = {
 	create_ambient_object = {
@@ -2054,6 +2195,23 @@ spawn_ringworld_divine_effect = {
 	}
 }
 
+spawn_lathe_divine_effect = {
+	create_ambient_object = {
+		location = this
+		type = habitat_divine_object
+		duration = 5
+
+		use_3d_location = yes
+		base_angle_towards = star
+		entity_face_object = star
+
+		entity_offset = { min = 0 max = 0 }
+
+		entity_scale_to_size = yes
+		scale = 0.10
+	}
+}
+
 # Nanobot effect
 spawn_habitat_nanobot_effect = {
 	create_ambient_object = {
@@ -2076,6 +2234,23 @@ spawn_ringworld_nanobot_effect = {
 	create_ambient_object = {
 		location = this
 		type = ringworld_nanobot_object
+		duration = 5
+
+		use_3d_location = yes
+		base_angle_towards = star
+		entity_face_object = star
+
+		entity_offset = { min = 0 max = 0 }
+
+		entity_scale_to_size = yes
+		scale = 0.10
+	}
+}
+
+spawn_lathe_nanobot_effect = {
+	create_ambient_object = {
+		location = this
+		type = habitat_nanobot_object
 		duration = 5
 
 		use_3d_location = yes
@@ -3335,7 +3510,7 @@ liquidate_clues = {
 	}
 }
 
-create_built_robot_species = {
+create_global_robot_parent_species = {
 	create_species = {
 		name = "NAME_Robot"
 		plural = "NAME_Robot_plural"
@@ -3347,116 +3522,67 @@ create_built_robot_species = {
 		}
 
 		effect = {
-			set_species_flag = mechanical_species@prev
-			if = {
-				limit = {
-					prev = { use_robot_portrait_sd_hum_robot = yes }
-				}
-				change_species_portrait = sd_hum_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_mam_robot = yes }
-				}
-				change_species_portrait = sd_mam_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_rep_robot = yes }
-				}
-				change_species_portrait = sd_rep_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_avi_robot = yes }
-				}
-				change_species_portrait = sd_avi_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_art_robot = yes }
-				}
-				change_species_portrait = sd_art_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_mol_robot = yes }
-				}
-				change_species_portrait = sd_mol_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_fun_robot = yes }
-				}
-				change_species_portrait = sd_fun_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_pla_robot = yes }
-				}
-				change_species_portrait = sd_pla_robot
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_lit_robot = yes }
-				}
-				change_species_portrait = lith_machine
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_nec_robot = yes }
-				}
-				change_species_portrait = nec_machine
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_aqu_robot = yes }
-				}
-				change_species_portrait = aqu_machine
-			}
-			else_if = {
-				limit = {
-					prev = { use_robot_portrait_sd_tox_robot = yes }
-				}
-				change_species_portrait = tox_machine
+			save_global_event_target_as = global_robot_parent_species
+		}
+	}
+}
+
+create_built_robot_species = {
+	if = {
+		limit = {
+			NOT = {
+				exists = event_target:global_robot_parent_species
 			}
 		}
+		create_global_robot_parent_species = yes
+	}
+
+	create_species = {
+		name = "NAME_Robot"
+		plural = "NAME_Robot_plural"
+		class = ROBOT
+		namelist = this
+		portrait = "default_robot"
+		traits = {
+			trait = "trait_mechanical"
+		}
+
+		effect = {
+			set_species_identity = event_target:global_robot_parent_species
+			set_machine_habitability = yes
+			set_species_flag = mechanical_species@prev
+		}
+	}
+
+	last_created_species = {
+		set_synth_or_robot_portrait_effect = yes
 	}
 
 	set_built_species = last_created_species
 }
 
-give_next_tech_society_option_effect = {
-	if = {
-		limit = { NOT = { has_technology = tech_society_1 } }
-		add_research_option = tech_society_1
-		add_tech_progress = {
-			tech = tech_society_1
-			progress = 0.25
+give_next_breakthrough_effect = {
+	inverted_switch = {
+		trigger = has_technology
+		tech_$AREA$_1 = {
+			give_breakthrough_tech_option_or_progress_effect = { TECH = tech_$AREA$_1 }
 		}
-	}
-	else_if = {
-		limit = { NOT = { has_technology = tech_society_2 } }
-		add_research_option = tech_society_2
-		add_tech_progress = {
-			tech = tech_society_2
-			progress = 0.25
+		tech_$AREA$_2 = {
+			give_breakthrough_tech_option_or_progress_effect = { TECH = tech_$AREA$_2 }
 		}
-	}
-	else_if = {
-		limit = { NOT = { has_technology = tech_society_3 } }
-		add_research_option = tech_society_3
-		add_tech_progress = {
-			tech = tech_society_3
-			progress = 0.25
+		tech_$AREA$_3 = {
+			give_breakthrough_tech_option_or_progress_effect = { TECH = tech_$AREA$_3 }
 		}
-	}
-	else = {
-		add_monthly_resource_mult = {
-			resource = society_research
-			value = @tier3researchreward
-			min = @tier3researchmin
-			max = @tier3researchmax
+		tech_$AREA$_4 = {
+			give_breakthrough_tech_option_or_progress_effect = { TECH = tech_$AREA$_4 }
+		}
+		default = {
+			add_monthly_resource_mult = {
+				resource = $AREA$_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
 		}
 	}
 }
@@ -3492,6 +3618,29 @@ give_next_terraforming_tech_option_effect = {
 			value = @tier3researchreward
 			min = @tier3researchmin
 			max = @tier3researchmax
+		}
+	}
+}
+
+give_next_terraforming_tech_effect = {
+	inverted_switch = {
+		trigger = has_technology
+		tech_terrestrial_sculpting = {
+			give_technology = { tech = tech_terrestrial_sculpting }
+		}
+		tech_ecological_adaptation = {
+			give_technology = { tech = tech_ecological_adaptation }
+		}
+		tech_climate_restoration = {
+			give_technology = { tech = tech_climate_restoration }
+		}
+		default = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
 		}
 	}
 }
@@ -3751,9 +3900,11 @@ assimilation_effect = {
 							has_trait = trait_mechanical
 							has_trait = trait_machine_unit
 						}
-						root.owner = {
-							has_authority = auth_machine_intelligence
-							has_active_tradition = tr_synthetics_adopt_machine
+						OR = {
+							root.owner = {
+								has_authority = auth_machine_intelligence
+							}
+							root.owner = { is_individual_machine = yes }
 						}
 					}
 				}
@@ -3845,20 +3996,9 @@ apply_post_assimilation_effects = {
 			root.owner = {
 				has_authority = auth_machine_intelligence
 				has_civic = civic_machine_assimilator
-				NOT = { has_tradition = tr_cybernetics_assimilator_adopt }
 			}
 		}
 		root.owner = { generate_cyborg_treats = yes } # scripted effect
-	}
-	else_if = {
-		limit = {
-			root.owner = {
-				has_authority = auth_machine_intelligence
-				has_civic = civic_machine_assimilator
-				has_tradition = tr_cybernetics_assimilator_adopt
-			}
-		}
-		root.owner = { generate_cyborg_extra_treats = yes } # scripted effect
 	}
 	if = {
 		limit = {
@@ -3893,6 +4033,61 @@ apply_post_assimilation_effects = {
 			}
 		}
 	}
+
+	if = { # Handle assimilation of spiritualists into cybernetic empires
+		limit = {
+			root.owner = { has_policy_flag = cyberization_standards_limited }
+			is_spiritualist = yes
+			has_trait = trait_cybernetic
+		}
+		convert_to_limited_cybernetic_effect = {
+			CYBER_SPECIES = event_target:convert_to_species
+		}
+	}
+}
+
+convert_to_limited_cybernetic_effect = {
+	if = {
+		limit = {
+			NOT = { exists = event_target:limited_cybernetic_species_of_@$CYBER_SPECIES$ }
+		}
+		modify_species = {
+			species = this
+			remove_trait = trait_cybernetic
+			add_trait = trait_limited_cybernetic
+			add_traits_at_start_of_list = yes
+			change_scoped_species = no
+			effect = {
+				save_global_event_target_as = limited_cybernetic_species_of_@$CYBER_SPECIES$
+				$CYBER_SPECIES$ = {
+					save_global_event_target_as = cybernetic_species_of_@prev
+				}
+			}
+		}
+	}
+	change_species = event_target:limited_cybernetic_species_of_@$CYBER_SPECIES$
+}
+
+convert_from_limited_cybernetic_effect = {
+	if = {
+		limit = {
+			NOT = { exists = event_target:cybernetic_species_of_@$LIMITED_SPECIES$ }
+		}
+		modify_species = {
+			species = this
+			remove_trait = trait_limited_cybernetic
+			add_trait = trait_cybernetic
+			add_traits_at_start_of_list = yes
+			change_scoped_species = no
+			effect = {
+				save_global_event_target_as = cybernetic_species_of_@$LIMITED_SPECIES$
+				$LIMITED_SPECIES$ = {
+					save_global_event_target_as = limited_cybernetic_species_of_@prev
+				}
+			}
+		}
+	}
+	change_species = event_target:cybernetic_species_of_@$LIMITED_SPECIES$
 }
 
 setup_baol_colony_1 = {
@@ -3929,7 +4124,7 @@ setup_baol_colony_3 = {
 	random_system_planet = {
 		limit = {
 			habitable_planet = yes
-			NOT = { is_planet_class = pc_city }
+			is_urban_planet = no
 			has_anomaly = no
 			NOR = {
 				exists = archaeological_site
@@ -3951,7 +4146,7 @@ setup_baol_colony_3_fallback = {
 	random_system_planet = {
 		limit = {
 			habitable_planet = yes
-			NOT = { is_planet_class = pc_city }
+			is_urban_planet = no
 			has_anomaly = no
 			NOR = {
 				exists = archaeological_site
@@ -3979,7 +4174,10 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							min_distance >= 1
 							max_distance <= 10
 						}
-						NOT = { has_hyperlane_to = prev }
+						NOR = {
+							has_hyperlane_to = prev
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -3990,7 +4188,10 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							min_distance >= 1
 							max_distance <= 10
 						}
-						NOT = { has_hyperlane_to = prev }
+						NOR = {
+							has_hyperlane_to = prev
+							has_star_flag = sealed_system
+						}
 					}
 					add_hyperlane = {
 						from = this
@@ -4007,7 +4208,10 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							min_distance >= 1
 							max_distance <= 15
 						}
-						NOT = { has_hyperlane_to = prev }
+						NOR = {
+							has_hyperlane_to = prev
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -4018,7 +4222,10 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							min_distance >= 1
 							max_distance <= 15
 						}
-						NOT = { has_hyperlane_to = prev }
+						NOR = {
+							has_hyperlane_to = prev
+							has_star_flag = sealed_system
+						}
 					}
 					add_hyperlane = {
 						from = this
@@ -4035,7 +4242,10 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							min_distance >= 1
 							max_distance <= 25
 						}
-						NOT = { has_hyperlane_to = prev }
+						NOR = {
+							has_hyperlane_to = prev
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -4063,7 +4273,10 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							min_distance >= 1
 							max_distance <= 40
 						}
-						NOT = { has_hyperlane_to = prev }
+						NOR = {
+							has_hyperlane_to = prev
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -4074,7 +4287,10 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							min_distance >= 1
 							max_distance <= 40
 						}
-						NOT = { has_hyperlane_to = prev }
+						NOR = {
+							has_hyperlane_to = prev
+							has_star_flag = sealed_system
+						}
 					}
 					add_hyperlane = {
 						from = this
@@ -5159,6 +5375,7 @@ ice_mining_depletion_effect = {
 							is_planet_class = pc_ice_asteroid
 							is_planet_class = pc_frozen
 						}
+						NOT = { has_planet_flag = mercenary_enclave_planet }
 					}
 					if = {
 						limit = {
@@ -5727,7 +5944,7 @@ count_robots_to_recycle = {
 			value = 2
 		}
 
-		round_variable  = recycled_robots
+		round_variable = recycled_robots
 	}
 	# if normal empire, get all robots
 	else = {
@@ -5760,7 +5977,6 @@ give_physics_tech_tier_1_effect = {
 	give_technology = { tech = tech_basic_science_lab_2 }
 	give_technology = { tech = tech_space_science_1 }
 	give_technology = { tech = tech_space_science_2 }
-	give_technology = { tech = tech_physics_1 }
 	give_technology = { tech = tech_administrative_ai }
 	give_technology = { tech = tech_cryostasis_1 }
 	give_technology = { tech = tech_automated_exploration }
@@ -5789,7 +6005,6 @@ give_physics_tech_tier_2_effect = {
 	}
 	give_technology = { tech = tech_space_science_3 }
 	give_technology = { tech = tech_space_science_4 }
-	give_technology = { tech = tech_physics_2 }
 	give_technology = { tech = tech_self_aware_logic }
 	if = {
 		limit = {
@@ -5824,7 +6039,6 @@ give_engineering_tech_tier_1_effect = {
 	give_technology = { tech = tech_mineral_purification_1 }
 	give_technology = { tech = tech_alloys_1 }
 	give_technology = { tech = tech_luxuries_1 }
-	give_technology = { tech = tech_engineering_1 }
 	give_technology = { tech = tech_robotic_workers }
 	give_technology = { tech = tech_afterburners_1 }
 	give_technology = { tech = tech_assembly_pattern }
@@ -5847,7 +6061,6 @@ give_engineering_tech_tier_2_effect = {
 	give_technology = { tech = tech_mining_2 }
 	give_technology = { tech = tech_mineral_purification_2 }
 	give_technology = { tech = tech_advanced_metallurgy_1 }
-	give_technology = { tech = tech_engineering_2 }
 	give_technology = { tech = tech_droid_workers }
 	give_technology = { tech = tech_housing_1 }
 }
@@ -5862,7 +6075,6 @@ give_society_tech_tier_1_effect = {
 	give_technology = { tech = tech_eco_simulation }
 	give_technology = { tech = tech_hydroponics }
 	give_technology = { tech = tech_food_processing_1 }
-	give_technology = { tech = tech_society_1 }
 	if = {
 		limit = {
 			is_regular_empire = yes
@@ -5920,7 +6132,6 @@ give_society_tech_tier_1_effect = {
 
 give_society_tech_tier_2_effect = {
 	give_technology = { tech = tech_gene_crops }
-	give_technology = { tech = tech_society_2 }
 	give_technology = { tech = tech_arcane_deciphering }
 	if = {
 		limit = {
@@ -6508,6 +6719,30 @@ set_ruined_megastructure = {
 		}
 		remove_megastructure = this
 	}
+	else_if = {
+		limit = {
+			OR = {
+				is_megastructure_type = orbital_arc_furnace_1
+				is_megastructure_type = orbital_arc_furnace_2
+				is_megastructure_type = orbital_arc_furnace_3
+				is_megastructure_type = orbital_arc_furnace_4
+				is_megastructure_type = orbital_arc_furnace_restored
+			}
+		}
+		solar_system = {
+			spawn_megastructure = {
+				type = "orbital_arc_furnace_destroyed"
+				coords_from = prev
+			}
+			every_system_planet = {
+				remove_modifier = orbital_arc_furnace_1_mod
+				remove_modifier = orbital_arc_furnace_2_mod
+				remove_modifier = orbital_arc_furnace_3_mod
+				remove_modifier = orbital_arc_furnace_4_mod
+			}
+		}
+		remove_megastructure = this
+	}
 	else = {
 		remove_megastructure = this
 	}
@@ -6555,12 +6790,26 @@ set_origin_effect = {
 		}
 		set_origin = origin_subterranean
 	}
+	# Subterranean Machines
+	else_if = {
+		limit = {
+			has_trait = trait_robot_cave_dweller
+		}
+		set_origin = origin_subterranean_machines
+	}
 	# Void Dwellers
 	else_if = {
 		limit = {
 			has_trait = trait_void_dweller_1
 		}
 		set_origin = origin_void_dwellers
+	}
+	# Void Machines
+	else_if = {
+		limit = {
+			has_trait = trait_void_dweller_2
+		}
+		set_origin = origin_void_machines
 	}
 	# Calamitous Birth
 	else_if = {
@@ -6630,15 +6879,11 @@ set_origin_effect = {
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_criminal_heritage }
-		}
-		shift_ethic = ethic_fanatic_authoritarian
+		limit = { has_civic = civic_criminal_heritage }
 		if = {
 			limit = { has_technology = tech_galactic_administration }
 			change_government = {
-				authority = auth_dictatorial
+				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
 				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
@@ -6646,7 +6891,7 @@ set_merchant_government_effect = {
 		}
 		else = {
 			change_government = {
-				authority = auth_dictatorial
+				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
 				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
@@ -6654,20 +6899,8 @@ set_merchant_government_effect = {
 		}
 	}
 	else_if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_worker_coop }
-		}
+		limit = { has_civic = civic_worker_coop }
 		shift_ethic = ethic_fanatic_egalitarian
-		if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			shift_ethic = ethic_xenophile
-		}
 		if = {
 			limit = { has_technology = tech_galactic_administration }
 			change_government = {
@@ -6689,51 +6922,19 @@ set_merchant_government_effect = {
 	else = {
 		if = {
 			limit = { has_technology = tech_galactic_administration }
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random civic = random }
-				}
-			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random civic = random }
 			}
 		}
 		else = {
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random }
-				}
-			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random }
 			}
 		}
 	}
@@ -7524,6 +7725,7 @@ fruitful_remove_seed_to_critter = {
 }
 
 initialize_kaleidoscope = {
+	set_global_flag = kaleidoscope_started
 	event_target:global_event_country = {
 		if = {
 			limit = {
@@ -7585,4 +7787,206 @@ reset_formless_crisis_reward = {
 	remove_country_flag = formless_unbidden_reward
 	remove_country_flag = formless_aberrant_reward
 	remove_country_flag = formless_vehement_reward
+}
+
+remove_modifers_after_terraform = {
+		remove_modifier = "bleak_planet"
+		remove_modifier = "dangerous_wildlife"
+		remove_modifier = "hazardous_weather"
+		remove_modifier = "wild_storms"
+		remove_modifier = "irradiated_planet"
+		remove_modifier = "second_home"
+		remove_deposit = d_radiotrophic_preserve
+}
+
+# Call from the create_species effect block when creating a synth species to set planet preference.
+# prev: Original species
+# this: New synth species
+set_machine_habitability = {
+	if = {
+		limit = {
+			prev = {
+				OR = {
+					has_trait = trait_pc_desert_preference
+					has_trait = trait_pc_arid_preference
+					has_trait = trait_pc_savannah_preference
+				}
+			}
+		}
+		modify_species = {
+			add_trait = trait_dry_planet_preference
+		}
+	}
+	else_if = {
+		limit = {
+			prev = {
+				OR = {
+					has_trait = trait_pc_tropical_preference
+					has_trait = trait_pc_continental_preference
+					has_trait = trait_pc_ocean_preference
+				}
+			}
+		}
+		modify_species = {
+			add_trait = trait_wet_planet_preference
+		}
+	}
+	else_if = {
+		limit = {
+			prev = {
+				OR = {
+					has_trait = trait_pc_arctic_preference
+					has_trait = trait_pc_tundra_preference
+					has_trait = trait_pc_alpine_preference
+				}
+			}
+		}
+		modify_species = {
+			add_trait = trait_frozen_planet_preference
+		}
+	}
+	else = {
+		random_list = {
+			1 = {
+				modify_species = {
+					add_trait = trait_dry_planet_preference
+				}
+			}
+			1 = {
+				modify_species = {
+					add_trait = trait_wet_planet_preference
+				}
+			}
+			1 = {
+				modify_species = {
+					add_trait = trait_frozen_planet_preference
+				}
+			}
+		}
+	}
+}
+
+#### Nanite Slushify World
+
+slushify_world = {
+	random_list = {
+		10 = {
+			modifier = {
+				factor = 0
+				num_free_districts = { type = any value < 2 }
+			}
+			add_deposit = d_nanotech_devastation
+			add_deposit = d_nanotech_devastation
+			owner = {
+				add_monthly_resource_mult = {
+					resource = nanites
+					value = 3
+					min = @tier1materialmin
+					max = @tier2materialmax
+				}
+				create_message = {
+					type = MESSAGE_TERRAVORE_CONSUME_WORLD
+					localization = MESSAGE_NANOTECH_CONSUME_WORLD_3_TEXT
+					days = 30
+					target = prev
+
+					variable = {
+						type = name
+						localization = PLANET
+						scope = prev
+					}
+				}
+			}
+			add_planet_devastation = 10
+		}
+		10 = {
+			modifier = {
+				factor = 0
+				num_free_districts = { type = any value < 2 }
+			}
+			add_deposit = d_nanotech_devastation
+			add_deposit = d_nanotech_devastation
+			owner = {
+				add_monthly_resource_mult = {
+					resource = nanites
+					value = 2
+					min = @tier1materialmin
+					max = @tier2materialmax
+				}
+				create_message = {
+					type = MESSAGE_TERRAVORE_CONSUME_WORLD
+					localization = MESSAGE_NANOTECH_CONSUME_WORLD_2_TEXT
+					days = 30
+					target = prev
+
+					variable = {
+						type = name
+						localization = PLANET
+						scope = prev
+					}
+				}
+			}
+			add_planet_devastation = 10
+		}
+		10 = {
+			# There's only one district slot left on the planet
+			modifier = {
+				factor = 0
+				num_free_districts = { type = any value >= 2 }
+			}
+			add_deposit = d_nanotech_devastation
+			owner = {
+				add_monthly_resource_mult = {
+					resource = nanites
+					value = 1
+					min = @tier1materialmin
+					max = @tier1materialmax
+				}
+				create_message = {
+					type = MESSAGE_TERRAVORE_CONSUME_WORLD
+					localization = MESSAGE_NANOTECH_CONSUME_WORLD_1_TEXT
+					days = 30
+					target = prev
+
+					variable = {
+						type = name
+						localization = PLANET
+						scope = prev
+					}
+				}
+			}
+			add_planet_devastation = 5
+		}
+	}
+	set_timed_planet_flag = {
+		days = 360
+		flag = recently_eaten_planet
+	}
+}
+
+set_subject_advanced_authority = {
+	from = {
+		switch = {
+			trigger = has_country_flag
+			cyber_creed_advanced_government = { root = { set_country_flag = 	cyber_creed_advanced_government } }
+			cyber_individualist = { root = { set_country_flag = cyber_individualist } }
+			cyber_collectivist = { root = { set_country_flag = cyber_collectivist } }
+			synth_physical = { root = { set_country_flag = synth_physical } }
+			synth_virtual = { root = { set_country_flag = synth_virtual } }
+			cyber_hive_volitional = { root = { set_country_flag = cyber_hive_volitional } }
+			cyber_hive_integrated = { root = { set_country_flag = cyber_hive_integrated } }
+			driven_memory_aggregator = { root = { set_country_flag = driven_memory_aggregator } }
+			driven_neural_chorus = { root = { set_country_flag = driven_neural_chorus } }
+		}
+	}
+
+	advanced_authority_refresh = yes
+
+	if = {
+		limit = {
+			has_country_flag = cyber_individualist
+			has_authority = auth_imperial
+		}
+		add_relic = r_the_rulerchip
+	}
 }
