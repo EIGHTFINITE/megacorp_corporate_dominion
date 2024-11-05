@@ -1926,6 +1926,7 @@ spawn_habitat_cracker_effect = {
 	create_ambient_object = {
 		location = this
 		type = habitat_cracker_object
+		play_animation_once = yes
 		duration = 5
 
 		use_3d_location = yes
@@ -1956,14 +1957,7 @@ spawn_habitat_cracker_effect = {
 				is_ship_class = shipclass_habitat_station
 			}
 			orbit = {
-				if = {
-					limit = {
-						NOT = {
-							has_planet_flag = habitat_build_site
-						}
-					}
-					remove_planet_flag = has_megastructure
-				}
+				remove_planet_flag = has_megastructure
 			}
 			delete_fleet = this
 		}
@@ -1975,6 +1969,7 @@ spawn_lathe_cracker_effect = {
 	create_ambient_object = {
 		location = this
 		type = habitat_cracker_object
+		play_animation_once = yes
 		duration = 5
 
 		use_3d_location = yes
@@ -2002,6 +1997,17 @@ spawn_lathe_cracker_effect = {
 		}
 	}
 	remove_planet = yes
+	random_country = {
+		limit = {
+			has_country_flag = cosmogenesis_world_built
+			NOT = {
+				any_owned_planet = {
+					is_planet_class = pc_cosmogenesis_world
+				}
+			}
+		}
+		remove_country_flag = cosmogenesis_world_built
+	}
 }
 
 spawn_ringworld_cracker_effect = {
@@ -2009,6 +2015,7 @@ spawn_ringworld_cracker_effect = {
 		location = this
 		type = ringworld_cracker_object
 		duration = 5
+		play_animation_once = yes
 
 		use_3d_location = yes
 		base_angle_towards = star
@@ -2037,21 +2044,13 @@ spawn_habitat_pacifier_effect = {
 		entity_scale_to_size = yes
 		scale = 0.10
 	}
-	save_event_target_as = target_habitat
 	solar_system = {
 		every_fleet_in_system = {
 			limit = {
 				is_ship_class = shipclass_habitat_station
 			}
 			orbit = {
-				if = {
-					limit = {
-						NOT = {
-							has_planet_flag = habitat@event_target:target_habitat
-						}
-					}
-					remove_planet_flag = has_megastructure
-				}
+				remove_planet_flag = has_megastructure
 			}
 			delete_fleet = this
 		}
@@ -3541,6 +3540,7 @@ create_built_robot_species = {
 		name = "NAME_Robot"
 		plural = "NAME_Robot_plural"
 		class = ROBOT
+		homeworld = this
 		namelist = this
 		portrait = "default_robot"
 		traits = {
@@ -3548,14 +3548,10 @@ create_built_robot_species = {
 		}
 
 		effect = {
+			set_synth_or_robot_portrait_effect = yes
 			set_species_identity = event_target:global_robot_parent_species
-			set_machine_habitability = yes
 			set_species_flag = mechanical_species@prev
 		}
-	}
-
-	last_created_species = {
-		set_synth_or_robot_portrait_effect = yes
 	}
 
 	set_built_species = last_created_species
@@ -3888,6 +3884,7 @@ assimilation_effect = {
 				type = citizenship_assimilation
 				country = root.owner
 			}
+			NOT = { root = { is_planet_class = pc_cosmogenesis_world } }
 		}
 		if = { # Has Synth Assimilation
 			limit = {
@@ -3902,7 +3899,7 @@ assimilation_effect = {
 						}
 						OR = {
 							root.owner = {
-								has_authority = auth_machine_intelligence
+								is_machine_empire = yes
 							}
 							root.owner = { is_individual_machine = yes }
 						}
@@ -3994,7 +3991,7 @@ apply_post_assimilation_effects = {
 	if = { # assimilator empire
 		limit = {
 			root.owner = {
-				has_authority = auth_machine_intelligence
+				is_machine_empire = yes
 				has_civic = civic_machine_assimilator
 			}
 		}
@@ -4012,7 +4009,7 @@ apply_post_assimilation_effects = {
 			}
 		}
 		if = { # set citizenship
-			limit = { root.owner = { has_authority = auth_machine_intelligence } }
+			limit = { root.owner = { is_machine_empire = yes } }
 			set_citizenship_type = {
 				type = citizenship_full_machine
 				country = root.owner
@@ -5241,6 +5238,9 @@ create_baol_species_effect = {
 				species = this
 				add_trait = trait_plantoid_phototrophic
 				add_traits_at_start_of_list = yes
+				effect = {
+					save_global_event_target_as = $GLOBAL_TARGET$
+				}
 			}
 		}
 	}
@@ -5256,6 +5256,9 @@ create_hive_baol_species_effect = {
 			species = this
 			add_trait = trait_hive_mind
 			add_traits_at_start_of_list = yes
+			effect = {
+				save_global_event_target_as = $GLOBAL_TARGET$
+			}
 		}
 	}
 }
@@ -5637,6 +5640,7 @@ generate_parade_city = {
 				NOR = {
 					has_planet_flag = recent_parade
 					has_modifier = slave_colony
+					is_planet_class = pc_cosmogenesis_world
 				}
 				any_owned_species = {
 					OR = {
@@ -5651,6 +5655,7 @@ generate_parade_city = {
 				NOR = {
 					has_planet_flag = recent_parade
 					has_modifier = slave_colony
+					is_planet_class = pc_cosmogenesis_world
 				}
 				any_owned_species = {
 					OR = {
@@ -6096,7 +6101,7 @@ give_society_tech_tier_1_effect = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_authority = auth_machine_intelligence }
+				is_machine_empire = no
 				has_civic = civic_machine_assimilator
 				has_civic = civic_machine_servitor
 			}
@@ -6166,7 +6171,7 @@ give_society_tech_tier_2_effect = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_authority = auth_machine_intelligence }
+				is_machine_empire = no
 				has_civic = civic_machine_assimilator
 			}
 		}
@@ -6180,7 +6185,7 @@ give_society_tech_tier_2_effect = {
 				#has_valid_civic = civic_hive_devouring_swarm # can uplift to make delicious
 			}
 			OR = {
-				NOT = { has_authority = auth_machine_intelligence }
+				is_machine_empire = no
 				has_civic = civic_machine_assimilator
 				has_civic = civic_machine_servitor
 			}
@@ -6190,7 +6195,7 @@ give_society_tech_tier_2_effect = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_authority = auth_machine_intelligence }
+				is_machine_empire = no
 				has_civic = civic_machine_assimilator
 			}
 		}
@@ -6199,7 +6204,7 @@ give_society_tech_tier_2_effect = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_authority = auth_machine_intelligence }
+				is_machine_empire = no
 				has_civic = civic_machine_assimilator
 			}
 		}
@@ -6730,20 +6735,60 @@ set_ruined_megastructure = {
 			}
 		}
 		solar_system = {
+			random_system_planet = {
+				limit = {
+					has_planet_flag = has_arc_furnace
+				}
+				save_event_target_as = arc_furnace_world
+			}
 			spawn_megastructure = {
 				type = "orbital_arc_furnace_destroyed"
-				coords_from = prev
+				planet = event_target:arc_furnace_world
 			}
 			every_system_planet = {
-				remove_modifier = orbital_arc_furnace_1_mod
-				remove_modifier = orbital_arc_furnace_2_mod
-				remove_modifier = orbital_arc_furnace_3_mod
-				remove_modifier = orbital_arc_furnace_4_mod
+				limit = {
+					OR = {
+						has_modifier = orbital_arc_furnace_1_mod
+						has_modifier = orbital_arc_furnace_2_mod
+						has_modifier = orbital_arc_furnace_3_mod
+						has_modifier = orbital_arc_furnace_4_mod
+					}
+				}
+				dismantle_arc_furnace_effect = yes
 			}
 		}
 		remove_megastructure = this
 	}
+	else_if = {
+		limit = { is_megastructure_type = grand_archive_0 }
+		solar_system = {
+			system_event = { id = grand_archive.4501 }
+		}
+	}
 	else = {
+		remove_megastructure = this
+	}
+}
+
+# This = Grand Archive (megastructure)
+destroy_grand_archive = {
+	if = {
+		limit = { is_megastructure_type = grand_archive_0 }
+		create_ambient_object = {
+			type = "large_debris_object"
+			location = this
+		}
+		last_created_ambient_object = {
+			set_location = {
+				target = prev
+				distance = 35
+				angle = 30
+			}
+		}
+		if = {
+			limit = { exists = planet }
+			planet = { remove_planet_flag = has_megastructure }
+		}
 		remove_megastructure = this
 	}
 }
@@ -6882,15 +6927,11 @@ set_origin_effect = {
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_criminal_heritage }
-		}
-		shift_ethic = ethic_fanatic_authoritarian
+		limit = { has_civic = civic_criminal_heritage }
 		if = {
 			limit = { has_technology = tech_galactic_administration }
 			change_government = {
-				authority = auth_dictatorial
+				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
 				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
@@ -6898,7 +6939,7 @@ set_merchant_government_effect = {
 		}
 		else = {
 			change_government = {
-				authority = auth_dictatorial
+				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
 				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
@@ -6906,20 +6947,8 @@ set_merchant_government_effect = {
 		}
 	}
 	else_if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_worker_coop }
-		}
+		limit = { has_civic = civic_worker_coop }
 		shift_ethic = ethic_fanatic_egalitarian
-		if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			shift_ethic = ethic_xenophile
-		}
 		if = {
 			limit = { has_technology = tech_galactic_administration }
 			change_government = {
@@ -6941,51 +6970,19 @@ set_merchant_government_effect = {
 	else = {
 		if = {
 			limit = { has_technology = tech_galactic_administration }
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random civic = random }
-				}
-			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random civic = random }
 			}
 		}
 		else = {
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random }
-				}
-			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random }
 			}
 		}
 	}
@@ -7028,8 +7025,8 @@ impose_ideology_effect = {
 	}
 	if = {
 		limit = {
-			root = { has_authority = auth_corporate }
-			has_authority = auth_corporate
+			root = { is_megacorp = yes }
+			is_megacorp = yes
 		}
 		set_merchant_government_effect = yes
 	}
@@ -7169,7 +7166,7 @@ remove_fauna_yuht = {
 	if = {
 		limit = { has_modifier = dangerous_wildlife }
 		remove_modifier = dangerous_wildlife
-		}
+	}
 
 	if = {
 		limit = { has_modifier = titanic_life }
@@ -7685,96 +7682,6 @@ tomb_world_modifier_cleanup = {
 	remove_modifier = "planet_myrmeku_lured"
 }
 
-fruitful_add_seed_to_critter = {
-	# There is no trigger to check a fleet's name, so we're using flags instead
-	switch = {
-		trigger = has_fleet_flag
-		NAME_Tiyanki_Space_Whale = {
-			set_name = NAME_Tiyanki_Space_Whale_seed
-			set_fleet_flag = NAME_Tiyanki_Space_Whale_seed
-			remove_fleet_flag = NAME_Tiyanki_Space_Whale
-		}
-		NAME_Grazing_Tiyanki = {
-			set_name = NAME_Grazing_Tiyanki_seed
-			set_fleet_flag = NAME_Grazing_Tiyanki_seed
-			remove_fleet_flag = NAME_Grazing_Tiyanki
-		}
-		NAME_Amoeba_Swarm = {
-			set_name = NAME_Amoeba_Swarm_seed
-			set_fleet_flag = NAME_Amoeba_Swarm_seed
-			remove_fleet_flag = NAME_Amoeba_Swarm
-		}
-		NAME_Space_Amoeba_Hunters = {
-			set_name = NAME_Space_Amoeba_Hunters_seed
-			set_fleet_flag = NAME_Space_Amoeba_Hunters_seed
-			remove_fleet_flag = NAME_Space_Amoeba_Hunters
-		}
-		NAME_Space_Amoeba_plural = {
-			set_name = NAME_Space_Amoeba_plural_seed
-			set_fleet_flag = NAME_Space_Amoeba_plural_seed
-			remove_fleet_flag = NAME_Space_Amoeba_plural
-		}
-		# Bubbles
-		NAME_Bubbles = {
-			set_name = NAME_Bubbles_seed
-			set_fleet_flag = NAME_Bubbles_seed
-			remove_fleet_flag = NAME_Bubbles
-		}
-		NAME_Nyx = {
-			set_name = NAME_Nyx_seed
-			set_fleet_flag = NAME_Nyx_seed
-			remove_fleet_flag = NAME_Nyx
-		}
-		NAME_Renegade = {
-			set_name = NAME_Renegade_seed
-			set_fleet_flag = NAME_Renegade_seed
-			remove_fleet_flag = NAME_Renegade
-		}
-		NAME_Cyto = {
-			set_name = NAME_Cyto_seed
-			set_fleet_flag = NAME_Cyto_seed
-			remove_fleet_flag = NAME_Cyto
-		}
-		NAME_Boomer = {
-			set_name = NAME_Boomer_seed
-			set_fleet_flag = NAME_Boomer_seed
-			remove_fleet_flag = NAME_Boomer
-		}
-	}
-}
-
-fruitful_remove_seed_to_critter = {
-	# There is no trigger to check a fleet's name, so we're using flags instead
-	switch = {
-		trigger = has_fleet_flag
-		NAME_Tiyanki_Space_Whale_seed = {
-			set_name = NAME_Tiyanki_Space_Whale
-			set_fleet_flag = NAME_Tiyanki_Space_Whale
-			remove_fleet_flag = NAME_Tiyanki_Space_Whale_seed
-		}
-		NAME_Grazing_Tiyanki_seed = {
-			set_name = NAME_Grazing_Tiyanki
-			set_fleet_flag = NAME_Grazing_Tiyanki
-			remove_fleet_flag = NAME_Grazing_Tiyanki_seed
-		}
-		NAME_Amoeba_Swarm_seed = {
-			set_name = NAME_Amoeba_Swarm
-			set_fleet_flag = NAME_Amoeba_Swarm
-			remove_fleet_flag = NAME_Amoeba_Swarm_seed
-		}
-		NAME_Space_Amoeba_Hunters_seed = {
-			set_name = NAME_Space_Amoeba_Hunters
-			set_fleet_flag = NAME_Space_Amoeba_Hunters
-			remove_fleet_flag = NAME_Space_Amoeba_Hunters_seed
-		}
-		NAME_Space_Amoeba_plural_seed = {
-			set_name = NAME_Space_Amoeba_plural
-			set_fleet_flag = NAME_Space_Amoeba_plural
-			remove_fleet_flag = NAME_Space_Amoeba_plural_seed
-		}
-	}
-}
-
 initialize_kaleidoscope = {
 	set_global_flag = kaleidoscope_started
 	event_target:global_event_country = {
@@ -7848,73 +7755,6 @@ remove_modifers_after_terraform = {
 		remove_modifier = "irradiated_planet"
 		remove_modifier = "second_home"
 		remove_deposit = d_radiotrophic_preserve
-}
-
-# Call from the create_species effect block when creating a synth species to set planet preference.
-# prev: Original species
-# this: New synth species
-set_machine_habitability = {
-	if = {
-		limit = {
-			prev = {
-				OR = {
-					has_trait = trait_pc_desert_preference
-					has_trait = trait_pc_arid_preference
-					has_trait = trait_pc_savannah_preference
-				}
-			}
-		}
-		modify_species = {
-			add_trait = trait_dry_planet_preference
-		}
-	}
-	else_if = {
-		limit = {
-			prev = {
-				OR = {
-					has_trait = trait_pc_tropical_preference
-					has_trait = trait_pc_continental_preference
-					has_trait = trait_pc_ocean_preference
-				}
-			}
-		}
-		modify_species = {
-			add_trait = trait_wet_planet_preference
-		}
-	}
-	else_if = {
-		limit = {
-			prev = {
-				OR = {
-					has_trait = trait_pc_arctic_preference
-					has_trait = trait_pc_tundra_preference
-					has_trait = trait_pc_alpine_preference
-				}
-			}
-		}
-		modify_species = {
-			add_trait = trait_frozen_planet_preference
-		}
-	}
-	else = {
-		random_list = {
-			1 = {
-				modify_species = {
-					add_trait = trait_dry_planet_preference
-				}
-			}
-			1 = {
-				modify_species = {
-					add_trait = trait_wet_planet_preference
-				}
-			}
-			1 = {
-				modify_species = {
-					add_trait = trait_frozen_planet_preference
-				}
-			}
-		}
-	}
 }
 
 #### Nanite Slushify World
@@ -8036,7 +7876,7 @@ set_subject_advanced_authority = {
 	if = {
 		limit = {
 			has_country_flag = cyber_individualist
-			has_authority = auth_imperial
+			is_imperial_authority = yes
 		}
 		add_relic = r_the_rulerchip
 	}
