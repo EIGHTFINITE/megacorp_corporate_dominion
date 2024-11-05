@@ -430,20 +430,11 @@ diplomatic_stance = {
 		valid = {
 			NOT = { has_valid_civic = civic_inwards_perfection }
 			is_homicidal = no
-			# some ugliness to preserve the
-			# auth/civic - potential/valid divide for tooltip
-			if = {
-				limit = {
-					has_megacorp = yes
-					is_megacorp = yes
-				}
+			OR = {
 				is_megacorp = yes
-			}
-			else_if = {
-				limit = { has_megacorp = yes }
 				has_civic = civic_merchant_guilds
+				has_civic = civic_corporate_dominion
 			}
-			else = { has_civic = civic_corporate_dominion }
 		}
 
 		policy_flags = {
