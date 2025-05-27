@@ -5,6 +5,7 @@ councilor_corporate_dominion = {
 	}
 	civic = civic_corporate_dominion
 	modifier = {
+		country_trade_produces_mult = 0.02
 	}
 	ai_hiring_weight = {
 		inline_script = councilor_leader_weights
