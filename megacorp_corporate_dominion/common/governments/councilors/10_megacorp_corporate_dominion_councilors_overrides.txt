@@ -1,0 +1,12 @@
+councilor_corporate_dominion = {
+	leader_class = { official }
+	is_leader_possible = {
+		leader_class = official
+	}
+	civic = civic_corporate_dominion
+	modifier = {
+	}
+	ai_hiring_weight = {
+		inline_script = councilor_leader_weights
+	}
+}
