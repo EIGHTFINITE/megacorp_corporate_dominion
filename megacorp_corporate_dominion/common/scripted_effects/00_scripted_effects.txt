@@ -2157,16 +2157,36 @@ update_leader_after_modification = {
 			switch = {
 				trigger = has_trait
 				trait_erudite = {
-					prev = { add_trait_no_notify = leader_trait_erudite }
+					prev = {
+						add_trait = {
+							trait = leader_trait_erudite
+							show_message = no
+						}
+					}
 				}
 				trait_cybernetic = {
-					prev = { add_trait_no_notify = leader_trait_cyborg }
+					prev = {
+						add_trait = {
+							trait = leader_trait_cyborg
+							show_message = no
+						}
+					}
 				}
 				trait_limited_cybernetic = {
-					prev = { add_trait_no_notify = leader_trait_limited_cyborg }
+					prev = {
+						add_trait = {
+							trait = leader_trait_limited_cyborg
+							show_message = no
+						}
+					}
 				}
 				trait_psionic = {
-					prev = { add_trait_no_notify = leader_trait_psionic }
+					prev = {
+						add_trait = {
+							trait = leader_trait_psionic
+							show_message = no
+						}
+					}
 				}
 			}
 		}
@@ -6975,14 +6995,20 @@ machine_synthetic_leader_effect = {
 				has_leader_flag = legendary_leader
 			}
 		}
-		add_trait_no_notify = leader_trait_synthetic
+		add_trait = {
+			trait = leader_trait_synthetic
+			show_message = no
+		}
 	}
 	every_pool_leader = {
 		limit = {
 			species = { has_trait = trait_machine_unit }
 			NOT = { has_trait = leader_trait_synthetic }
 		}
-		add_trait_no_notify = leader_trait_synthetic
+		add_trait = {
+			trait = leader_trait_synthetic
+			show_message = no
+		}
 	}
 }
 
@@ -7166,10 +7192,9 @@ create_random_devolved_species = {
 				species = event_target:species_target
 				add_trait = trait_presapient_starborn
 				add_traits_at_start_of_list = yes
+				sapient = no
+				change_scoped_species = no
 				effect = {
-					change_species_characteristics = {
-						sapient = no
-					}
 					save_event_target_as = devolved_species_target
 				}
 			}
@@ -7180,10 +7205,9 @@ create_random_devolved_species = {
 				species = event_target:species_target
 				add_trait = trait_presapient_earthbound
 				add_traits_at_start_of_list = yes
+				sapient = no
+				change_scoped_species = no
 				effect = {
-					change_species_characteristics = {
-						sapient = no
-					}
 					save_event_target_as = devolved_species_target
 				}
 			}
@@ -7194,10 +7218,9 @@ create_random_devolved_species = {
 				species = event_target:species_target
 				add_trait = trait_presapient_natural_intellectuals
 				add_traits_at_start_of_list = yes
+				sapient = no
+				change_scoped_species = no
 				effect = {
-					change_species_characteristics = {
-						sapient = no
-					}
 					save_event_target_as = devolved_species_target
 				}
 			}
@@ -7208,10 +7231,9 @@ create_random_devolved_species = {
 				species = event_target:species_target
 				add_trait = trait_presapient_proles
 				add_traits_at_start_of_list = yes
+				sapient = no
+				change_scoped_species = no
 				effect = {
-					change_species_characteristics = {
-						sapient = no
-					}
 					save_event_target_as = devolved_species_target
 				}
 			}
@@ -7222,10 +7244,9 @@ create_random_devolved_species = {
 				species = event_target:species_target
 				add_trait = trait_presapient_conservative
 				add_traits_at_start_of_list = yes
+				sapient = no
+				change_scoped_species = no
 				effect = {
-					change_species_characteristics = {
-						sapient = no
-					}
 					save_event_target_as = devolved_species_target
 				}
 			}
@@ -7236,10 +7257,9 @@ create_random_devolved_species = {
 				species = event_target:species_target
 				add_trait = trait_presapient_irradiated
 				add_traits_at_start_of_list = yes
+				sapient = no
+				change_scoped_species = no
 				effect = {
-					change_species_characteristics = {
-						sapient = no
-					}
 					save_event_target_as = devolved_species_target
 				}
 			}
@@ -7250,10 +7270,9 @@ create_random_devolved_species = {
 				species = event_target:species_target
 				add_trait = trait_presapient_docile_livestock
 				add_traits_at_start_of_list = yes
+				sapient = no
+				change_scoped_species = no
 				effect = {
-					change_species_characteristics = {
-						sapient = no
-					}
 					save_event_target_as = devolved_species_target
 				}
 			}
