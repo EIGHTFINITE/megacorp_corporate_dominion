@@ -2081,6 +2081,10 @@ resettlement = {
 		policy_flags = {
 			resettlement_not_allowed
 		}
+		
+		modifier = {
+			planet_resettlement_unemployed_mult = 1
+		}
 	}
 
 	option = {
