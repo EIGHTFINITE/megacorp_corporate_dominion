@@ -4000,7 +4000,10 @@ population_controls = {
 		policy_flags = {
 			population_controls_allowed
 		}
-		modifier = {}
+
+		modifier = {
+			refugee_attraction = -0.10
+		}
 
 		AI_weight = {
 			factor = 10
@@ -4060,6 +4063,10 @@ slavery = {
 				is_authoritarian = yes
 				is_xenophobe = yes
 			}
+		}
+
+		modifier = {
+			refugee_attraction = -0.40
 		}
 
 		policy_flags = {
@@ -4135,7 +4142,9 @@ purge = {
 			purge_displacement_only
 		}
 
-		modifier = {}
+		modifier = {
+			refugee_attraction = -0.25
+		}
 
 		valid = {
 			is_xenophile = no
@@ -4173,7 +4182,9 @@ purge = {
 		policy_flags = {
 			purge_allowed
 		}
-		modifier = {}
+		modifier = {
+			refugee_attraction = -0.90
+		}
 
 		valid = {
 			custom_tooltip = {
@@ -4385,71 +4396,71 @@ relentless_industrialists_policy = {
 	}
 }
 
-eternal_vigilance_policy = {
-	potential = {
-		is_country_type = default
-		has_ascension_perk = ap_eternal_vigilance
-	}
-
-	option = {
-		name = eternal_vigilance_full_spending
-
-		policy_flags = {
-			eternal_vigilance_full_spending
-		}
-
-		AI_weight = {
-			weight = 20
-			modifier = { #Seems like a good idea if you have the energy to spend
-				factor = 5
-				has_monthly_income = {
-					resource = energy
-					value > 500
-				}
-			}
-			modifier = { #Uhoh we are close to a deficit we probably shouldn't
-				factor = 0
-				has_monthly_income = {
-					resource = energy
-					value < 50
-				}
-			}
-		}
-	}
-	option = {
-		name = eternal_vigilance_half_spending
-
-		policy_flags = {
-			eternal_vigilance_half_spending
-		}
-
-		AI_weight = { #This is the option if you are doing just fine on the economy front
-			weight = 75
-		}
-	}
-	option = {
-		name = eternal_vigilance_no_spending
-
-		policy_flags = {
-			eternal_vigilance_no_spending
-		}
-
-		AI_weight = {
-			weight = 20
-			modifier = { #Seems like a bad idea if you have the energy to spend
-				factor = 0
-				has_monthly_income = {
-					resource = energy
-					value > 500
-				}
-			}
-			modifier = { #Uhoh we are close to a deficit we probably shouldn't spend more
-				factor = 5
-				has_monthly_income = {
-					resource = energy
-					value < 50
-				}
-			}
-		}
-	}
-}
+# eternal_vigilance_policy = {
+# 	potential = {
+# 		is_country_type = default
+# 		has_ascension_perk = ap_eternal_vigilance
+# 	}
+# 
+# 	option = {
+# 		name = eternal_vigilance_full_spending
+# 
+# 		policy_flags = {
+# 			eternal_vigilance_full_spending
+# 		}
+# 
+# 		AI_weight = {
+# 			weight = 20
+# 			modifier = { #Seems like a good idea if you have the energy to spend
+# 				factor = 5
+# 				has_monthly_income = {
+# 					resource = energy
+# 					value > 500
+# 				}
+# 			}
+# 			modifier = { #Uhoh we are close to a deficit we probably shouldn't
+# 				factor = 0
+# 				has_monthly_income = {
+# 					resource = energy
+# 					value < 50
+# 				}
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		name = eternal_vigilance_half_spending
+# 
+# 		policy_flags = {
+# 			eternal_vigilance_half_spending
+# 		}
+# 
+# 		AI_weight = { #This is the option if you are doing just fine on the economy front
+# 			weight = 75
+# 		}
+# 	}
+# 	option = {
+# 		name = eternal_vigilance_no_spending
+# 
+# 		policy_flags = {
+# 			eternal_vigilance_no_spending
+# 		}
+# 
+# 		AI_weight = {
+# 			weight = 20
+# 			modifier = { #Seems like a bad idea if you have the energy to spend
+# 				factor = 0
+# 				has_monthly_income = {
+# 					resource = energy
+# 					value > 500
+# 				}
+# 			}
+# 			modifier = { #Uhoh we are close to a deficit we probably shouldn't spend more
+# 				factor = 5
+# 				has_monthly_income = {
+# 					resource = energy
+# 					value < 50
+# 				}
+# 			}
+# 		}
+# 	}
+# }
