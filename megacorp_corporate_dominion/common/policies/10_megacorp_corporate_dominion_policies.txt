@@ -423,6 +423,7 @@ diplomatic_stance = {
 				is_megacorp = yes
 				has_civic = civic_merchant_guilds
 				has_civic = civic_corporate_dominion
+				has_civic = civic_galactic_sovereign_megacorp
 			}
 		}
 
