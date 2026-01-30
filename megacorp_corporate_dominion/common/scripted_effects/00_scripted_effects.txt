@@ -1197,7 +1197,7 @@ create_ai_planet_defense = {
 		effect = {
 			set_owner = event_target:AI_crisis
 			while = {
-				count = 25
+				count = 16
 				create_ship = {
 					name = random
 					design = "NAME_Euthanizer"
@@ -1206,7 +1206,7 @@ create_ai_planet_defense = {
 			}
 			assign_leader = event_target:contingency_fleet_leader
 			while = {
-				count = 50
+				count = 35
 				create_ship = {
 					name = random
 					design = "NAME_Sterilizer"
@@ -1370,7 +1370,7 @@ create_ai_fleet = {
 		effect = {
 			set_owner = event_target:AI_crisis
 			while = {
-				count = 10
+				count = 6
 				create_ship = {
 					name = random
 					design = "NAME_Euthanizer"
@@ -1379,7 +1379,7 @@ create_ai_fleet = {
 			}
 			assign_leader = event_target:contingency_fleet_leader
 			while = {
-				count = 20
+				count = 12
 				create_ship = {
 					name = random
 					design = "NAME_Sterilizer"
@@ -5903,7 +5903,7 @@ count_robots_to_recycle = {
 
 	set_variable = {
 		which = total_alloys_gained
-		value = recycled_robots
+		value = recycled_robots_100
 	}
 
 	multiply_variable = {
@@ -6947,15 +6947,11 @@ set_origin_effect = {
 
 set_merchant_government_effect = {
 	if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_criminal_heritage }
-		}
-		shift_ethic = ethic_fanatic_authoritarian
+		limit = { has_civic = civic_criminal_heritage }
 		if = {
 			limit = { has_technology = tech_galactic_administration }
 			change_government = {
-				authority = auth_dictatorial
+				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
 				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
@@ -6963,7 +6959,7 @@ set_merchant_government_effect = {
 		}
 		else = {
 			change_government = {
-				authority = auth_dictatorial
+				authority = auth_oligarchic
 				cooldown = no
 				remove_invalid_civics = yes
 				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
@@ -6971,20 +6967,8 @@ set_merchant_government_effect = {
 		}
 	}
 	else_if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_worker_coop }
-		}
+		limit = { has_civic = civic_worker_coop }
 		shift_ethic = ethic_fanatic_egalitarian
-		if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			shift_ethic = ethic_xenophile
-		}
 		if = {
 			limit = { has_technology = tech_galactic_administration }
 			change_government = {
@@ -7006,51 +6990,19 @@ set_merchant_government_effect = {
 	else = {
 		if = {
 			limit = { has_technology = tech_galactic_administration }
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random civic = random }
-				}
-			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random civic = random }
 			}
 		}
 		else = {
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random }
-				}
-			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random }
 			}
 		}
 	}
