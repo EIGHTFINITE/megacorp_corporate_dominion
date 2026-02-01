@@ -7070,22 +7070,11 @@ set_merchant_government_effect = {
 			root = { has_civic = civic_criminal_heritage }
 		}
 		shift_ethic = ethic_fanatic_authoritarian
-		if = {
-			limit = { has_technology = tech_galactic_administration }
-			change_government = {
-				authority = auth_dictatorial
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
-			}
-		}
-		else = {
-			change_government = {
-				authority = auth_dictatorial
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = civic_dystopian_society }
-			}
+		change_government = {
+			authority = auth_dictatorial
+			cooldown = no
+			remove_invalid_civics = yes
+			civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
 		}
 	}
 	else_if = {
@@ -7103,74 +7092,43 @@ set_merchant_government_effect = {
 			}
 			shift_ethic = ethic_xenophile
 		}
-		if = {
-			limit = { has_technology = tech_galactic_administration }
-			change_government = {
-				authority = auth_democratic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = civic_shared_burden civic = random }
-			}
-		}
-		else = {
-			change_government = {
-				authority = auth_democratic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = civic_shared_burden }
-			}
+		change_government = {
+			authority = auth_democratic
+			cooldown = no
+			remove_invalid_civics = yes
+			civics = { civic = civic_merchant_guilds civic = civic_shared_burden civic = random }
 		}
 	}
 	else = {
 		if = {
-			limit = { has_technology = tech_galactic_administration }
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random civic = random }
+			limit = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
 				}
 			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_merchant_guilds civic = random civic = random }
 			}
 		}
 		else = {
-			if = {
-				limit = {
-					OR = {
-						has_ethic = ethic_xenophobe
-						has_ethic = ethic_fanatic_xenophobe
-					}
-				}
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_merchant_guilds civic = random }
-				}
-			}
-			else = {
-				change_government = {
-					authority = auth_oligarchic
-					cooldown = no
-					remove_invalid_civics = yes
-					civics = { civic = civic_corporate_dominion civic = random }
-				}
+			change_government = {
+				authority = auth_oligarchic
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { civic = civic_corporate_dominion civic = random civic = random }
 			}
 		}
+	}
+	force_remove_civic = 6
+	force_remove_civic = 5
+	force_remove_civic = 4
+	if = {
+		limit = { NOT = { has_technology = tech_galactic_administration } }
+		force_remove_civic = 3
 	}
 }
 
