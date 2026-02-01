@@ -7099,28 +7099,26 @@ set_merchant_government_effect = {
 			civics = { civic = civic_merchant_guilds civic = civic_shared_burden civic = random }
 		}
 	}
-	else = {
-		if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random civic = random }
+	else_if = {
+		limit = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
 			}
 		}
-		else = {
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_corporate_dominion civic = random civic = random }
-			}
+		change_government = {
+			authority = auth_oligarchic
+			cooldown = no
+			remove_invalid_civics = yes
+			civics = { civic = civic_merchant_guilds civic = random civic = random }
+		}
+	}
+	else = {
+		change_government = {
+			authority = auth_oligarchic
+			cooldown = no
+			remove_invalid_civics = yes
+			civics = { civic = civic_corporate_dominion civic = random civic = random }
 		}
 	}
 	force_remove_civic = 6
