@@ -7080,7 +7080,12 @@ set_merchant_government_effect = {
 	else_if = {
 		limit = {
 			exists = root
-			root = { has_civic = civic_worker_coop }
+			root = {
+				OR = {
+					has_civic = civic_worker_coop
+					has_civic = civic_shared_burden
+				}
+			}
 		}
 		shift_ethic = ethic_fanatic_egalitarian
 		if = {
@@ -7125,8 +7130,33 @@ set_merchant_government_effect = {
 	force_remove_civic = 5
 	force_remove_civic = 4
 	if = {
-		limit = { NOT = { has_technology = tech_galactic_administration } }
+		limit = { has_technology = tech_galactic_administration }
+		if = {
+			limit = {
+				exists = root
+				root = { has_civic = civic_crusader_spirit }
+			}
+			force_remove_civic = 3
+			force_add_civic = civic_crusader_spirit
+		}
+	}
+	else = {
 		force_remove_civic = 3
+		if = {
+			limit = {
+				exists = root
+				root = {
+					has_civic = civic_crusader_spirit
+					NOR = {
+						has_civic = civic_criminal_heritage
+						has_civic = civic_worker_coop
+						has_civic = civic_shared_burden
+					}
+				}
+			}
+			force_remove_civic = 2
+			force_add_civic = civic_crusader_spirit
+		}
 	}
 }
 
