@@ -4514,10 +4514,6 @@ destroy_star_system = {
 			}
 		}
 		if = {
-			limit = { is_planet_class = pc_habitat } # uncolonized
-			spawn_habitat_cracker_effect = yes
-		}
-		if = {
 			limit = { is_colony = yes }
 			if = {
 				limit = {
@@ -4530,6 +4526,10 @@ destroy_star_system = {
 			if = {
 				limit = { is_planet_class = pc_habitat }
 				spawn_habitat_cracker_effect = yes
+			}
+			else_if = {
+				limit = { is_planet_class = pc_cosmogenesis_world }
+				spawn_lathe_cracker_effect = yes
 			}
 			else_if = {
 				limit = { is_ringworld = yes }
@@ -4545,7 +4545,15 @@ destroy_star_system = {
 			}
 		}
 		else_if = {
-			limit = { is_ringworld = yes }
+			limit = { is_planet_class = pc_habitat } # uncolonized
+			spawn_habitat_cracker_effect = yes
+		}
+		else_if = {
+			limit = { is_planet_class = pc_cosmogenesis_world } # uncolonized
+			spawn_lathe_cracker_effect = yes
+		}
+		else_if = {
+			limit = { is_ringworld = yes } # uncolonized
 			spawn_ringworld_cracker_effect = yes
 			change_pc = pc_ringworld_habitable_damaged
 		}
@@ -6722,6 +6730,7 @@ create_zombie_pop_group = {
 		pop_group = event_target:old_pop_group
 		species = event_target:target_species
 		size = $SIZE$
+		category = worker
 	}
 }
 
