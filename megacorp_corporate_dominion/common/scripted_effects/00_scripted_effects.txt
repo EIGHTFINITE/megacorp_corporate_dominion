@@ -2473,6 +2473,15 @@ update_leader_after_modification = {
 		else = {
 			if = {
 				limit = {
+					owner = { has_country_flag = driven_cybernetics }
+				}
+				add_trait = {
+					trait = leader_trait_cyborg
+					show_message = no
+				}
+			}
+			else_if = {
+				limit = {
 					owner = {
 						OR = {
 							has_country_flag = synthetic_empire
@@ -7857,7 +7866,6 @@ give_nanite_techs = {
 create_demon_species_effect = {
 	if = {
 		limit = {
-			has_humanoids = yes
 			NOT = { species_portrait = humanoid_hp_01 }
 		}
 		create_species = {
