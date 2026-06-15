@@ -7409,9 +7409,9 @@ set_merchant_government_effect = {
 			civics = { civic = civic_corporate_dominion civic = random civic = random }
 		}
 	}
-	force_remove_civic = 6
-	force_remove_civic = 5
-	force_remove_civic = 4
+	force_remove_civic_by_index = 6
+	force_remove_civic_by_index = 5
+	force_remove_civic_by_index = 4
 	if = {
 		limit = { has_technology = tech_galactic_administration }
 		if = {
@@ -7419,12 +7419,12 @@ set_merchant_government_effect = {
 				exists = root
 				root = { has_civic = civic_crusader_spirit }
 			}
-			force_remove_civic = 3
+			force_remove_civic_by_index = 3
 			force_add_civic = civic_crusader_spirit
 		}
 	}
 	else = {
-		force_remove_civic = 3
+		force_remove_civic_by_index = 3
 		if = {
 			limit = {
 				exists = root
@@ -7437,7 +7437,7 @@ set_merchant_government_effect = {
 					}
 				}
 			}
-			force_remove_civic = 2
+			force_remove_civic_by_index = 2
 			force_add_civic = civic_crusader_spirit
 		}
 	}
