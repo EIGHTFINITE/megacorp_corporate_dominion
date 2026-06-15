@@ -764,195 +764,6 @@ make_leashed_messenger = {
 	}
 }
 
-spawn_vultaum_anomaly = {
-	random_system_within_border = {
-		limit = {
-			has_star_flag = precursor_1
-			any_system_planet = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-		}
-		random_system_planet = {
-			limit = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-			save_event_target_as = precursor_planet
-			set_planet_flag = precursor_world
-			enable_special_project = {
-				name = "VULTAUM_ARTIFACT_FOUND"
-				location = this
-				owner = root
-			}
-		}
-	}
-	set_country_flag = ongoing_precursor_artifact
-}
-
-spawn_yuht_anomaly = {
-	random_system_within_border = {
-		limit = {
-			has_star_flag = precursor_2
-			any_system_planet = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-		}
-		random_system_planet = {
-			limit = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-			save_event_target_as = precursor_planet
-			set_planet_flag = precursor_world
-			enable_special_project = {
-				name = "YUHT_ARTIFACT_FOUND"
-				location = this
-				owner = root
-			}
-		}
-	}
-	set_country_flag = ongoing_precursor_artifact
-}
-
-spawn_league_anomaly = {
-	random_system_within_border = {
-		limit = {
-			has_star_flag = precursor_3
-			any_system_planet = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-		}
-		random_system_planet = {
-			limit = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-			save_event_target_as = precursor_planet
-			set_planet_flag = precursor_world
-			enable_special_project = {
-				name = "LEAGUE_ARTIFACT_FOUND"
-				location = this
-				owner = root
-			}
-		}
-	}
-	set_country_flag = ongoing_precursor_artifact
-}
-
-spawn_irassian_anomaly = {
-	random_system_within_border = {
-		limit = {
-			has_star_flag = precursor_4
-			any_system_planet = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-		}
-		random_system_planet = {
-			limit = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-			save_event_target_as = precursor_planet
-			set_planet_flag = precursor_world
-			enable_special_project = {
-				name = "IRASSIAN_ARTIFACT_FOUND"
-				location = this
-				owner = root
-			}
-		}
-	}
-	set_country_flag = ongoing_precursor_artifact
-}
-
-spawn_cybrex_anomaly = {
-	random_system_within_border = {
-		limit = {
-			has_star_flag = precursor_5
-			any_system_planet = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-		}
-		random_system_planet = {
-			limit = {
-				uninhabitable_regular_planet = yes
-				NOT = { has_planet_flag = precursor_world }
-				has_owner = no
-				has_anomaly = no
-				is_surveyed = {
-					who = root
-					status = yes
-				}
-			}
-			save_event_target_as = precursor_planet
-			set_planet_flag = precursor_world
-			enable_special_project = {
-				name = "CYBREX_ARTIFACT_FOUND"
-				location = this
-				owner = root
-			}
-		}
-	}
-	set_country_flag = ongoing_precursor_artifact
-}
 
 collector_surrenders_artifact = {
 	if = {
@@ -1778,7 +1589,7 @@ remove_culture_shock = {
 
 nuke_pre_ftls_effect = {
 	destroy_colony = yes
-	set_planet_flag = pre_ftls_nuked_themselves
+	set_carrier_flag = pre_ftls_nuked_themselves
 	if = {
 		limit = {
 			is_artificial = no
@@ -1787,7 +1598,7 @@ nuke_pre_ftls_effect = {
 		reroll_planet = yes
 		remove_all_buildings = yes
 		add_deposit = d_metal_boneyard
-		set_planet_flag = nuked_planet_anomalies_disabled
+		set_carrier_flag = nuked_planet_anomalies_disabled
 	}
 }
 
@@ -1803,7 +1614,7 @@ nuke_pre_ftls_toxic_effect = {
 			limit = {
 				has_toxoids = yes
 			}
-			set_planet_flag = toxic_terraforming_candidate
+			set_carrier_flag = toxic_terraforming_candidate
 			add_modifier = {
 				modifier = toxic_terraforming_candidate
 			}
@@ -1862,7 +1673,7 @@ nuke_pre_ftls_stone_age_effect = {
 			add_pre_ftl_buildings = yes
 		}
 		add_deposit = d_metal_boneyard
-		set_planet_flag = nuked_planet_anomalies_disabled
+		set_carrier_flag = nuked_planet_anomalies_disabled
 	}
 }
 
@@ -1949,7 +1760,7 @@ country_syndaw545_in_days = {
 				has_trait = trait_mechanical
 			}
 		}
-		planet_event = { id = syndaw.545 days = $DAYS$ random = $DAYS$ }
+		carrier_event = { id = syndaw.545 days = $DAYS$ random = $DAYS$ }
 	}
 }
 
@@ -1993,17 +1804,17 @@ spawn_habitat_cracker_effect = {
 		}
 		random_system_planet = {
 			limit = {
-				has_planet_flag = habitat@event_target:target_habitat
+				has_carrier_flag = habitat@event_target:target_habitat
 			}
-			remove_planet_flag = habitat@event_target:target_habitat
-			set_planet_flag = habitat_build_site
+			remove_carrier_flag = habitat@event_target:target_habitat
+			set_carrier_flag = habitat_build_site
 		}
 		every_fleet_in_system = {
 			limit = {
 				is_ship_class = shipclass_habitat_station
 			}
 			orbit = {
-				remove_planet_flag = has_megastructure
+				remove_carrier_flag = has_megastructure
 			}
 			delete_fleet = this
 		}
@@ -2036,10 +1847,10 @@ spawn_lathe_cracker_effect = {
 		}
 		random_system_planet = {
 			limit = {
-				has_planet_flag = has_cosmogenesis_world
+				has_carrier_flag = has_cosmogenesis_world
 			}
-			remove_planet_flag = has_cosmogenesis_world
-			remove_planet_flag = has_megastructure
+			remove_carrier_flag = has_cosmogenesis_world
+			remove_carrier_flag = has_megastructure
 		}
 	}
 	remove_planet = yes
@@ -2096,7 +1907,7 @@ spawn_habitat_pacifier_effect = {
 				is_ship_class = shipclass_habitat_station
 			}
 			orbit = {
-				remove_planet_flag = has_megastructure
+				remove_carrier_flag = has_megastructure
 			}
 			delete_fleet = this
 		}
@@ -2127,10 +1938,10 @@ spawn_lathe_pacifier_effect = {
 		}
 		random_system_planet = {
 			limit = {
-				has_planet_flag = has_cosmogenesis_world
+				has_carrier_flag = has_cosmogenesis_world
 			}
-			remove_planet_flag = has_cosmogenesis_world
-			remove_planet_flag = has_megastructure
+			remove_carrier_flag = has_cosmogenesis_world
+			remove_carrier_flag = has_megastructure
 		}
 	}
 	remove_planet = yes
@@ -3895,6 +3706,47 @@ give_next_armor_tech_option_effect = {
 	}
 }
 
+give_next_shield_tech_option_effect = {
+	if = {
+		limit = { NOT = { has_technology = tech_shields_1 } }
+		give_tech_option_or_progress_effect = {
+			TECH = tech_shields_1
+		}
+	}
+	else_if = {
+		limit = { NOT = { has_technology = tech_shields_2 } }
+		give_tech_option_or_progress_effect = {
+			TECH = tech_shields_2
+		}
+	}
+	else_if = {
+		limit = { NOT = { has_technology = tech_shields_3 } }
+		give_tech_option_or_progress_effect = {
+			TECH = tech_shields_3
+		}
+	}
+	else_if = {
+		limit = { NOT = { has_technology = tech_shields_4 } }
+		give_tech_option_or_progress_effect = {
+			TECH = tech_shields_4
+		}
+	}
+	else_if = {
+		limit = { NOT = { has_technology = tech_shields_5 } }
+		give_tech_option_or_progress_effect = {
+			TECH = tech_shields_5
+		}
+	}
+	else = {
+		add_monthly_resource_mult = {
+			resource = physics_research
+			value = @tier3researchreward
+			min = @tier3researchmin
+			max = @tier3researchmax
+		}
+	}
+}
+
 give_next_habitability_tech_option_effect = {
 	if = {
 		limit = {
@@ -3974,7 +3826,6 @@ grant_dragon_armor_effect = {
 give_tech_option_or_progress_effect = {
 	if = {
 		limit = { NOT = { has_tech_option = $TECH$ } }
-		add_research_option = $TECH$
 		add_tech_progress = {
 			tech = $TECH$
 			progress = 0.25
@@ -4225,7 +4076,7 @@ setup_baol_colony_1 = {
 			is_planet_class = pc_barren
 			has_anomaly = no
 			NOT = { exists = archaeological_site }
-			NOT = { has_planet_flag = suppress_archaeological_sites }
+			NOT = { has_carrier_flag = suppress_archaeological_sites }
 		}
 		save_event_target_as = baol_colony_1
 	}
@@ -4239,7 +4090,7 @@ setup_baol_colony_2 = {
 			is_planet_class = pc_asteroid
 			has_anomaly = no
 			NOT = { exists = archaeological_site }
-			NOT = { has_planet_flag = suppress_archaeological_sites }
+			NOT = { has_carrier_flag = suppress_archaeological_sites }
 		}
 		save_event_target_as = baol_colony_2
 	}
@@ -4255,8 +4106,8 @@ setup_baol_colony_3 = {
 			has_anomaly = no
 			NOR = {
 				exists = archaeological_site
-				has_planet_flag = colony_event
-				has_planet_flag = suppress_archaeological_sites
+				has_carrier_flag = colony_event
+				has_carrier_flag = suppress_archaeological_sites
 			}
 			OR = {
 				is_colony = no
@@ -4277,8 +4128,8 @@ setup_baol_colony_3_fallback = {
 			has_anomaly = no
 			NOR = {
 				exists = archaeological_site
-				has_planet_flag = colony_event
-				has_planet_flag = suppress_archaeological_sites
+				has_carrier_flag = colony_event
+				has_carrier_flag = suppress_archaeological_sites
 			}
 			OR = {
 				is_colony = no
@@ -4429,6 +4280,153 @@ add_extra_hyperlane_to_spawned_system_effect = {
 	}
 }
 
+add_extra_hyperlane_to_this_system_effect = {
+	if = {
+		limit = {
+			any_system = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 10
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+		}
+		random_system = {
+			limit = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 10
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+			add_hyperlane = {
+				from = this
+				to = prev
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_system = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 15
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+		}
+		random_system = {
+			limit = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 15
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+			add_hyperlane = {
+				from = this
+				to = prev
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_system = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 25
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+		}
+		random_system = {
+			limit = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 25
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+			add_hyperlane = {
+				from = this
+				to = prev
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_system = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 40
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+		}
+		random_system = {
+			limit = {
+				distance = {
+					source = prev
+					type = euclidean
+					min_distance >= 1
+					max_distance <= 40
+				}
+				NOR = {
+					has_hyperlane_to = prev
+					has_star_flag = sealed_system
+					is_bottleneck_system = yes
+				}
+			}
+			add_hyperlane = {
+				from = this
+				to = prev
+			}
+		}
+	}
+}
+
 add_imp_concession_ports_0 = {
 	remove_modifier = imp_concession_ports_1
 	remove_modifier = imp_concession_ports_2
@@ -4496,18 +4494,18 @@ destroy_star_system = {
 	every_system_planet = {
 		limit = {
 			is_planet_class = pc_ai
-			NOT = { has_planet_flag = machine_lair }
+			NOT = { has_carrier_flag = machine_lair }
 		}
 		destroy_machine_world = yes
 	}
 	random_system_planet = {
 		limit = {
 			is_planet_class = pc_ai
-			has_planet_flag = machine_lair
+			has_carrier_flag = machine_lair
 		}
 		from.owner = { save_event_target_as = final_machine_world_destroyer }
 		stop_crisis_sound = yes
-		planet_event = { id = crisis.2046 }
+		carrier_event = { id = crisis.2046 }
 	}
 	every_system_planet = {
 		limit = {
@@ -4615,7 +4613,7 @@ destroy_star_system = {
 						}
 					}
 				}
-				# except biggest monsters
+				# except biggest monsters or arkships
 				any_owned_ship = {
 					OR = {
 						is_ship_size = behemoth_04
@@ -4628,6 +4626,24 @@ destroy_star_system = {
 			limit = {
 				exists = event_target:crisis_country #i.e. not final destruction of all matter
 				is_mobile = yes
+			}
+			set_mia = mia_return_home
+		}
+		else_if = { # To avoid Nomads game overing.
+			limit = {
+				is_arkship_fleet = yes
+			}
+			every_owned_ship = {
+				colony? = {
+					add_planet_devastation = 90
+					every_owned_pop_group = {
+						kill_pop_group = {
+							pop_group = this
+							percentage = 0.5
+						}
+					}
+				}
+				reduce_hp_percent = 0.9
 			}
 			set_mia = mia_return_home
 		}
@@ -4747,28 +4763,28 @@ give_tech_no_error_effect = {
 destroy_machine_world = {
 	log = "machine handling fired"
 	if = {
-		limit = { has_planet_flag = machine_world_1 }
+		limit = { has_carrier_flag = machine_world_1 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.1
 		}
 	}
 	else_if = {
-		limit = { has_planet_flag = machine_world_2 }
+		limit = { has_carrier_flag = machine_world_2 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.2
 		}
 	}
 	else_if = {
-		limit = { has_planet_flag = machine_world_3 }
+		limit = { has_carrier_flag = machine_world_3 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.3
 		}
 	}
 	else_if = {
-		limit = { has_planet_flag = machine_world_4 }
+		limit = { has_carrier_flag = machine_world_4 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.4
@@ -4777,11 +4793,11 @@ destroy_machine_world = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_planet_flag = destroyed_by_colossus }
-				has_planet_flag = planet_godrayed
-				has_planet_flag = planet_drenched
-				has_planet_flag = planet_devolved
-				has_planet_flag = planet_burned
+				NOT = { has_carrier_flag = destroyed_by_colossus }
+				has_carrier_flag = planet_godrayed
+				has_carrier_flag = planet_drenched
+				has_carrier_flag = planet_devolved
+				has_carrier_flag = planet_burned
 			}
 		}
 		destroy_colony = yes
@@ -5456,7 +5472,7 @@ create_origin_dragon_deposit_effect = {
 	}
 
 
-	planet_event = { id = aquatics.170 days = 5400 random = 360 } #about 15 years
+	carrier_event = { id = aquatics.170 days = 5400 random = 360 } #about 15 years
 }
 
 create_origin_dragon_fleet_effect = {
@@ -5547,7 +5563,7 @@ ice_mining_depletion_effect = {
 							is_planet_class = pc_ice_asteroid
 							is_planet_class = pc_frozen
 						}
-						NOT = { has_planet_flag = mercenary_enclave_planet }
+						NOT = { has_carrier_flag = mercenary_enclave_planet }
 					}
 					if = {
 						limit = {
@@ -5557,7 +5573,7 @@ ice_mining_depletion_effect = {
 							limit = { exists = orbital_station }
 							orbital_station = { delete_fleet = this }
 						}
-						set_planet_flag = being_killed #probably only removed in the next tick
+						set_carrier_flag = being_killed #probably only removed in the next tick
 						remove_planet = yes
 					}
 					else_if = {
@@ -5595,11 +5611,11 @@ ice_mining_depletion_effect = {
 									is_planet_class = pc_ice_asteroid
 									is_planet_class = pc_frozen
 								}
-								NOT = { has_planet_flag = being_killed }
+								NOT = { has_carrier_flag = being_killed }
 							}
 						}
 					}
-					root = { set_planet_flag = temp_ice_mine_exhausted_flag } #deliberately root and not prevprevprev (because that is not always a planet)
+					root = { set_carrier_flag = temp_ice_mine_exhausted_flag } #deliberately root and not prevprevprev (because that is not always a planet)
 				}
 			}
 		}
@@ -5700,7 +5716,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_study_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 2480 }
+						carrier_event = { id = situation.1085 days = 2480 }
 					}
 				}
 			}
@@ -5709,7 +5725,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_study_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 4960 }
+						carrier_event = { id = situation.1085 days = 4960 }
 					}
 				}
 			}
@@ -5718,7 +5734,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_deify_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 2480 }
+						carrier_event = { id = situation.1085 days = 2480 }
 					}
 				}
 			}
@@ -5729,7 +5745,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_study_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 2480 }
+						carrier_event = { id = situation.1085 days = 2480 }
 					}
 				}
 			}
@@ -5738,7 +5754,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_study_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 4960 }
+						carrier_event = { id = situation.1085 days = 4960 }
 					}
 				}
 			}
@@ -5747,7 +5763,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_deify_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 2480 }
+						carrier_event = { id = situation.1085 days = 2480 }
 					}
 				}
 			}
@@ -5758,7 +5774,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_study_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 2480 }
+						carrier_event = { id = situation.1085 days = 2480 }
 					}
 				}
 			}
@@ -5767,7 +5783,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_study_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 4960 }
+						carrier_event = { id = situation.1085 days = 4960 }
 					}
 				}
 			}
@@ -5776,7 +5792,7 @@ set_celebration_modifier = {
 				target = {
 					add_modifier = { modifier = horror_deify_trophy }
 					hidden_effect = {
-						planet_event = { id = situation.1085 days = 2480 }
+						carrier_event = { id = situation.1085 days = 2480 }
 					}
 				}
 			}
@@ -5807,7 +5823,7 @@ generate_parade_city = {
 		limit = {
 			any_owned_planet = {
 				NOR = {
-					has_planet_flag = recent_parade
+					has_carrier_flag = recent_parade
 					has_modifier = slave_colony
 					is_planet_class = pc_cosmogenesis_world
 				}
@@ -5822,7 +5838,7 @@ generate_parade_city = {
 		ordered_owned_planet = {
 			limit = {
 				NOR = {
-					has_planet_flag = recent_parade
+					has_carrier_flag = recent_parade
 					has_modifier = slave_colony
 					is_planet_class = pc_cosmogenesis_world
 				}
@@ -5836,7 +5852,7 @@ generate_parade_city = {
 			position = 0
 			order_by = trigger:pop_amount
 			save_event_target_as = parade_city
-			set_timed_planet_flag = { flag = recent_parade years = 40 }
+			set_timed_carrier_flag = { flag = recent_parade years = 40 }
 		}
 	}
 	else = {
@@ -5844,8 +5860,8 @@ generate_parade_city = {
 			position = 0
 			order_by = trigger:pop_amount
 			save_event_target_as = parade_city
-			remove_planet_flag = recent_parade
-			set_timed_planet_flag = { flag = recent_parade years = 40 }
+			remove_carrier_flag = recent_parade
+			set_timed_carrier_flag = { flag = recent_parade years = 40 }
 		}
 	}
 }
@@ -6966,7 +6982,7 @@ set_ruined_megastructure = {
 		solar_system = {
 			random_system_planet = {
 				limit = {
-					has_planet_flag = has_arc_furnace
+					has_carrier_flag = has_arc_furnace
 				}
 				save_event_target_as = arc_furnace_world
 			}
@@ -7016,7 +7032,7 @@ destroy_grand_archive = {
 		}
 		if = {
 			limit = { exists = planet }
-			planet = { remove_planet_flag = has_megastructure }
+			planet = { remove_carrier_flag = has_megastructure }
 		}
 		remove_megastructure = this
 	}
@@ -7046,7 +7062,7 @@ open_shroud_rift_effect = {
 	hidden_effect = {
 		if = {
 			limit = {
-				NOT = { has_planet_flag = origin_shroud_forged_capital_flag }
+				NOT = { has_carrier_flag = origin_shroud_forged_capital_flag }
 			}
 			hidden_effect = {
 				create_ambient_object = {
@@ -7070,7 +7086,7 @@ close_shroud_rift_effect = {
 	hidden_effect = {
 		if = {
 			limit = {
-				NOT = { has_planet_flag = origin_shroud_forged_capital_flag }
+				NOT = { has_carrier_flag = origin_shroud_forged_capital_flag }
 			}
 			solar_system = {
 				every_system_ambient_object = {
@@ -7146,7 +7162,7 @@ set_origin_effect = {
 	# Calamitous Birth
 	else_if = {
 		limit = {
-			from = { has_origin = origin_lithoid }
+			$SOURCE_COUNTRY$ = { has_origin = origin_lithoid }
 			has_trait = trait_lithoid
 		}
 		set_origin = origin_lithoid
@@ -7184,7 +7200,7 @@ set_origin_effect = {
 	else_if = {
 		limit = {
 			is_machine_empire = no
-			from = {
+			$SOURCE_COUNTRY$ = {
 				is_machine_empire = yes
 			}
 			has_trait = trait_machine_unit
@@ -7321,14 +7337,14 @@ impose_ideology_effect = {
 		limit = {
 			root = { has_civic = civic_shared_burden }
 		}
-		force_remove_civic = 1
+		force_remove_civic_by_index = 1
 		force_add_civic = civic_shared_burden
 	}
 	if = {
 		limit = {
 			root = { has_civic = civic_crusader_spirit }
 		}
-		force_remove_civic = 1
+		force_remove_civic_by_index = 1
 		force_add_civic = civic_crusader_spirit
 	}
 	add_modifier = { modifier = recently_liberated days = 7200 }
@@ -7355,7 +7371,7 @@ detox_hangover = {
 zroni_legacy_planet_check_effect = {
 	if = {
 		limit = {
-			has_planet_flag = $FLAG$
+			has_carrier_flag = $FLAG$
 		}
 		if = {
 			limit = {
@@ -7547,9 +7563,9 @@ zroni_digsite_spawn_effect = {
 				has_anomaly = no
 				NOR = {
 					exists = archaeological_site
-					has_planet_flag = hatchling_egg
-					has_planet_flag = suppress_archaeological_sites #for modders
-					has_planet_flag = colony_event
+					has_carrier_flag = hatchling_egg
+					has_carrier_flag = suppress_archaeological_sites #for modders
+					has_carrier_flag = colony_event
 				}
 			}
 			root.owner = {
@@ -7572,9 +7588,9 @@ zroni_digsite_spawn_effect = {
 				}
 				NOR = {
 					exists = archaeological_site
-					has_planet_flag = hatchling_egg
-					has_planet_flag = suppress_archaeological_sites
-					has_planet_flag = colony_event
+					has_carrier_flag = hatchling_egg
+					has_carrier_flag = suppress_archaeological_sites
+					has_carrier_flag = colony_event
 				}
 			}
 			create_archaeological_site = $DIGSITE$
@@ -7612,8 +7628,8 @@ zroni_digsite_spawn_effect = {
 					has_anomaly = no
 					NOR = {
 						exists = archaeological_site
-						has_planet_flag = hatchling_egg
-						has_planet_flag = suppress_archaeological_sites
+						has_carrier_flag = hatchling_egg
+						has_carrier_flag = suppress_archaeological_sites
 					}
 				}
 			}
@@ -7628,8 +7644,8 @@ zroni_digsite_spawn_effect = {
 					has_anomaly = no
 					NOR = {
 						exists = archaeological_site
-						has_planet_flag = hatchling_egg
-						has_planet_flag = suppress_archaeological_sites
+						has_carrier_flag = hatchling_egg
+						has_carrier_flag = suppress_archaeological_sites
 					}
 				}
 				create_archaeological_site = $DIGSITE$
@@ -7778,11 +7794,11 @@ shroud_invasion_effect = {
 				is_capital = no
 				has_deposit = d_shroud_rift_deposit
 				is_controlled_by = root
-				NOT = { has_planet_flag = zroni_legacy_flag }
+				NOT = { has_carrier_flag = zroni_legacy_flag }
 			}
 			random = {
 				chance = 10
-				planet_event = {
+				carrier_event = {
 					id = shroud_forged.321
 					days = 5
 					random = 25
@@ -7798,10 +7814,10 @@ shroud_invasion_effect = {
 	}
 	every_owned_planet = {
 		limit = {
-			has_planet_flag = zroni_legacy_flag
+			has_carrier_flag = zroni_legacy_flag
 			is_controlled_by = root
 		}
-		planet_event = {
+		carrier_event = {
 			id = shroud_forged.321
 			days = 5
 			random = 25
@@ -7998,12 +8014,12 @@ remove_galactic_market_modifiers = {
 		}
 		# remove boosted flags
 		if = {
-			limit = { has_planet_flag = boosted_once }
-			remove_planet_flag = boosted_once
+			limit = { has_carrier_flag = boosted_once }
+			remove_carrier_flag = boosted_once
 		}
 		if = {
-			limit = { has_planet_flag = boosted_twice }
-			remove_planet_flag = boosted_twice
+			limit = { has_carrier_flag = boosted_twice }
+			remove_carrier_flag = boosted_twice
 		}
 		# remove modifiers
 		if = {
@@ -8434,7 +8450,7 @@ consume_world = {
 			add_planet_devastation = 10
 		}
 	}
-	set_timed_planet_flag = {
+	set_timed_carrier_flag = {
 		days = 360
 		flag = recently_eaten_planet
 	}
@@ -8621,7 +8637,7 @@ slushify_world = {
 			add_planet_devastation = 5
 		}
 	}
-	set_timed_planet_flag = {
+	set_timed_carrier_flag = {
 		days = 360
 		flag = recently_eaten_planet
 	}
