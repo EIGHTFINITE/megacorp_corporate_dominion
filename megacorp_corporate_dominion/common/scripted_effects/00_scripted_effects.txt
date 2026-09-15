@@ -1598,7 +1598,7 @@ nuke_pre_ftls_effect = {
 		reroll_planet = yes
 		remove_all_buildings = yes
 		add_deposit = d_metal_boneyard
-		set_carrier_flag = nuked_planet_anomalies_disabled
+		set_planet_flag = nuked_planet_anomalies_disabled
 	}
 }
 
@@ -1673,7 +1673,7 @@ nuke_pre_ftls_stone_age_effect = {
 			add_pre_ftl_buildings = yes
 		}
 		add_deposit = d_metal_boneyard
-		set_carrier_flag = nuked_planet_anomalies_disabled
+		set_planet_flag = nuked_planet_anomalies_disabled
 	}
 }
 
@@ -1681,8 +1681,14 @@ nuke_pre_ftls_stone_age_effect = {
 generate_cyborg_treats = {
 	if = {
 		limit = {
-			has_tradition = tr_cybernetics_assimilator_adopt
-			has_government = gov_memory_aggregator
+			has_assimilator_cybernetics_adopt = yes
+			OR = {
+				has_government = gov_memory_aggregator
+				AND = {
+					has_origin = origin_nomadic_purger
+					overlord? = { has_government = gov_memory_aggregator }
+				}
+			}
 		}
 		add_monthly_resource_mult = {
 			resource = unity
@@ -1705,9 +1711,13 @@ generate_cyborg_treats = {
 	}
 	else_if = {
 		limit = {
-			has_tradition = tr_cybernetics_assimilator_adopt
-			NOT = {
+			has_assimilator_cybernetics_adopt = yes
+			NOR = {
 				has_government = gov_memory_aggregator
+				AND = {
+					has_origin = origin_nomadic_purger
+					overlord? = { has_government = gov_memory_aggregator }
+				}
 			}
 		}
 		add_monthly_resource_mult = {
@@ -1804,17 +1814,17 @@ spawn_habitat_cracker_effect = {
 		}
 		random_system_planet = {
 			limit = {
-				has_carrier_flag = habitat@event_target:target_habitat
+				has_planet_flag = habitat@event_target:target_habitat
 			}
-			remove_carrier_flag = habitat@event_target:target_habitat
-			set_carrier_flag = habitat_build_site
+			remove_planet_flag = habitat@event_target:target_habitat
+			set_planet_flag = habitat_build_site
 		}
 		every_fleet_in_system = {
 			limit = {
 				is_ship_class = shipclass_habitat_station
 			}
 			orbit = {
-				remove_carrier_flag = has_megastructure
+				remove_planet_flag = has_megastructure
 			}
 			delete_fleet = this
 		}
@@ -1847,10 +1857,10 @@ spawn_lathe_cracker_effect = {
 		}
 		random_system_planet = {
 			limit = {
-				has_carrier_flag = has_cosmogenesis_world
+				has_planet_flag = has_cosmogenesis_world
 			}
-			remove_carrier_flag = has_cosmogenesis_world
-			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_cosmogenesis_world
+			remove_planet_flag = has_megastructure
 		}
 	}
 	remove_planet = yes
@@ -1907,7 +1917,7 @@ spawn_habitat_pacifier_effect = {
 				is_ship_class = shipclass_habitat_station
 			}
 			orbit = {
-				remove_carrier_flag = has_megastructure
+				remove_planet_flag = has_megastructure
 			}
 			delete_fleet = this
 		}
@@ -1938,10 +1948,10 @@ spawn_lathe_pacifier_effect = {
 		}
 		random_system_planet = {
 			limit = {
-				has_carrier_flag = has_cosmogenesis_world
+				has_planet_flag = has_cosmogenesis_world
 			}
-			remove_carrier_flag = has_cosmogenesis_world
-			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_cosmogenesis_world
+			remove_planet_flag = has_megastructure
 		}
 	}
 	remove_planet = yes
@@ -2223,9 +2233,23 @@ update_leader_after_modification = {
 					}
 					trait_cybernetic = {
 						prev = {
-							add_trait = {
-								trait = leader_trait_cyborg
-								show_message = no
+							if = {
+								limit = {
+									is_spiritualist = yes
+									owner = {
+										has_policy_flag = cyberization_standards_limited
+									}
+								}
+								add_trait = {
+									trait = leader_trait_limited_cyborg
+									show_message = no
+								}
+							}
+							else = {
+								add_trait = {
+									trait = leader_trait_cyborg
+									show_message = no
+								}
 							}
 							if = {
 								limit = {
@@ -2237,14 +2261,6 @@ update_leader_after_modification = {
 									trait = leader_trait_firewalled
 									show_message = no
 								}
-							}
-						}
-					}
-					trait_limited_cybernetic = {
-						prev = {
-							add_trait = {
-								trait = leader_trait_limited_cyborg
-								show_message = no
 							}
 						}
 					}
@@ -3448,6 +3464,34 @@ liquidate_clues = {
 	}
 }
 
+# saves the owned (regular) or waystation-co-located (nomad) L-Gate as candidate_gateway, then enables the project
+enable_lgate_project_on_owned_gateway = {
+	if = {
+		limit = { any_owned_megastructure = { is_megastructure_type = lgate_base } }	# regular empires
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = lgate_base }
+			save_event_target_as = candidate_gateway
+		}
+	}
+	else = {																			# nomads
+		random_owned_nonprimary_starbase = {
+			limit = {
+				is_waystation_starbase = yes
+				solar_system = {
+					any_system_megastructure = { is_megastructure_type = lgate_base }
+				}
+			}
+			solar_system = {
+				random_system_megastructure = {
+					limit = { is_megastructure_type = lgate_base }
+					save_event_target_as = candidate_gateway
+				}
+			}
+		}
+	}
+	country_event = { id = distar.10905 } # enable project
+}
+
 create_global_robot_parent_species = {
 	create_species = {
 		name = "NAME_Robot"
@@ -4012,15 +4056,6 @@ apply_post_assimilation_effects = {
 		}
 	}
 
-	if = { # Handle assimilation of spiritualists into cybernetic empires
-		limit = {
-			root.owner = { has_policy_flag = cyberization_standards_limited }
-			is_spiritualist = yes
-			has_trait = trait_cybernetic
-		}
-		convert_to_limited_cybernetic_effect = yes
-	}
-
 	if = { # Handle Purity Authority effects
 		limit = {
 			root.owner = {
@@ -4040,32 +4075,27 @@ apply_post_assimilation_effects = {
 	}
 }
 
-convert_to_limited_cybernetic_effect = {
-	modify_species = {
-		species = this
-		remove_trait = trait_cybernetic
-		add_trait = trait_limited_cybernetic
-		add_traits_at_start_of_list = yes
-		change_scoped_species = no
-		effect = {
-			save_global_event_target_as = limited_cybernetic_species
+# Credits Become-the-Crisis "Purge Pops" $COUNT$ times. A purge vassal is not the Crisis, so credit goes to its Overlord.
+credit_assimilation_purge_crisis = {
+	if = {
+		limit = { has_ascension_perk = ap_become_the_crisis }
+		while = {
+			count = $COUNT$
+			complete_crisis_objective = crisobj_purge_pops
 		}
 	}
-	change_species = event_target:limited_cybernetic_species
-}
-
-convert_from_limited_cybernetic_effect = {
-	modify_species = {
-		species = this
-		remove_trait = trait_limited_cybernetic
-		add_trait = trait_cybernetic
-		add_traits_at_start_of_list = yes
-		change_scoped_species = no
-		effect = {
-			save_global_event_target_as = cybernetic_species
+	else_if = {
+		limit = {
+			has_origin = origin_nomadic_purger
+			overlord? = { has_ascension_perk = ap_become_the_crisis }
+		}
+		overlord = {
+			while = {
+				count = $COUNT$
+				complete_crisis_objective = crisobj_purge_pops
+			}
 		}
 	}
-	change_species = event_target:cybernetic_species
 }
 
 setup_baol_colony_1 = {
@@ -4076,7 +4106,7 @@ setup_baol_colony_1 = {
 			is_planet_class = pc_barren
 			has_anomaly = no
 			NOT = { exists = archaeological_site }
-			NOT = { has_carrier_flag = suppress_archaeological_sites }
+			NOT = { has_planet_flag = suppress_archaeological_sites }
 		}
 		save_event_target_as = baol_colony_1
 	}
@@ -4090,7 +4120,7 @@ setup_baol_colony_2 = {
 			is_planet_class = pc_asteroid
 			has_anomaly = no
 			NOT = { exists = archaeological_site }
-			NOT = { has_carrier_flag = suppress_archaeological_sites }
+			NOT = { has_planet_flag = suppress_archaeological_sites }
 		}
 		save_event_target_as = baol_colony_2
 	}
@@ -4107,7 +4137,7 @@ setup_baol_colony_3 = {
 			NOR = {
 				exists = archaeological_site
 				has_carrier_flag = colony_event
-				has_carrier_flag = suppress_archaeological_sites
+				has_planet_flag = suppress_archaeological_sites
 			}
 			OR = {
 				is_colony = no
@@ -4129,7 +4159,7 @@ setup_baol_colony_3_fallback = {
 			NOR = {
 				exists = archaeological_site
 				has_carrier_flag = colony_event
-				has_carrier_flag = suppress_archaeological_sites
+				has_planet_flag = suppress_archaeological_sites
 			}
 			OR = {
 				is_colony = no
@@ -4462,6 +4492,10 @@ destroy_star_system = {
 	else = {
 		fire_on_action = { on_action = on_destroy_star_system }
 	}
+	# Must run before the bodies below are removed.
+	every_system_planet = {
+		clear_consecration_effect = yes
+	}
 	set_star_flag = star_cracked
 	set_star_class = sc_black_hole
 	every_system_ambient_object = {
@@ -4494,14 +4528,14 @@ destroy_star_system = {
 	every_system_planet = {
 		limit = {
 			is_planet_class = pc_ai
-			NOT = { has_carrier_flag = machine_lair }
+			NOT = { has_planet_flag = machine_lair }
 		}
 		destroy_machine_world = yes
 	}
 	random_system_planet = {
 		limit = {
 			is_planet_class = pc_ai
-			has_carrier_flag = machine_lair
+			has_planet_flag = machine_lair
 		}
 		from.owner = { save_event_target_as = final_machine_world_destroyer }
 		stop_crisis_sound = yes
@@ -4618,6 +4652,13 @@ destroy_star_system = {
 					OR = {
 						is_ship_size = behemoth_04
 						is_ship_size = voidspawn_boss
+					}
+				}
+				#except fallen empires
+				owner? = {
+					OR = {
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
 					}
 				}
 			}
@@ -4763,28 +4804,28 @@ give_tech_no_error_effect = {
 destroy_machine_world = {
 	log = "machine handling fired"
 	if = {
-		limit = { has_carrier_flag = machine_world_1 }
+		limit = { has_planet_flag = machine_world_1 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.1
 		}
 	}
 	else_if = {
-		limit = { has_carrier_flag = machine_world_2 }
+		limit = { has_planet_flag = machine_world_2 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.2
 		}
 	}
 	else_if = {
-		limit = { has_carrier_flag = machine_world_3 }
+		limit = { has_planet_flag = machine_world_3 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.3
 		}
 	}
 	else_if = {
-		limit = { has_carrier_flag = machine_world_4 }
+		limit = { has_planet_flag = machine_world_4 }
 		every_playable_country = {
 			limit = { has_event_chain = "ai_crisis_chain" }
 			remove_point_of_interest = ai_crisis_poi.4
@@ -5563,7 +5604,7 @@ ice_mining_depletion_effect = {
 							is_planet_class = pc_ice_asteroid
 							is_planet_class = pc_frozen
 						}
-						NOT = { has_carrier_flag = mercenary_enclave_planet }
+						NOT = { has_planet_flag = mercenary_enclave_planet }
 					}
 					if = {
 						limit = {
@@ -5573,7 +5614,7 @@ ice_mining_depletion_effect = {
 							limit = { exists = orbital_station }
 							orbital_station = { delete_fleet = this }
 						}
-						set_carrier_flag = being_killed #probably only removed in the next tick
+						set_planet_flag = being_killed #probably only removed in the next tick
 						remove_planet = yes
 					}
 					else_if = {
@@ -5611,7 +5652,7 @@ ice_mining_depletion_effect = {
 									is_planet_class = pc_ice_asteroid
 									is_planet_class = pc_frozen
 								}
-								NOT = { has_carrier_flag = being_killed }
+								NOT = { has_planet_flag = being_killed }
 							}
 						}
 					}
@@ -6680,8 +6721,8 @@ central_crystal_country_spawn_effect = {
 
 		set_graphical_culture = mammalian_01
 
-		set_male_ruler_title = "Commander"
-		set_female_ruler_title = "Commander"
+		set_male_ruler_title = "RT_CENTRAL_CRYSTAL_COMMANDER"
+		set_female_ruler_title = "RT_CENTRAL_CRYSTAL_COMMANDER"
 
 		create_fleet = {
 			name = "NAME_Central_Crystal_Enclave"
@@ -6716,6 +6757,11 @@ create_zombie_pop_group = {
 			NOT = { has_trait = trait_hive_mind }
 			NOT = { has_trait = trait_zombie }
 			is_robot_pop_group = no
+			# Forever Cruise: only zombify crew species, not passengers
+			OR = {
+				owner = { NOT = { has_origin = origin_forever_cruise } }
+				has_citizenship_type = { country = owner type = citizenship_cruise_crew }
+			}
 		}
 		save_event_target_as = old_pop_group
 		species = {
@@ -6982,7 +7028,7 @@ set_ruined_megastructure = {
 		solar_system = {
 			random_system_planet = {
 				limit = {
-					has_carrier_flag = has_arc_furnace
+					has_planet_flag = has_arc_furnace
 				}
 				save_event_target_as = arc_furnace_world
 			}
@@ -7032,7 +7078,7 @@ destroy_grand_archive = {
 		}
 		if = {
 			limit = { exists = planet }
-			planet = { remove_carrier_flag = has_megastructure }
+			planet = { remove_planet_flag = has_megastructure }
 		}
 		remove_megastructure = this
 	}
@@ -7042,13 +7088,39 @@ clean_up_voidspawn_situation = {
 	remove_modifier = voidspawn_contaminant
 }
 
+shroud_world_zro_deposit_effect = {
+	random_list = {
+		1 = {
+			add_deposit = d_zro_deposit_1
+		}
+		4 = {
+			add_deposit = d_zro_deposit_2
+		}
+		1 = {
+			add_deposit = d_zro_deposit_3
+		}
+	}
+	while = {
+		count = value:get_shroud_forged_pop_thousands
+		add_deposit = d_zro_deposit_1
+	}
+	random = {
+		chance = value:get_shroud_forged_pop_zro_chance
+		add_deposit = d_zro_deposit_1
+	}
+}
+
 decision_shroud_region_effect = {
-	custom_tooltip = decision_open_shroud_rift_effect_tt
 	hidden_effect = {
 		random_deposit = {
 			limit = {
 				is_blocker = no
-				NOT = { is_deposit_type = d_shroud_rift_deposit }
+				NOR = {
+					is_deposit_type = d_shroud_rift_deposit
+					has_deposit_category = deposit_cat_rare
+					has_deposit_category = deposit_cat_rare_resource
+					has_deposit_category = deposit_cat_rare_blocker
+				}
 			}
 			remove_deposit = yes
 		}
@@ -7062,21 +7134,21 @@ open_shroud_rift_effect = {
 	hidden_effect = {
 		if = {
 			limit = {
-				NOT = { has_carrier_flag = origin_shroud_forged_capital_flag }
+				NOT = {
+					has_carrier_flag = origin_shroud_forged_capital_flag
+				}
 			}
-			hidden_effect = {
-				create_ambient_object = {
-					type = shroud_rift_object
-					scale = 0.2
-					entity_offset_height = -17
-					location = this
+			create_ambient_object = {
+				type = shroud_rift_object
+				scale = 0.2
+				entity_offset_height = -17
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
 				}
-				last_created_ambient_object = {
-					set_location = {
-						target = prev
-					}
-					set_ambient_object_flag = shroud_rift@root
-				}
+				set_ambient_object_flag = shroud_rift@root
 			}
 		}
 	}
@@ -7086,7 +7158,9 @@ close_shroud_rift_effect = {
 	hidden_effect = {
 		if = {
 			limit = {
-				NOT = { has_carrier_flag = origin_shroud_forged_capital_flag }
+				NOT = {
+					has_carrier_flag = origin_shroud_forged_capital_flag
+				}
 			}
 			solar_system = {
 				every_system_ambient_object = {
@@ -7546,7 +7620,6 @@ zroni_digsite_spawn_effect = {
 			NOR = {
 				is_same_value = root.solar_system
 				has_star_flag = first_zroni_site@root.owner
-				is_same_value = root.owner.capital_scope.solar_system
 				has_star_flag = hostile_system
 			}
 			is_fe_cluster = no
@@ -7563,8 +7636,8 @@ zroni_digsite_spawn_effect = {
 				has_anomaly = no
 				NOR = {
 					exists = archaeological_site
-					has_carrier_flag = hatchling_egg
-					has_carrier_flag = suppress_archaeological_sites #for modders
+					has_planet_flag = hatchling_egg
+					has_planet_flag = suppress_archaeological_sites #for modders
 					has_carrier_flag = colony_event
 				}
 			}
@@ -7588,8 +7661,8 @@ zroni_digsite_spawn_effect = {
 				}
 				NOR = {
 					exists = archaeological_site
-					has_carrier_flag = hatchling_egg
-					has_carrier_flag = suppress_archaeological_sites
+					has_planet_flag = hatchling_egg
+					has_planet_flag = suppress_archaeological_sites
 					has_carrier_flag = colony_event
 				}
 			}
@@ -7612,7 +7685,6 @@ zroni_digsite_spawn_effect = {
 				NOR = {
 					is_same_value = root.solar_system
 					has_star_flag = first_zroni_site@root.owner
-					is_same_value = root.owner.capital_scope.solar_system
 					has_star_flag = hostile_system
 				}
 				is_fe_cluster = no
@@ -7628,8 +7700,8 @@ zroni_digsite_spawn_effect = {
 					has_anomaly = no
 					NOR = {
 						exists = archaeological_site
-						has_carrier_flag = hatchling_egg
-						has_carrier_flag = suppress_archaeological_sites
+						has_planet_flag = hatchling_egg
+						has_planet_flag = suppress_archaeological_sites
 					}
 				}
 			}
@@ -7644,8 +7716,8 @@ zroni_digsite_spawn_effect = {
 					has_anomaly = no
 					NOR = {
 						exists = archaeological_site
-						has_carrier_flag = hatchling_egg
-						has_carrier_flag = suppress_archaeological_sites
+						has_planet_flag = hatchling_egg
+						has_planet_flag = suppress_archaeological_sites
 					}
 				}
 				create_archaeological_site = $DIGSITE$
@@ -8450,7 +8522,7 @@ consume_world = {
 			add_planet_devastation = 10
 		}
 	}
-	set_timed_carrier_flag = {
+	set_timed_planet_flag = {
 		days = 360
 		flag = recently_eaten_planet
 	}
@@ -8637,7 +8709,7 @@ slushify_world = {
 			add_planet_devastation = 5
 		}
 	}
-	set_timed_carrier_flag = {
+	set_timed_planet_flag = {
 		days = 360
 		flag = recently_eaten_planet
 	}
@@ -8772,10 +8844,11 @@ sacrifice_single_pop = {
 	}
 }
 
-# Transfers an AMOUNT or PERCENTAGE of pops from the calling pop group into the provided ETHOS.
+# Forces an AMOUNT or PERCENTAGE of pops from the calling pop group into the provided ETHOS.
+# Randomises the amounts by RANDOM.
 # If POP_GROUP is set, it's used as the source pop group, otherwise a random group is selected
 # If POP_GROUP_FLAG is set, it's set on the target pop group
-pop_group_transfer_ethic = {
+pop_group_add_ethic_effect = {
 	[[POP_GROUP]
 		$POP_GROUP$ = { save_event_target_as = source_pop_group }
 	]
@@ -8783,41 +8856,69 @@ pop_group_transfer_ethic = {
 		weighted_random_owned_pop_group = {
 			limit = {
 				has_any_ethic = yes
-				NOR = {
-					has_ethic = $ETHOS$
-					pop_group_has_trait = trait_hive_mind
-					pop_group_has_trait = trait_machine_unit
-					pop_group_has_trait = trait_mechanical
-					# Jonas Add check that the pop group isn't fanatic opposing ethic
-				}
 			}
 			this = { save_event_target_as = source_pop_group }
 		}
 	]
 
 	event_target:source_pop_group = {
-		planet = {
-			create_pop_group = {
-				pop_group = event_target:source_pop_group
-				ethos = { ethic = $ETHOS$ }
-				size = 0
-				effect = {
-					transfer_pop_amount = {
-						source = event_target:source_pop_group
-						target = this
-						[[AMOUNT]
-							amount = $AMOUNT$
-						]
-						[[PERCENTAGE]
-							percentage = $PERCENTAGE$
-						]
-					}
-					[[POP_GROUP_FLAG]
-						set_pop_group_flag = $POP_GROUP_FLAG$
-					]
-				}
+		[[AMOUNT]
+			pop_force_add_ethic = {
+				ethic = $ETHOS$
+				amount = $AMOUNT$
+				random = $RANDOM$	# Randomise by up to RANDOM
 			}
+		]
+		[[PERCENTAGE]
+			pop_force_add_ethic = {
+				ethic = $ETHOS$
+				percentage = $PERCENTAGE$
+				random = $RANDOM$	# Randomise by up to RANDOM
+			}
+		]
+		[[POP_GROUP_FLAG]
+			set_pop_group_flag = $POP_GROUP_FLAG$
+		]
+	}
+}
+
+# Forces an AMOUNT or PERCENTAGE of pops from the calling pop group into the provided ETHOS.
+# Randomises the amounts by RANDOM.
+# If POP_GROUP is set, it's used as the source pop group, otherwise a random group is selected
+# If POP_GROUP_FLAG is set, it's set on the target pop group
+pop_group_transfer_effect = {
+	[[POP_GROUP]
+		$POP_GROUP$ = { save_event_target_as = source_pop_group }
+	]
+	[[!POP_GROUP]
+		weighted_random_owned_pop_group = {
+			limit = {
+				has_ethic =	$OLD_ETHOS$
+			}
+			this = { save_event_target_as = source_pop_group }
 		}
+	]
+
+	event_target:source_pop_group = {
+		[[AMOUNT]
+			pop_force_transfer_ethic = {
+				old_ethic = $OLD_ETHOS$
+				new_ethic = $ETHOS$
+				amount = $AMOUNT$
+				random = $RANDOM$	# Randomise by up to RANDOM
+			}
+		]
+		[[PERCENTAGE]
+			pop_force_transfer_ethic = {
+				old_ethic = $OLD_ETHOS$
+				new_ethic = $ETHOS$
+				percentage = $PERCENTAGE$
+				random = $RANDOM$	# Randomise by up to RANDOM
+			}
+		]
+		[[POP_GROUP_FLAG]
+			set_pop_group_flag = $POP_GROUP_FLAG$
+		]
 	}
 }
 
