@@ -3934,7 +3934,7 @@ fire_random_centralisation_flavour_event_effect = {
 }
 
 set_assimilation_counter_variable = {
-	# 4d25 + Auto-Mod Modifier
+	# 5d20 + Auto-Mod Modifier
 	export_modifier_to_variable = {
 		modifier = auto_mod_monthly_mult
 		variable = assimilation_counter_mult
@@ -3954,25 +3954,31 @@ set_assimilation_counter_variable = {
 	set_variable_to_random_value = {
 		which = assimilation_counter_1
 		min = 1
-		max = 25
+		max = 20
 		rounded = yes
 	}
 	set_variable_to_random_value = {
 		which = assimilation_counter_2
 		min = 1
-		max = 25
+		max = 20
 		rounded = yes
 	}
 	set_variable_to_random_value = {
 		which = assimilation_counter_3
 		min = 1
-		max = 25
+		max = 20
 		rounded = yes
 	}
 	set_variable_to_random_value = {
 		which = assimilation_counter_4
 		min = 1
-		max = 25
+		max = 20
+		rounded = yes
+	}
+	set_variable_to_random_value = {
+		which = assimilation_counter_5
+		min = 1
+		max = 20
 		rounded = yes
 	}
 	change_variable = {
@@ -3991,15 +3997,16 @@ set_assimilation_counter_variable = {
 		which = assimilation_counter
 		value = assimilation_counter_4
 	}
-	# Divide by 5 and round as we assimilate in batches of 5
+	change_variable = {
+		which = assimilation_counter
+		value = assimilation_counter_5
+	}
+	# Divide by 5 as we assimilate in batches of 5
 	divide_variable = {
 		which = assimilation_counter
 		value = 5
 	}
-	round_variable_to_closest = {
-		which = assimilation_counter
-		value = 5
-	}
+	round_variable = assimilation_counter
 }
 
 clear_assimilation_variables = {
@@ -4009,6 +4016,103 @@ clear_assimilation_variables = {
 	clear_variable = assimilation_counter_2
 	clear_variable = assimilation_counter_3
 	clear_variable = assimilation_counter_4
+	clear_variable = assimilation_counter_5
+}
+
+# pop group scope. Creates the assimilated counterpart species, or finds the one
+# an earlier pass already made, and saves it as target_species.
+create_assimilation_species = {
+	if = {
+		limit = {
+			NOT = {
+				any_galaxy_species = {
+					has_species_flag = assimilation_species_of_species@event_target:old_species
+					has_species_flag = assimilation_species_of_empire@root.owner
+					is_same_species = event_target:old_species
+				}
+			}
+		}
+		create_species = {
+			is_mod = yes
+			name = this
+			plural = this
+			class = this
+			portrait = this
+			traits = this
+			can_be_modified = this
+			homeworld = this
+			namelist = this
+			gender = this
+			effect = {
+				modify_species = {
+					species = this
+					$TRAITS$
+					add_traits_at_start_of_list = yes
+					change_scoped_species = no
+
+					effect = {
+						set_species_flag = assimilation_species_of_species@event_target:old_species
+						set_species_flag = assimilation_species_of_empire@root.owner
+						save_event_target_as = target_species
+					}
+				}
+			}
+		}
+	}
+	else = {
+		random_galaxy_species = {
+			limit = {
+				has_species_flag = assimilation_species_of_species@event_target:old_species
+				has_species_flag = assimilation_species_of_empire@root.owner
+				is_same_species = event_target:old_species
+			}
+			save_event_target_as = target_species
+		}
+	}
+}
+
+# pop group scope. Converts to the owner founder species rather than a new one.
+use_founder_species_as_assimilation_target = {
+	root.owner.species = {
+		save_event_target_as = target_species
+	}
+	$TRAITS$					# The founder species keeps its own traits, so this is empty
+}
+
+# pop group scope. Moves AMOUNT pops into the assimilated species group
+assimilate_pop_group_effect = {
+	colony = {
+		create_pop_group = {
+			pop_group = event_target:old_pop_group
+			species = event_target:target_species
+			size = 0
+			effect = {
+				transfer_pop_amount = {
+					source = event_target:old_pop_group
+					target = this
+					amount = $AMOUNT|5$
+				}
+				set_timed_pop_group_flag = {
+					flag = already_assimilated
+					days = 15
+				}
+				apply_post_assimilation_effects = yes
+			}
+		}
+	}
+}
+
+# pop group scope. Wilderness keeps one pop in five, so the rest are killed.
+assimilate_wilderness_pop_group_effect = {
+	assimilate_pop_group_effect = {
+		AMOUNT = 1
+	}
+	colony = {
+		kill_pop_group = {
+			pop_group = event_target:old_pop_group
+			amount = 4
+		}
+	}
 }
 
 # pop scope, root = planet
@@ -4071,6 +4175,27 @@ apply_post_assimilation_effects = {
 		}
 		species = {
 			set_species_traits_purity_count_variable = yes
+		}
+	}
+}
+
+# planet scope. Run once a month, because assimilating over 100 pops a month is hard
+finish_assimilation_effect = {
+	owner = {
+		credit_assimilation_purge_crisis = {
+			COUNT = 1
+		}
+		assimilate_armies = {
+			SOURCE = event_target:old_species
+			TARGET = event_target:target_species
+		}
+		assimilate_colony_ships = {
+			SOURCE = event_target:old_species
+			TARGET = event_target:target_species
+		}
+		assimilate_leaders = {
+			SOURCE = event_target:old_species
+			TARGET = event_target:target_species
 		}
 	}
 }
@@ -4185,6 +4310,7 @@ add_extra_hyperlane_to_spawned_system_effect = {
 						NOR = {
 							has_hyperlane_to = prev
 							has_star_flag = sealed_system
+							has_star_flag = surveillance_supercomputer_system
 						}
 					}
 				}
@@ -4199,6 +4325,7 @@ add_extra_hyperlane_to_spawned_system_effect = {
 						NOR = {
 							has_hyperlane_to = prev
 							has_star_flag = sealed_system
+							has_star_flag = surveillance_supercomputer_system
 						}
 					}
 					add_hyperlane = {
@@ -4219,6 +4346,7 @@ add_extra_hyperlane_to_spawned_system_effect = {
 						NOR = {
 							has_hyperlane_to = prev
 							has_star_flag = sealed_system
+							has_star_flag = surveillance_supercomputer_system
 						}
 					}
 				}
@@ -4233,6 +4361,7 @@ add_extra_hyperlane_to_spawned_system_effect = {
 						NOR = {
 							has_hyperlane_to = prev
 							has_star_flag = sealed_system
+							has_star_flag = surveillance_supercomputer_system
 						}
 					}
 					add_hyperlane = {
@@ -4253,6 +4382,7 @@ add_extra_hyperlane_to_spawned_system_effect = {
 						NOR = {
 							has_hyperlane_to = prev
 							has_star_flag = sealed_system
+							has_star_flag = surveillance_supercomputer_system
 						}
 					}
 				}
@@ -4284,6 +4414,7 @@ add_extra_hyperlane_to_spawned_system_effect = {
 						NOR = {
 							has_hyperlane_to = prev
 							has_star_flag = sealed_system
+							has_star_flag = surveillance_supercomputer_system
 						}
 					}
 				}
@@ -4298,6 +4429,7 @@ add_extra_hyperlane_to_spawned_system_effect = {
 						NOR = {
 							has_hyperlane_to = prev
 							has_star_flag = sealed_system
+							has_star_flag = surveillance_supercomputer_system
 						}
 					}
 					add_hyperlane = {
@@ -4323,6 +4455,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -4338,6 +4471,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -4359,6 +4493,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -4374,6 +4509,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -4395,6 +4531,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -4410,6 +4547,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -4431,6 +4569,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -4446,6 +4585,7 @@ add_extra_hyperlane_to_this_system_effect = {
 				NOR = {
 					has_hyperlane_to = prev
 					has_star_flag = sealed_system
+					has_star_flag = surveillance_supercomputer_system
 					is_bottleneck_system = yes
 				}
 			}
@@ -5312,7 +5452,10 @@ ask_empire_if_they_want_this_revolt = {
 		order_by = trigger:num_owned_planets
 		limit = {
 			NOT = { has_country_flag = asked_about_revolt_@event_target:revolt_situation }
-			basic_eligibility_for_separatism_joining_trigger = yes
+			separatism_joining_eligibility_trigger = {
+				SPECIES = event_target:rebellion_species
+				SITUATION = event_target:revolt_situation
+			}
 			OR = {
 				event_target:revolt_situation.target = {
 					OR = {
@@ -9393,5 +9536,16 @@ declare_malevolent_aura_focus = {
 			war = event_target:malevolent_aura_war
 			side = event_target:community_war_leader
 		}
+	}
+}
+
+copy_deposit_from = {
+	if = {
+		limit = {
+			$SCOPE$ = {
+				has_deposit = $DEPOSIT$
+			}
+		}
+		add_deposit = $DEPOSIT$
 	}
 }
