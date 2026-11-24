@@ -7548,22 +7548,31 @@ set_civics_for_released_country_effect = {
 set_merchant_government_effect = {
 	if = {
 		limit = {
-			has_civic = civic_criminal_heritage
+			exists = root
+			root = { has_civic = civic_criminal_heritage }
 		}
 		shift_ethic = ethic_fanatic_authoritarian
 		set_merchant_government_change_effect = {
 			AUTHORITY = auth_dictatorial
-			CIVIC = civic_dystopian_society
+			CIVIC1 = civic_merchant_guilds
+			CIVIC2 = civic_dystopian_society
 		}
 	}
 	else_if = {
 		limit = {
-			has_civic = civic_worker_coop
+			exists = root
+			root = {
+				OR = {
+					has_civic = civic_worker_coop
+					has_civic = civic_shared_burden
+				}
+			}
 		}
 		shift_ethic = ethic_fanatic_egalitarian
 		set_merchant_government_change_effect = {
 			AUTHORITY = auth_democratic
-			CIVIC = civic_shared_burden
+			CIVIC1 = civic_merchant_guilds
+			CIVIC2 = civic_shared_burden
 		}
 	}
 	else_if = {
@@ -7572,7 +7581,8 @@ set_merchant_government_effect = {
 		}
 		set_merchant_government_change_effect = {
 			AUTHORITY = auth_dictatorial
-			CIVIC = random
+			CIVIC1 = civic_merchant_guilds
+			CIVIC2 = random
 		}
 	}
 	else_if = {
@@ -7581,18 +7591,33 @@ set_merchant_government_effect = {
 		}
 		set_merchant_government_change_effect = {
 			AUTHORITY = auth_democratic
-			CIVIC = random
+			CIVIC1 = civic_merchant_guilds
+			CIVIC2 = random
+		}
+	}
+	else_if = {
+		limit = {
+			is_xenophobe = yes
+		}
+		set_merchant_government_change_effect = {
+			AUTHORITY = auth_oligarchic
+			CIVIC1 = civic_merchant_guilds
+			CIVIC2 = random
 		}
 	}
 	else = {
 		set_merchant_government_change_effect = {
 			AUTHORITY = auth_oligarchic
-			CIVIC = random
+			CIVIC1 = civic_corporate_dominion
+			CIVIC2 = random
 		}
 	}
 }
 
 set_merchant_government_change_effect = {
+	force_remove_civic_by_index = 6
+	force_remove_civic_by_index = 5
+	force_remove_civic_by_index = 4
 	if = {
 		limit = {
 			has_technology = tech_galactic_administration
@@ -7602,10 +7627,18 @@ set_merchant_government_change_effect = {
 			cooldown = no
 			remove_invalid_civics = yes
 			civics = {
-				civic = civic_merchant_guilds
-				civic = $CIVIC$
+				civic = $CIVIC1$
+				civic = $CIVIC2$
 				civic = random
 			}
+		}
+		if = {
+			limit = {
+				exists = root
+				root = { has_civic = civic_crusader_spirit }
+			}
+			force_remove_civic_by_index = 3
+			force_add_civic = civic_crusader_spirit
 		}
 	}
 	else = {
@@ -7614,9 +7647,25 @@ set_merchant_government_change_effect = {
 			cooldown = no
 			remove_invalid_civics = yes
 			civics = {
-				civic = civic_merchant_guilds
-				civic = $CIVIC$
+				civic = $CIVIC1$
+				civic = $CIVIC2$
 			}
+		}
+		force_remove_civic_by_index = 3
+		if = {
+			limit = {
+				exists = root
+				root = {
+					has_civic = civic_crusader_spirit
+					NOR = {
+						has_civic = civic_criminal_heritage
+						has_civic = civic_worker_coop
+						has_civic = civic_shared_burden
+					}
+				}
+			}
+			force_remove_civic_by_index = 2
+			force_add_civic = civic_crusader_spirit
 		}
 	}
 }
