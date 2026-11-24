@@ -3602,6 +3602,15 @@ give_next_breakthrough_effect = {
 
 give_next_terraforming_tech_option_effect = {
 	if = {
+		limit = { is_nomadic = yes }
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = @tier3researchreward
+			min = @tier3researchmin
+			max = @tier3researchmax
+		}
+	}
+	else_if = {
 		limit = { NOT = { has_technology = tech_terrestrial_sculpting } }
 		add_research_option = tech_terrestrial_sculpting
 		add_tech_progress = {
@@ -4054,6 +4063,7 @@ create_assimilation_species = {
 						set_species_flag = assimilation_species_of_species@event_target:old_species
 						set_species_flag = assimilation_species_of_empire@root.owner
 						save_event_target_as = target_species
+						$SPECIES_EFFECT$
 					}
 				}
 			}
@@ -4077,6 +4087,7 @@ use_founder_species_as_assimilation_target = {
 		save_event_target_as = target_species
 	}
 	$TRAITS$					# The founder species keeps its own traits, so this is empty
+	$SPECIES_EFFECT$
 }
 
 # pop group scope. Moves AMOUNT pops into the assimilated species group
@@ -5385,12 +5396,29 @@ death_cult_sacrifice_effect = {
 		which = sacrifice_result_mult
 		value = value:sacrifice_edict_power_councilor_death_cult
 	}
+
+	if = {
+		limit = { is_variable_set = spirit_cultivation_death_cult_roll_count }
+		# Add bonus from Spirit Cultivation.
+		multiply_variable = {
+			which = sacrifice_result_mult
+			value = value:spirit_cultivation_death_cult_bonus_plus_one
+		}
+	}
 }
 
 
 #THIS and ROOT are the Situation
 deduce_planetary_separatism_species = {
 	target = {
+		save_event_target_as = rebel_planet
+	}
+	deduce_planetary_separatism_species_rebel_planet = yes
+}
+
+#THIS and ROOT are the Situation
+deduce_planetary_separatism_species_rebel_planet = {
+	event_target:rebel_planet = {
 		random_owned_species = {
 			limit = {
 				is_sapient = yes
@@ -5413,13 +5441,13 @@ deduce_planetary_separatism_species = {
 				base = 100
 				complex_trigger_modifier = { #add 0.1 for each unhappy pop of this species
 					trigger = count_owned_pop_amount
-					trigger_scope = root.target
+					trigger_scope = event_target:rebel_planet
 					potential = {
 						species_has_happiness_with_owner = root.owner
 					}
 					parameters = {
 						limit = {
-							is_same_species = prevprev #prev should be root.target, prevprev the species
+							is_same_species = prevprev #prev should be event_target:rebel_planet, prevprev the species
 							happiness < 0.3
 						}
 					}
@@ -5428,7 +5456,7 @@ deduce_planetary_separatism_species = {
 				}
 				complex_trigger_modifier = { #multiply it by the percentage of pops on the planet
 					trigger = pop_amount_percentage
-					trigger_scope = root.target
+					trigger_scope = event_target:rebel_planet
 					parameters = {
 						limit = { is_same_species = prevprev }
 					}
@@ -7199,6 +7227,11 @@ set_ruined_megastructure = {
 			system_event = { id = grand_archive.4501 }
 		}
 	}
+	else_if = {
+		limit = { is_megastructure_galactic_halls = yes }
+		on_galactic_hall_deleted = yes
+		remove_megastructure = this
+	}
 	else = {
 		remove_megastructure = this
 	}
@@ -7339,10 +7372,19 @@ remove_system_terraforming_candidates = {
 }
 
 set_origin_effect = {
-	country_event = { id = game_start.8 }
+	country_event = {
+		id = game_start.8
+	}
 	give_starting_resources_effect = yes
-	# Necrophages
+	# Planetary Purgers
 	if = {
+		limit = {
+			has_origin = origin_nomadic_purger
+		}
+		set_origin = origin_nomadic_purger
+	}
+	# Necrophages
+	else_if = {
 		limit = {
 			has_trait = trait_necrophage
 		}
@@ -7379,7 +7421,9 @@ set_origin_effect = {
 	# Calamitous Birth
 	else_if = {
 		limit = {
-			$SOURCE_COUNTRY$ = { has_origin = origin_lithoid }
+			$SOURCE_COUNTRY$ = {
+				has_origin = origin_lithoid
+			}
 			has_trait = trait_lithoid
 		}
 		set_origin = origin_lithoid
@@ -7399,7 +7443,9 @@ set_origin_effect = {
 	if = {
 		limit = {
 			is_machine_empire = yes
-			NOT = { has_trait = trait_machine_unit }
+			NOT = {
+				has_trait = trait_machine_unit
+			}
 		}
 		country_remove_ethic = ethic_gestalt_consciousness
 		shift_ethic = ethic_xenophobe
@@ -7408,7 +7454,9 @@ set_origin_effect = {
 	else_if = {
 		limit = {
 			is_hive_empire = yes
-			NOT = { has_trait = trait_hive_mind }
+			NOT = {
+				has_trait = trait_hive_mind
+			}
 		}
 		country_remove_ethic = ethic_gestalt_consciousness
 		shift_ethic = ethic_xenophobe
@@ -7441,242 +7489,24 @@ set_origin_effect = {
 			remove_invalid_civics = yes
 		}
 	}
-	country_event = { id = game_start.70 }
-	country_event = { id = game_start.72 }
-}
-
-set_merchant_government_effect = {
-	if = {
-		limit = {
-			has_ethic = ethic_fanatic_authoritarian
-		}
-		if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			shift_ethic = ethic_fanatic_xenophobe
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-				}
-			}
-			shift_ethic = ethic_fanatic_xenophile
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
-				}
-			}
-			shift_ethic = ethic_fanatic_militarist
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
-			}
-			shift_ethic = ethic_fanatic_pacifist
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-				}
-			}
-			shift_ethic = ethic_fanatic_spiritualist
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-				}
-			}
-			shift_ethic = ethic_fanatic_materialist
-		}
+	country_event = {
+		id = game_start.70
 	}
-	else_if = {
-		limit = {
-			has_ethic = ethic_fanatic_egalitarian
-		}
-		if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			shift_ethic = ethic_fanatic_xenophobe
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-				}
-			}
-			shift_ethic = ethic_fanatic_xenophile
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
-				}
-			}
-			shift_ethic = ethic_fanatic_militarist
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
-			}
-			shift_ethic = ethic_fanatic_pacifist
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-				}
-			}
-			shift_ethic = ethic_fanatic_spiritualist
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-				}
-			}
-			shift_ethic = ethic_fanatic_materialist
-		}
-	}
-	if = {
-		limit = {
-			exists = root
-			root = { has_civic = civic_criminal_heritage }
-		}
-		shift_ethic = ethic_fanatic_authoritarian
-		change_government = {
-			authority = auth_dictatorial
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_merchant_guilds civic = civic_dystopian_society civic = random }
-		}
-	}
-	else_if = {
-		limit = {
-			exists = root
-			root = {
-				OR = {
-					has_civic = civic_worker_coop
-					has_civic = civic_shared_burden
-				}
-			}
-		}
-		shift_ethic = ethic_fanatic_egalitarian
-		if = {
-			limit = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
-			}
-			shift_ethic = ethic_xenophile
-		}
-		change_government = {
-			authority = auth_democratic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_merchant_guilds civic = civic_shared_burden civic = random }
-		}
-	}
-	else_if = {
-		limit = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
-		}
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_merchant_guilds civic = random civic = random }
-		}
-	}
-	else = {
-		change_government = {
-			authority = auth_oligarchic
-			cooldown = no
-			remove_invalid_civics = yes
-			civics = { civic = civic_corporate_dominion civic = random civic = random }
-		}
-	}
-	force_remove_civic_by_index = 6
-	force_remove_civic_by_index = 5
-	force_remove_civic_by_index = 4
-	if = {
-		limit = { has_technology = tech_galactic_administration }
-		if = {
-			limit = {
-				exists = root
-				root = { has_civic = civic_crusader_spirit }
-			}
-			force_remove_civic_by_index = 3
-			force_add_civic = civic_crusader_spirit
-		}
-	}
-	else = {
-		force_remove_civic_by_index = 3
-		if = {
-			limit = {
-				exists = root
-				root = {
-					has_civic = civic_crusader_spirit
-					NOR = {
-						has_civic = civic_criminal_heritage
-						has_civic = civic_worker_coop
-						has_civic = civic_shared_burden
-					}
-				}
-			}
-			force_remove_civic_by_index = 2
-			force_add_civic = civic_crusader_spirit
-		}
+	country_event = {
+		id = game_start.72
 	}
 }
 
-impose_ideology_effect = {
+set_civics_for_released_country_effect = {
 	if = {
 		limit = {
-			is_ai = yes
-			OR = {
-				has_origin = origin_legendary_leader
-				has_origin = origin_legendary_leader_imperial
-				has_origin = origin_legendary_leader_dictatorial
+			$SOURCE_COUNTRY$ = {
+				has_corporate_government = yes
 			}
+			has_corporate_government = yes
 		}
-		random_owned_leader = {
-			limit = { is_ruler = yes }
-			kill_leader = { show_notification = yes }
-		}
-		set_origin = origin_legendary_leader_death
+		set_merchant_government_effect = yes
 	}
-	copy_ethos_and_authority = root
 	if = {
 		limit = {
 			has_civic = civic_galactic_sovereign
@@ -7697,29 +7527,137 @@ impose_ideology_effect = {
 	}
 	if = {
 		limit = {
-			root = { has_civic = civic_shared_burden }
+			$SOURCE_COUNTRY$ = {
+				has_civic = civic_shared_burden
+			}
 		}
 		force_remove_civic_by_index = 1
 		force_add_civic = civic_shared_burden
 	}
 	if = {
 		limit = {
-			root = { has_civic = civic_crusader_spirit }
+			$SOURCE_COUNTRY$ = {
+				has_civic = civic_crusader_spirit
+			}
 		}
 		force_remove_civic_by_index = 1
 		force_add_civic = civic_crusader_spirit
 	}
+}
+
+set_merchant_government_effect = {
 	if = {
 		limit = {
-			root = { is_megacorp = yes }
-			is_megacorp = yes
+			has_civic = civic_criminal_heritage
 		}
-		set_merchant_government_effect = yes
+		shift_ethic = ethic_fanatic_authoritarian
+		set_merchant_government_change_effect = {
+			AUTHORITY = auth_dictatorial
+			CIVIC = civic_dystopian_society
+		}
 	}
-	add_modifier = { modifier = recently_liberated days = 7200 }
-	add_opinion_modifier = { modifier = opinion_liberated_us who = root }
+	else_if = {
+		limit = {
+			has_civic = civic_worker_coop
+		}
+		shift_ethic = ethic_fanatic_egalitarian
+		set_merchant_government_change_effect = {
+			AUTHORITY = auth_democratic
+			CIVIC = civic_shared_burden
+		}
+	}
+	else_if = {
+		limit = {
+			is_fanatic_authoritarian = yes
+		}
+		set_merchant_government_change_effect = {
+			AUTHORITY = auth_dictatorial
+			CIVIC = random
+		}
+	}
+	else_if = {
+		limit = {
+			is_fanatic_egalitarian = yes
+		}
+		set_merchant_government_change_effect = {
+			AUTHORITY = auth_democratic
+			CIVIC = random
+		}
+	}
+	else = {
+		set_merchant_government_change_effect = {
+			AUTHORITY = auth_oligarchic
+			CIVIC = random
+		}
+	}
+}
+
+set_merchant_government_change_effect = {
+	if = {
+		limit = {
+			has_technology = tech_galactic_administration
+		}
+		change_government = {
+			authority = $AUTHORITY$
+			cooldown = no
+			remove_invalid_civics = yes
+			civics = {
+				civic = civic_merchant_guilds
+				civic = $CIVIC$
+				civic = random
+			}
+		}
+	}
+	else = {
+		change_government = {
+			authority = $AUTHORITY$
+			cooldown = no
+			remove_invalid_civics = yes
+			civics = {
+				civic = civic_merchant_guilds
+				civic = $CIVIC$
+			}
+		}
+	}
+}
+
+impose_ideology_effect = {
+	if = {
+		limit = {
+			is_ai = yes
+			OR = {
+				has_origin = origin_legendary_leader
+				has_origin = origin_legendary_leader_imperial
+				has_origin = origin_legendary_leader_dictatorial
+			}
+		}
+		random_owned_leader = {
+			limit = {
+				is_ruler = yes
+			}
+			kill_leader = {
+				show_notification = yes
+			}
+		}
+		set_origin = origin_legendary_leader_death
+	}
+	copy_ethos_and_authority = root
+	set_civics_for_released_country_effect = {
+		SOURCE_COUNTRY = root
+	}
+	add_modifier = {
+		modifier = recently_liberated
+		days = 7200
+	}
+	add_opinion_modifier = {
+		modifier = opinion_liberated_us
+		who = root
+	}
 	root = {
-		add_opinion_modifier = { modifier = opinion_we_liberated who = from }
+		add_opinion_modifier = {
+			modifier = opinion_we_liberated
+			who = from
+		}
 	}
 }
 
@@ -9060,12 +8998,14 @@ create_faction_formed_message = {
 	}
 }
 
+# This = embraced pop faction, Root = country to notify
 create_faction_shifted_message = {
 	create_message = {
-		type = $FACTION_TYPE$
-		localization = $FACTION_INTRO$
+		type = $TITLE$
+		localization = $DESC|factions.2000.desc_type$
 		days = 100
-		target = root
+		recipient = root
+		target = owner
 	}
 }
 
