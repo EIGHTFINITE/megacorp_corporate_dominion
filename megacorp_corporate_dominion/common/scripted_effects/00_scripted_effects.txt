@@ -7500,15 +7500,6 @@ set_origin_effect = {
 set_civics_for_released_country_effect = {
 	if = {
 		limit = {
-			$SOURCE_COUNTRY$ = {
-				has_corporate_government = yes
-			}
-			has_corporate_government = yes
-		}
-		set_merchant_government_effect = yes
-	}
-	if = {
-		limit = {
 			has_civic = civic_galactic_sovereign
 		}
 		force_remove_civic = civic_galactic_sovereign
@@ -7528,20 +7519,31 @@ set_civics_for_released_country_effect = {
 	if = {
 		limit = {
 			$SOURCE_COUNTRY$ = {
-				has_civic = civic_shared_burden
+				has_corporate_government = yes
 			}
+			has_corporate_government = yes
 		}
-		force_remove_civic_by_index = 1
-		force_add_civic = civic_shared_burden
+		set_merchant_government_effect = yes
 	}
-	if = {
-		limit = {
-			$SOURCE_COUNTRY$ = {
-				has_civic = civic_crusader_spirit
+	else = {
+		if = {
+			limit = {
+				$SOURCE_COUNTRY$ = {
+					has_civic = civic_shared_burden
+				}
 			}
+			force_remove_civic_by_index = 1
+			force_add_civic = civic_shared_burden
 		}
-		force_remove_civic_by_index = 1
-		force_add_civic = civic_crusader_spirit
+		if = {
+			limit = {
+				$SOURCE_COUNTRY$ = {
+					has_civic = civic_crusader_spirit
+				}
+			}
+			force_remove_civic_by_index = 1
+			force_add_civic = civic_crusader_spirit
+		}
 	}
 }
 
@@ -7551,7 +7553,12 @@ set_merchant_government_effect = {
 			exists = root
 			root = { has_civic = civic_criminal_heritage }
 		}
-		shift_ethic = ethic_fanatic_authoritarian
+		if = {
+			limit = {
+				is_fanatic_authoritarian = no
+			}
+			shift_ethic = ethic_fanatic_authoritarian
+		}
 		set_merchant_government_change_effect = {
 			AUTHORITY = auth_dictatorial
 			CIVIC1 = civic_merchant_guilds
@@ -7568,7 +7575,12 @@ set_merchant_government_effect = {
 				}
 			}
 		}
-		shift_ethic = ethic_fanatic_egalitarian
+		if = {
+			limit = {
+				is_fanatic_egalitarian = no
+			}
+			shift_ethic = ethic_fanatic_egalitarian
+		}
 		set_merchant_government_change_effect = {
 			AUTHORITY = auth_democratic
 			CIVIC1 = civic_merchant_guilds
