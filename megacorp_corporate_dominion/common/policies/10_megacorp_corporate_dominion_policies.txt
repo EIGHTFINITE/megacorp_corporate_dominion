@@ -42,6 +42,9 @@ diplomatic_stance = {
 			country_naval_cap_mult = 0.1
 			country_claim_influence_cost_mult = -0.1
 			external_leader_pool_add = -1
+			ideological_push_mult = 0.05
+			ideological_resistance_mult = 0.05
+			foreign_ideological_push_mult = 0.05
 		}
 
 		ai_weight = {
@@ -55,7 +58,7 @@ diplomatic_stance = {
 			# Pacifists
 			modifier = { # Fanatic Pacifists will *only* go belligerent if there's a rival neighbor...
 				factor = 0
-				has_ethic = ethic_fanatic_pacifist
+				is_fanatic_pacifist = yes
 				NOT = {
 					any_neighbor_country = {
 						is_rival = root
@@ -78,12 +81,20 @@ diplomatic_stance = {
 
 			# Angry people like to be belligerent
 			modifier = {
+				factor = 2.5
+				has_ethic = ethic_absolute_militarist
+			}
+			modifier = {
 				factor = 2.0
 				has_ethic = ethic_fanatic_militarist
 			}
 			modifier = {
 				factor = 1.5
 				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = 1.75
+				has_ethic = ethic_absolute_authoritarian
 			}
 			modifier = {
 				factor = 1.5
@@ -157,6 +168,8 @@ diplomatic_stance = {
 			operations_cost_mult = 0.25
 			operations_upkeep_mult = 0.25
 			external_leader_pool_add = 1
+			ideological_resistance_mult = -0.1
+			foreign_ideological_push_mult = 0.1
 		}
 
 		ai_weight = {
@@ -183,6 +196,10 @@ diplomatic_stance = {
 				has_ethic = ethic_xenophobe
 			}
 			modifier = {
+				factor = 0.25
+				has_ethic = ethic_absolute_authoritarian
+			}
+			modifier = {
 				factor = 0.5
 				has_ethic = ethic_fanatic_authoritarian
 			}
@@ -192,6 +209,10 @@ diplomatic_stance = {
 			}
 
 			# Nice people:
+			modifier = {
+				factor = 2.5
+				has_ethic = ethic_absolute_xenophile
+			}
 			modifier = {
 				factor = 2.0
 				has_ethic = ethic_fanatic_xenophile
@@ -205,6 +226,10 @@ diplomatic_stance = {
 				has_valid_civic = civic_machine_exploration_protocol
 			}
 			modifier = {
+				factor = 1.45
+				has_ethic = ethic_absolute_pacifist
+			}
+			modifier = {
 				factor = 1.3
 				has_ethic = ethic_fanatic_pacifist
 			}
@@ -213,12 +238,20 @@ diplomatic_stance = {
 				has_ethic = ethic_pacifist
 			}
 			modifier = {
+				factor = 1.45
+				has_ethic = ethic_absolute_egalitarian
+			}
+			modifier = {
 				factor = 1.3
 				has_ethic = ethic_fanatic_egalitarian
 			}
 			modifier = {
 				factor = 1.15
 				has_ethic = ethic_egalitarian
+			}
+			modifier = {
+				factor = 1.2
+				has_ethic = ethic_absolute_materialist
 			}
 			modifier = {
 				factor = 1.1
@@ -280,6 +313,9 @@ diplomatic_stance = {
 			pop_government_ethic_attraction = 0.25
 			country_border_friction_mult = 2.0
 			external_leader_pool_add = -2
+			ideological_push_mult = -0.1
+			ideological_resistance_mult = 0.2
+			foreign_ideological_push_mult = -0.5
 		}
 
 		on_enabled = {
@@ -350,6 +386,8 @@ diplomatic_stance = {
 			starbase_outpost_cost_mult = -0.10
 			planet_colony_development_speed_mult = 0.15
 			country_border_friction_mult = 1.0
+			ideological_push_mult = 0.1
+			foreign_ideological_push_mult = 0.05
 		}
 
 		ai_weight = {
@@ -391,6 +429,8 @@ diplomatic_stance = {
 			starbase_outpost_cost_mult = -0.10
 			terraform_speed_mult = 0.15
 			country_border_friction_mult = 1.0
+			ideological_push_mult = 0.1
+			foreign_ideological_push_mult = 0.05
 		}
 
 		ai_weight = {
@@ -440,6 +480,7 @@ diplomatic_stance = {
 			diplo_weight_economy_mult = 0.25
 			country_trade_produces_mult = 0.1
 			external_leader_pool_add = 1
+			foreign_ideological_push_mult = 0.05
 		}
 
 		ai_weight = {
@@ -511,6 +552,9 @@ diplomatic_stance = {
 			country_war_exhaustion_mult = -0.20
 			country_naval_cap_mult = 0.20
 			country_claim_influence_cost_mult = -0.1
+			ideological_push_mult = 0.1
+			ideological_resistance_mult = 0.1
+			foreign_ideological_push_mult = 0.1
 		}
 
 		on_enabled = {
@@ -539,12 +583,20 @@ diplomatic_stance = {
 
 			# Angry people want to be Supreme
 			modifier = {
+				factor = 2.5
+				has_ethic = ethic_absolute_militarist
+			}
+			modifier = {
 				factor = 2.0
 				has_ethic = ethic_fanatic_militarist
 			}
 			modifier = {
 				factor = 1.5
 				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = 1.75
+				has_ethic = ethic_absolute_authoritarian
 			}
 			modifier = {
 				factor = 1.5
@@ -640,6 +692,9 @@ diplomatic_stance = {
 			rivalries_unity_produces_add = 10
 			country_border_friction_mult = 1
 			diplo_weight_rivals_mult = 0.05
+			ideological_push_mult = 0.1
+			ideological_resistance_mult = 0.1
+			foreign_ideological_push_mult = -0.2
 		}
 
 		ai_weight = {
@@ -1019,7 +1074,7 @@ diplomatic_stance = {
 			# Pacifists
 			modifier = { # Fanatic Pacifists will *only* go belligerent if there's a rival neighbor...
 				factor = 0
-				has_ethic = ethic_fanatic_pacifist
+				is_fanatic_pacifist = yes
 				NOT = {
 					any_neighbor_country = {
 						is_rival = root
@@ -1042,12 +1097,20 @@ diplomatic_stance = {
 
 			# Angry people like to be belligerent
 			modifier = {
+				factor = 2.5
+				has_ethic = ethic_absolute_militarist
+			}
+			modifier = {
 				factor = 2.0
 				has_ethic = ethic_fanatic_militarist
 			}
 			modifier = {
 				factor = 1.5
 				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = 1.75
+				has_ethic = ethic_absolute_authoritarian
 			}
 			modifier = {
 				factor = 1.5
@@ -1142,6 +1205,10 @@ diplomatic_stance = {
 				has_ethic = ethic_xenophobe
 			}
 			modifier = {
+				factor = 0.25
+				has_ethic = ethic_absolute_authoritarian
+			}
+			modifier = {
 				factor = 0.5
 				has_ethic = ethic_fanatic_authoritarian
 			}
@@ -1151,6 +1218,10 @@ diplomatic_stance = {
 			}
 
 			# Nice people:
+			modifier = {
+				factor = 2.5
+				has_ethic = ethic_absolute_xenophile
+			}
 			modifier = {
 				factor = 2.0
 				has_ethic = ethic_fanatic_xenophile
@@ -1164,6 +1235,10 @@ diplomatic_stance = {
 				has_valid_civic = civic_machine_exploration_protocol
 			}
 			modifier = {
+				factor = 1.45
+				has_ethic = ethic_absolute_pacifist
+			}
+			modifier = {
 				factor = 1.3
 				has_ethic = ethic_fanatic_pacifist
 			}
@@ -1172,12 +1247,20 @@ diplomatic_stance = {
 				has_ethic = ethic_pacifist
 			}
 			modifier = {
+				factor = 1.45
+				has_ethic = ethic_absolute_egalitarian
+			}
+			modifier = {
 				factor = 1.3
 				has_ethic = ethic_fanatic_egalitarian
 			}
 			modifier = {
 				factor = 1.15
 				has_ethic = ethic_egalitarian
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_absolute_materialist
 			}
 			modifier = {
 				factor = 1.1
@@ -1342,12 +1425,20 @@ diplomatic_stance = {
 
 			# Angry people want to be Supreme
 			modifier = {
+				factor = 2.5
+				has_ethic = ethic_absolute_militarist
+			}
+			modifier = {
 				factor = 2.0
 				has_ethic = ethic_fanatic_militarist
 			}
 			modifier = {
 				factor = 1.5
 				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = 1.75
+				has_ethic = ethic_absolute_authoritarian
 			}
 			modifier = {
 				factor = 1.5
