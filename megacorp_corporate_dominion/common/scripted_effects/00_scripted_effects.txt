@@ -2203,7 +2203,10 @@ remove_muutagan_trades = {
 update_leader_after_modification = {
 	if = {
 		limit = {
-			is_leader_tier = leader_tier_default
+			OR = {
+				is_leader_tier = leader_tier_default
+				has_leader_flag = leader_golden_generation
+			}
 			has_any_chosen_one_leader_trait = no
 		}
 		# Remove all applicable leader traits
